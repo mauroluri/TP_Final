@@ -160,11 +160,13 @@ public class TP_Final {
         return this.miPersistencia.dameCategorias();}
     
     //Cliente
+    private LinkedList<Cliente> clientes = new LinkedList<Cliente>();
     public void crearCliente(String nombre, long dni, long telefono, String email, String cuit, int altura,
             Localidad localidad, Calle calle) throws PreexistingEntityException, Exception{
         Cliente miCliente = new Cliente();
-        miCliente = miCliente.creaCliente(nombre, dni, telefono, email, cuit, altura, localidad, calle);
-        miPersistencia.crearCliente(miCliente);}
+        miCliente = miCliente.creaCliente(clientes, nombre, dni, telefono, email, cuit, altura, localidad, calle);
+        if (miCliente!=null)miPersistencia.crearCliente(miCliente);
+    }
     public void editarCliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
             Localidad localidad, Calle calle, Empresa emp, String contra, LinkedList<Vehiculo> ve,
         LinkedList<OrdenTrabajo> or, LinkedList<Turno> tu, boolean ok) throws PreexistingEntityException, Exception{

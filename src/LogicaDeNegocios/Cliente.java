@@ -100,36 +100,33 @@ public class Cliente implements Serializable{
     }
     
     //En memoria (sin persistencia)     
-    private List<Cliente> clientes;
-    //Get
-    public List<Cliente> getClientes(){return clientes; }
     //Metodos en memoria
-    private Cliente buscarCliente(long dni){
+    private Cliente buscarCliente(LinkedList<Cliente> clientes, long dni){
         Cliente cli=null, ret=null;
-        boolean b=false;
-        Iterator<Cliente> it = clientes.iterator();
-        while(it.hasNext()&& ret==null){
-            cli= it.next();
-            if (cli.getDni()==dni){
-                ret=cli;
+        if (clientes!=null) {
+            Iterator<Cliente> it = clientes.iterator();
+            while(it.hasNext()&& ret==null){
+                cli= it.next();
+                if (cli.getDni()==dni){
+                    ret=cli;
+                }
             }
         }        
         return ret;
     }
-    public Cliente creaCliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
+    public Cliente creaCliente(LinkedList<Cliente> clientes, String nombre, long dni, long telefono, String email, String cuit, int altura, 
             Localidad localidad, Calle calle){
-        Cliente ret;
-        if (buscarCliente(dni)==null){
-            this.setNombre(nombre);
-            this.setDni(dni);
-            this.setTelefono(telefono);
-            this.setEmail(email);
-            this.setCuit(cuit);
-            this.setAltura(altura);
-            this.setUnaLocalidad(localidad);
-            this.setUnaCalle(calle);
-            clientes.add(this);
-            ret=this;
+        Cliente ret=this;
+        if (buscarCliente(clientes, dni)==null){
+            ret.setNombre(nombre);
+            ret.setDni(dni);
+            ret.setTelefono(telefono);
+            ret.setEmail(email);
+            ret.setCuit(cuit);
+            ret.setAltura(altura);
+            ret.setUnaLocalidad(localidad);
+            ret.setUnaCalle(calle);
+            clientes.add(ret);
         }else{
             ret=null;
         }
