@@ -99,7 +99,8 @@ public class Cliente implements Serializable{
         this.pass = "";
     }
     
-    //En memoria (sin persistencia)
+    
+    //En memoria (sin persistencia)     
     private List<Cliente> clientes;
     //Get
     public List<Cliente> getClientes(){return clientes; }
