@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="TP_FinalPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>LogicaDeNegocios.Accesorio</class>
+    <class>LogicaDeNegocios.Actividad</class>
+    <class>LogicaDeNegocios.Ajuste</class>
+    <class>LogicaDeNegocios.AtencionPublico</class>
+    <class>LogicaDeNegocios.Autoparte</class>
+    <class>LogicaDeNegocios.Calle</class>
+    <class>LogicaDeNegocios.Categoria</class>
+    <class>LogicaDeNegocios.Cliente</class>
+    <class>LogicaDeNegocios.Deposito</class>
+    <class>LogicaDeNegocios.DetalleActividad</class>
+    <class>LogicaDeNegocios.Diagnostico</class>
+    <class>LogicaDeNegocios.Empleado</class>
+    <class>LogicaDeNegocios.Empresa</class>
+    <class>LogicaDeNegocios.Encargado</class>
+    <class>LogicaDeNegocios.Equipamiento</class>
+    <class>LogicaDeNegocios.Especialidad</class>
+    <class>LogicaDeNegocios.Estado</class>
+    <class>LogicaDeNegocios.Externo</class>
+    <class>LogicaDeNegocios.Garantia</class>
+    <class>LogicaDeNegocios.GrupoParte</class>
+    <class>LogicaDeNegocios.Interno</class>
+    <class>LogicaDeNegocios.Item</class>
+    <class>LogicaDeNegocios.Localidad</class>
+    <class>LogicaDeNegocios.Marca</class>
+    <class>LogicaDeNegocios.Mecanico</class>
+    <class>LogicaDeNegocios.Modelo</class>
+    <class>LogicaDeNegocios.NivelImportancia</class>
+    <class>LogicaDeNegocios.NivelSeveridad</class>
+    <class>LogicaDeNegocios.OrdenTrabajo</class>
+    <class>LogicaDeNegocios.Pedido</class>
+    <class>LogicaDeNegocios.Perito</class>
+    <class>LogicaDeNegocios.Proveedor</class>
+    <class>LogicaDeNegocios.Provincia</class>
+    <class>LogicaDeNegocios.Recepcion</class>
+    <class>LogicaDeNegocios.Repuesto</class>
+    <class>LogicaDeNegocios.Sector</class>
+    <class>LogicaDeNegocios.Segmento</class>
+    <class>LogicaDeNegocios.Sucursal</class>
+    <class>LogicaDeNegocios.Taller</class>
+    <class>LogicaDeNegocios.TipoDiagnostico</class>
+    <class>LogicaDeNegocios.Turno</class>
+    <class>LogicaDeNegocios.Vehiculo</class>
+    <class>LogicaDeNegocios.DiaHabil</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/TP_FinalPU"/>
+      <property name="javax.persistence.jdbc.password" value="rednaxela"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+    </properties>
+  </persistence-unit>
+</persistence>
