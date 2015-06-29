@@ -50,7 +50,7 @@ public class OrdenTrabajoJpaController implements Serializable {
             em.persist(ordenTrabajo);
             if (unTurno != null) {
                 unTurno.getVsOrdenTrabajo().add(ordenTrabajo);
-                unTurno = em.merge(unTurno);asdfasd
+                unTurno = em.merge(unTurno);//asdfasd
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
