@@ -447,16 +447,16 @@ public class TP_Final {
         return this.miPersistencia.dameGarantias();}
    
     //GrupoParte
-    public void crearGrupoParte(String nombre, int codGrupo,LinkedList<Modelo> mods, LinkedList<Autoparte> parts) throws 
+    public void crearGrupoParte(String nombre, int codGrupo, Modelo mods, LinkedList<Autoparte> parts) throws 
             PreexistingEntityException, Exception{
         GrupoParte miGrupoParte = new GrupoParte(nombre, codGrupo, mods, parts);
         miPersistencia.crearGrupoParte(miGrupoParte);}
-    public void editarGrupoParte(String nombre, int codGrupo, List<Actividad> ac, List<Modelo> mo, 
+    public void editarGrupoParte(String nombre, int codGrupo, List<Actividad> ac, Modelo mo, 
             List<Autoparte> au, List<Proveedor> pr) throws  PreexistingEntityException, Exception{
         GrupoParte miGrupoParte = this.miPersistencia.dameUnGrupoParte(codGrupo);
         miGrupoParte.setNombre(nombre);
         miGrupoParte.setCodGrupo(codGrupo);
-        miGrupoParte.setVsModelo(mo);
+        miGrupoParte.setUnModelo(mo);
         miGrupoParte.setVsAutoparte(au);
         miGrupoParte.setVsProveedor(pr);
         this.miPersistencia.editarGrupoParte(miGrupoParte);}
