@@ -266,9 +266,9 @@ public class Controladora {
         return TP.dameGarantias();}
    
     //GrupoParte
-    public void crearGrupoParte(String nombre, int codGrupo, LinkedList<Modelo> mods, LinkedList<Autoparte> parts) throws PreexistingEntityException, Exception{
+    public void crearGrupoParte(String nombre, int codGrupo, Modelo mods, LinkedList<Autoparte> parts) throws PreexistingEntityException, Exception{
         TP.crearGrupoParte(nombre, codGrupo, mods, parts);}
-    public void editarGrupoParte(String nombre, int codGrupo, Vehiculo auto, List<Actividad> ac, List<Modelo> mo, 
+    public void editarGrupoParte(String nombre, int codGrupo, Vehiculo auto, List<Actividad> ac, Modelo mo, 
             List<Autoparte> au, List<Proveedor> pr) throws PreexistingEntityException, Exception{
         TP.editarGrupoParte(nombre, codGrupo, ac, mo, au, pr);}
     public void eliminarGrupoParte(int codGrupo) throws NonexistentEntityException{

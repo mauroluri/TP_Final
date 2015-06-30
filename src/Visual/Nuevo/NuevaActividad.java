@@ -39,6 +39,8 @@ public class NuevaActividad extends javax.swing.JInternalFrame {
         miModeloTabla.addColumn("Detalles");
         miModeloTabla2.addColumn("Detalles");
         CargarTabla();
+        txtHora.setEnabled(false);
+        txtMin.setEnabled(false);
     }
 
     @SuppressWarnings("unchecked")

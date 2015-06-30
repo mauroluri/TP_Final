@@ -11,12 +11,15 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
 
     Controladora cLocal;
+    Modelo mod = null, Mode;
+    DefaultComboBoxModel miModeloCombo;
     DefaultTableModel miModeloTabla= new DefaultTableModel();
     DefaultTableModel miModeloTabla2= new DefaultTableModel();    
     DefaultTableModel miModeloTabla3= new DefaultTableModel();    
@@ -32,12 +35,12 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
         setTitle(nom+" - Nuevo Grupo de partes");
         int cant= cLocal.dameGruposParte().size();
         txtCodigo.setEnabled(false);
+        CargarComboModelo();
         txtCodigo.setText(String.valueOf(cant+1));
         miModeloTabla.addColumn("Nombre");
         miModeloTabla2.addColumn("Nombre");
         miModeloTabla3.addColumn("Nombre");
         miModeloTabla4.addColumn("Nombre");
-        CargarTabla(); 
     }
 
     @SuppressWarnings("unchecked")
@@ -52,15 +55,6 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
         lblNombre = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         lblModelo = new javax.swing.JLabel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        tblModelosExistentes = new javax.swing.JTable();
-        btnQuitarM = new javax.swing.JButton();
-        btnAgregarM = new javax.swing.JButton();
-        btnQuitarTodoM = new javax.swing.JButton();
-        btnAgregarTodoM = new javax.swing.JButton();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        tblModelosGrup = new javax.swing.JTable();
-        lblModeloGrup = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         lblAutoparte = new javax.swing.JLabel();
         jScrollPane12 = new javax.swing.JScrollPane();
@@ -72,6 +66,7 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
         tblAutoparteGrup = new javax.swing.JTable();
         btnQuitarTodoA = new javax.swing.JButton();
         btnAgregarTodoA = new javax.swing.JButton();
+        cmbModelo = new javax.swing.JComboBox();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
@@ -127,72 +122,7 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        lblModelo.setText("Modelos:");
-
-        tblModelosExistentes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tblModelosExistentes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tblModelosExistentes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblModelosExistentesMouseClicked(evt);
-            }
-        });
-        jScrollPane6.setViewportView(tblModelosExistentes);
-
-        btnQuitarM.setText("< Quitar");
-        btnQuitarM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnQuitarMActionPerformed(evt);
-            }
-        });
-
-        btnAgregarM.setText("Agregar >");
-        btnAgregarM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarMActionPerformed(evt);
-            }
-        });
-
-        btnQuitarTodoM.setText("<< Quitar todo");
-        btnQuitarTodoM.setMaximumSize(new java.awt.Dimension(115, 23));
-        btnQuitarTodoM.setMinimumSize(new java.awt.Dimension(115, 23));
-        btnQuitarTodoM.setPreferredSize(new java.awt.Dimension(115, 23));
-        btnQuitarTodoM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnQuitarTodoMActionPerformed(evt);
-            }
-        });
-
-        btnAgregarTodoM.setText("Agregar todo >>");
-        btnAgregarTodoM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarTodoMActionPerformed(evt);
-            }
-        });
-
-        tblModelosGrup.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tblModelosGrup.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tblModelosGrup.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblModelosGrupMouseClicked(evt);
-            }
-        });
-        jScrollPane7.setViewportView(tblModelosGrup);
-
-        lblModeloGrup.setText("Modelos que conoce:");
+        lblModelo.setText("Modelo:");
 
         lblAutoparte.setText("Autopartes:");
 
@@ -261,6 +191,12 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
             }
         });
 
+        cmbModelo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbModeloActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelNuevoClienteLayout = new javax.swing.GroupLayout(jPanelNuevoCliente);
         jPanelNuevoCliente.setLayout(jPanelNuevoClienteLayout);
         jPanelNuevoClienteLayout.setHorizontalGroup(
@@ -268,60 +204,40 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
             .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
-                    .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelNuevoClienteLayout.createSequentialGroup()
                         .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelNuevoClienteLayout.createSequentialGroup()
-                                .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
-                                        .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(btnQuitarA, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnAgregarA)
-                                                .addGap(10, 10, 10))
-                                            .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
-                                                .addGap(28, 28, 28)
-                                                .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(btnQuitarTodoA, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(btnAgregarTodoA, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                    .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
-                                        .addComponent(lblAutoparte)
-                                        .addGap(346, 346, 346)))
-                                .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblAutoparteGrup)
-                                    .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
-                                .addComponent(jPanelDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanelUbicacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelNuevoClienteLayout.createSequentialGroup()
+                                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
-                                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(10, 10, 10)
-                                        .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
-                                                .addComponent(btnQuitarM, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnAgregarM)
-                                                .addGap(10, 10, 10))
-                                            .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
-                                                .addGap(20, 20, 20)
-                                                .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(btnQuitarTodoM, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(btnAgregarTodoM, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnQuitarA, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnAgregarA)
+                                        .addGap(10, 10, 10))
                                     .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
-                                        .addComponent(lblModelo)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblModeloGrup)
-                                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap())))
+                                        .addGap(28, 28, 28)
+                                        .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(btnQuitarTodoA, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnAgregarTodoA, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
+                                .addComponent(lblAutoparte)
+                                .addGap(346, 346, 346)))
+                        .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblAutoparteGrup)
+                            .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
+                        .addComponent(jPanelDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanelUbicacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
+                        .addComponent(lblModelo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         jPanelNuevoClienteLayout.setVerticalGroup(
             jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -333,29 +249,18 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblModelo)
-                    .addComponent(lblModeloGrup))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelNuevoClienteLayout.createSequentialGroup()
-                        .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnQuitarM)
-                            .addComponent(btnAgregarM))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnQuitarTodoM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAgregarTodoM))
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelNuevoClienteLayout.createSequentialGroup()
-                        .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblAutoparte)
-                            .addComponent(lblAutoparteGrup))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblAutoparteGrup)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelNuevoClienteLayout.createSequentialGroup()
+                        .addComponent(lblAutoparte)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelNuevoClienteLayout.createSequentialGroup()
                                 .addGroup(jPanelNuevoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -402,16 +307,16 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanelNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(38, 38, 38))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -422,68 +327,11 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void tblModelosExistentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblModelosExistentesMouseClicked
-
-    }//GEN-LAST:event_tblModelosExistentesMouseClicked
-
-    private void btnQuitarMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarMActionPerformed
-        if(tblModelosGrup.getRowCount()!=0 && tblModelosGrup.getSelectedRow() != -1){
-            Object[]fila= new Object[1];
-            fila[0] = tblModelosGrup.getValueAt(tblModelosGrup.getSelectedRow(),0).toString();
-            miModeloTabla2.removeRow(tblModelosGrup.getSelectedRow());
-            miModeloTabla.addRow(fila);
-
-            tblModelosExistentes.setModel(miModeloTabla);
-            tblModelosGrup.setModel(miModeloTabla2);}
-    }//GEN-LAST:event_btnQuitarMActionPerformed
-
-    private void btnAgregarMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarMActionPerformed
-        if(tblModelosExistentes.getRowCount()!=0 && tblModelosExistentes.getSelectedRow() != -1){
-            Object[]fila= new Object[1];
-            fila[0] = tblModelosExistentes.getValueAt(tblModelosExistentes.getSelectedRow(),0).toString();
-            miModeloTabla.removeRow(tblModelosExistentes.getSelectedRow());
-            miModeloTabla2.addRow(fila);
-
-            tblModelosGrup.setModel(miModeloTabla2);
-            tblModelosExistentes.setModel(miModeloTabla);}
-    }//GEN-LAST:event_btnAgregarMActionPerformed
-
-    private void btnQuitarTodoMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarTodoMActionPerformed
-        DefaultTableModel modelo2=(DefaultTableModel) tblModelosGrup.getModel();
-        Object[]fila= new Object[1];    
-        
-        int filas=tblModelosGrup.getRowCount();
-        for(int i=0; i<filas;i++){
-            fila[0] = tblModelosGrup.getValueAt(0,0).toString();
-            miModeloTabla.addRow(fila);
-            modelo2.removeRow(0);
-        }        
-        tblModelosExistentes.setModel(miModeloTabla);    
-    }//GEN-LAST:event_btnQuitarTodoMActionPerformed
-
-    private void btnAgregarTodoMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTodoMActionPerformed
-       DefaultTableModel modelo2=(DefaultTableModel) tblModelosExistentes.getModel();
-        Object[]fila= new Object[1];
-        
-        int filas=tblModelosExistentes.getRowCount();
-        for(int i=0; i<filas;i++){
-            fila[0] = tblModelosExistentes.getValueAt(0,0).toString();
-            miModeloTabla2.addRow(fila);
-            modelo2.removeRow(0);
-        }
-        
-        tblModelosGrup.setModel(miModeloTabla2);        
-    }//GEN-LAST:event_btnAgregarTodoMActionPerformed
-
-    private void tblModelosGrupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblModelosGrupMouseClicked
-
-    }//GEN-LAST:event_tblModelosGrupMouseClicked
 
     private void tblAutoparteExistenteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAutoparteExistenteMouseClicked
         // TODO add your handling code here:
@@ -544,7 +392,7 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAgregarTodoAActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        if(control()){
+        if(control() && controlMod()){
             try {
                 controlNombre();
                 
@@ -572,31 +420,23 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
                     Nuevos.add(gp); 
                 }
                 
-                //Catch de los Modelos nuevos
-                int cant2 = tblModelosGrup.getRowCount();
-                List<Modelo> Todos2= cLocal.dameModelos();
-                        
-                LinkedList<Modelo> NuevosMod= new LinkedList<Modelo>();
-                String nom2;
-                Modelo mo;
-                int bb;
-                Iterator<Modelo> it2;
-                for(int i=0; i<cant2;i++){
-                    nom2 = tblModelosGrup.getValueAt(i,0).toString();
-                    it2 = Todos2.iterator();
-                    mo = null;
-                    bb=0;
-                    while(it2.hasNext() && bb==0) {
-                        mo = it2.next();
-                        if(mo.getNombre().equals(nom2)){ bb=1; }
-                    }
-                    NuevosMod.add(mo); 
+                //Catch del modelo nuevo
+                String m = cmbModelo.getSelectedItem().toString();
+                
+                List<Modelo> l = cLocal.dameModelos();
+                int d=0;
+                Iterator<Modelo> it2 = l.iterator();
+                Modelo ma = null;
+                while(it2.hasNext() && d==0) {
+                    ma = it2.next();
+                    if(ma.getNombre().equals(m)){ d=1; }
                 }
+                
                 
                 List<GrupoParte> g = cLocal.dameGruposParte();
                 int cod = g.size()+1;
                 nombre = txtNombre.getText();
-                cLocal.crearGrupoParte(nombre, cod, NuevosMod, Nuevos);
+                cLocal.crearGrupoParte(nombre, cod, ma, Nuevos);
                 this.hide();
 
                 String err = "Se ha creado correctamente";
@@ -621,26 +461,29 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    public void CargarTabla(){
-        List<Modelo> Lista= cLocal.dameModelos();
-        Object[]fila= new Object[1];
-        
-        Collections.sort(Lista, new Comparator<Modelo>(){
-            public int compare(Modelo s1, Modelo s2) {
-                if (s1.getNombre().compareToIgnoreCase(s2.getNombre())<=0)
-             return -1;
-                else
-             return 1;
+    private void cmbModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbModeloActionPerformed
+        if(!(cmbModelo.getSelectedItem().toString().equals("Seleccione un Modelo"))){
+            try {
+                String nom = cmbModelo.getSelectedItem().toString();
+                List<Modelo> p = cLocal.dameModelos();
+                int b=0;
+
+                Iterator<Modelo> it = p.iterator();
+                mod = null;
+                while(it.hasNext() && b==0) {
+                    mod = it.next();
+                    if(mod.getNombre().equals(nom)){ b=1; }
+                }
+            } catch (Exception e){
             }
-        });
-        
-        for(Modelo unModelo:Lista){
-            fila[0]=unModelo.getNombre();
-            miModeloTabla.addRow(fila);
+        CargarTabla(mod); 
         }
-        tblModelosExistentes.setModel(miModeloTabla);
-        
-        //------------------------
+        else{
+        VaciarTabla();
+        }
+    }//GEN-LAST:event_cmbModeloActionPerformed
+
+    public void CargarTabla(Modelo mod){
         
         List<Autoparte> Lista2 = new LinkedList<Autoparte>();
         Lista2.addAll(cLocal.dameAccesorios());
@@ -658,18 +501,47 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
         });
         
         for(Autoparte unaAutoparte:Lista2){
-            fila1[0]=unaAutoparte.getDescripcion();
-            miModeloTabla3.addRow(fila1);
+            if(unaAutoparte.getVsModelo().contains(mod)){
+                fila1[0]=unaAutoparte.getDescripcion();
+                miModeloTabla3.addRow(fila1);
+            }
         }
         tblAutoparteExistente.setModel(miModeloTabla3);
+    }
+    
+    public void VaciarTabla(){
+        DefaultTableModel modelo =(DefaultTableModel) tblAutoparteGrup.getModel();
+        int filas=tblAutoparteGrup.getRowCount();
+        for(int i=0; i<filas;i++){
+            modelo.removeRow(0);
+        }
+        DefaultTableModel modelo2 =(DefaultTableModel) tblAutoparteExistente.getModel();
+        int filas2=tblAutoparteExistente.getRowCount();
+        for(int i=0; i<filas2;i++){
+            modelo2.removeRow(0);
+        }
     }
     
     private boolean control(){
         boolean ok=true;        
         if (txtNombre.getText().equals("")) ok=false;
         if (tblAutoparteGrup.getRowCount()== 0) ok=false;
-        if (tblModelosGrup.getRowCount() == 0) ok=false;
         return ok;
+    }
+    
+    private boolean controlMod(){
+        boolean b=true;
+        /*List<Modelo> Mods=cLocal.dameModelos();
+        for (Modelo miMod:Mods){
+            if (miMod.getUnaLocalidad().getCodigo()==Mode.getCodigo() && 
+               miMod.getCalleSuc().getNombre().equals(calle.getNombre())){
+                    b=false;
+                    String err = "Ya existe una Sucursal en esa Localidad y Calle.";
+                    System.err.println(err);
+                    JOptionPane.showMessageDialog(this, err, "Error de Carga", JOptionPane.ERROR_MESSAGE);
+            }            
+        }*/
+        return b;
     }
     
     private boolean controlNombre() throws PreexistingEntityException{
@@ -688,35 +560,37 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
         return b;
     }
     
+    private void CargarComboModelo(){
+        miModeloCombo = new DefaultComboBoxModel();
+        List<Modelo> misMod = cLocal.dameModelos();
+        miModeloCombo.addElement("Seleccione un Modelo");
+        for(Modelo miModelo:misMod){
+            miModeloCombo.addElement(miModelo.getNombre());            
+        }
+        cmbModelo.setModel(miModeloCombo);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnAgregarA;
-    private javax.swing.JButton btnAgregarM;
     private javax.swing.JButton btnAgregarTodoA;
-    private javax.swing.JButton btnAgregarTodoM;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnQuitarA;
-    private javax.swing.JButton btnQuitarM;
     private javax.swing.JButton btnQuitarTodoA;
-    private javax.swing.JButton btnQuitarTodoM;
+    private javax.swing.JComboBox cmbModelo;
     private javax.swing.JPanel jPanelDNI;
     private javax.swing.JPanel jPanelNuevoCliente;
     private javax.swing.JPanel jPanelUbicacion;
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblAutoparte;
     private javax.swing.JLabel lblAutoparteGrup;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblModelo;
-    private javax.swing.JLabel lblModeloGrup;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JTable tblAutoparteExistente;
     private javax.swing.JTable tblAutoparteGrup;
-    private javax.swing.JTable tblModelosExistentes;
-    private javax.swing.JTable tblModelosGrup;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables

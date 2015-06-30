@@ -14,8 +14,8 @@ public class GrupoParte implements Serializable{
     
     //Relaciones
         //Vehiculo
-    @OneToMany
-    private List<Modelo> vsModelo;
+    @OneToOne
+    private Modelo unModelo;
         //Autoparte
     @OneToMany
     private List<Autoparte> vsAutoparte;
@@ -26,7 +26,7 @@ public class GrupoParte implements Serializable{
     //SETS
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setCodGrupo(int codGrupo) { this.codGrupo = codGrupo; }
-    public void setVsModelo(List<Modelo> vsModelo) { this.vsModelo = vsModelo; }
+    public void setUnModelo(Modelo unModelo) { this.unModelo = unModelo; }
     public void setVsAutoparte(List<Autoparte> vsAutoparte) { this.vsAutoparte = vsAutoparte; }
     public void setVsProveedor(List<Proveedor> vsProveedor) { this.vsProveedor = vsProveedor; }
 
@@ -36,7 +36,7 @@ public class GrupoParte implements Serializable{
     public String getNombre() { return this.nombre; }
     public int getCodGrupo() { return this.codGrupo; }
     public List<Autoparte> getVsAutoparte() { return vsAutoparte; }
-    public List<Modelo> getVsModelo() { return vsModelo; }    
+    public Modelo getUnModelo() { return unModelo; }    
     public List<Proveedor> getVsProveedor() { return vsProveedor; }
 
     
@@ -46,10 +46,10 @@ public class GrupoParte implements Serializable{
 
     public GrupoParte() { }
 
-    public GrupoParte(String nombre, int codGrupo, LinkedList<Modelo> mods, LinkedList<Autoparte> parts) {
+    public GrupoParte(String nombre, int codGrupo, Modelo mods, LinkedList<Autoparte> parts) {
         this.nombre = nombre;
         this.codGrupo = codGrupo;
-        this.vsModelo = mods;
+        this.unModelo = mods;
         this.vsAutoparte = parts;
         this.vsProveedor = new LinkedList<Proveedor>();
     }
