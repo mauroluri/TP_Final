@@ -99,9 +99,16 @@ public class Cliente implements Serializable{
         this.pass = "";
     }
     
-    //En memoria (sin persistencia)     
+    //En memoria (sin persistencia)    
+    private static LinkedList<Cliente> clientes = new LinkedList<Cliente>();
+//    private void setClientes(Cliente cli){
+//        clientes.add(cli);
+//    }
+//    private LinkedList<Cliente> getClientes(){
+//        return clientes;
+//    }
     //Metodos en memoria
-    public Cliente buscarCliente(LinkedList<Cliente> clientes, long dni){
+    public Cliente buscarCliente(long dni){
         Cliente cli, ret=null;
         if (!clientes.isEmpty()) { 
             Iterator<Cliente> it = clientes.iterator();
@@ -114,9 +121,9 @@ public class Cliente implements Serializable{
         }        
         return ret;
     }
-    public Cliente creaCliente(LinkedList<Cliente> clientes, String nombre, long dni, long telefono, String email, String cuit, int altura, 
+    public Cliente creaCliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
             Localidad localidad, Calle calle){
-        Cliente ret = buscarCliente(clientes, dni);
+        Cliente ret = buscarCliente( dni);
         if (ret==null){
             this.setNombre(nombre);
             this.setDni(dni);
@@ -133,10 +140,10 @@ public class Cliente implements Serializable{
         }
         return ret;
     }    
-    public Cliente editaCliente(LinkedList<Cliente> clientes, String nombre, long dni, long telefono, String email, String cuit,
+    public Cliente editaCliente(String nombre, long dni, long telefono, String email, String cuit,
             int altura, Localidad localidad, Calle calle, String contra, LinkedList<Vehiculo> ve, LinkedList<OrdenTrabajo> or,
             LinkedList<Turno> tu, boolean ok){
-        Cliente ret = buscarCliente(clientes, dni);
+        Cliente ret = buscarCliente( dni);
         this.setNombre(nombre);
         this.setDni(dni);
         this.setTelefono(telefono);
@@ -158,5 +165,14 @@ public class Cliente implements Serializable{
             ret = this;
         }
         return ret;
+    }
+    public void eliminaCliente(long dni){
+        Cliente ret = buscarCliente (dni);
+        if (ret!=null){
+            clientes.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Cliente> darClientes(){
+        return clientes;
     }
 }

@@ -110,7 +110,7 @@ public class Controladora {
             Localidad localidad, Calle calle, Empresa emp, String contra, LinkedList<Vehiculo> ve,
         LinkedList<OrdenTrabajo> or, LinkedList<Turno> tu, boolean ok) throws PreexistingEntityException, Exception{
         TP.editarCliente(nombre, dni, telefono, email, cuit, altura, 
-            localidad, calle, emp, contra,  ve, or, tu,  ok);}
+            localidad, calle, contra,  ve, or, tu,  ok);}
     public void eliminarCliente(long dni) throws NonexistentEntityException{
         TP.eliminarCliente(dni);}
     public Cliente dameUnCliente(long dni){
