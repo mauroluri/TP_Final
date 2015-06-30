@@ -173,15 +173,14 @@ public class TP_Final {
         }
     }
     public void editarCliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
-            Localidad localidad, Calle calle, Empresa emp, String contra, LinkedList<Vehiculo> ve,
-        LinkedList<OrdenTrabajo> or, LinkedList<Turno> tu, boolean ok) throws PreexistingEntityException, Exception{
+            Localidad localidad, Calle calle, String contra, LinkedList<Vehiculo> ve, LinkedList<OrdenTrabajo> or,
+            LinkedList<Turno> tu, boolean ok) throws PreexistingEntityException, Exception{
         Cliente miCliente = new Cliente();
         miCliente = miCliente.editaCliente(clientes, nombre, dni, telefono, email, cuit, altura, localidad, calle,
-        emp, contra, ve, or, tu, ok);
-        
-        miCliente = this.miPersistencia.dameUnCliente(dni);
+        contra, ve, or, tu, ok);        
         this.miPersistencia.editarCliente(miCliente);}
     public void eliminarCliente(long dni) throws NonexistentEntityException{
+        
         this.miPersistencia.eliminarCliente(dni);}
     public Cliente dameUnCliente(long dni){
         return this.miPersistencia.dameUnCliente(dni);}

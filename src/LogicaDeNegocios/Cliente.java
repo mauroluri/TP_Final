@@ -133,26 +133,29 @@ public class Cliente implements Serializable{
         }
         return ret;
     }    
-    public Cliente editaCliente(LinkedList<Cliente> clientes, String nombre, long dni, long telefono, String email, String cuit, int altura, 
-            Localidad localidad, Calle calle, Empresa emp, String contra, LinkedList<Vehiculo> ve,
-            LinkedList<OrdenTrabajo> or, LinkedList<Turno> tu, boolean ok){
+    public Cliente editaCliente(LinkedList<Cliente> clientes, String nombre, long dni, long telefono, String email, String cuit,
+            int altura, Localidad localidad, Calle calle, String contra, LinkedList<Vehiculo> ve, LinkedList<OrdenTrabajo> or,
+            LinkedList<Turno> tu, boolean ok){
         Cliente ret = buscarCliente(clientes, dni);
+        this.setNombre(nombre);
+        this.setDni(dni);
+        this.setTelefono(telefono);
+        this.setEmail(email);
+        this.setAltura(altura);
+        this.setCuit(cuit);
+        this.setUnaLocalidad(localidad);
+        this.setUnaCalle(calle);
+        this.setPass(cuit);
+        this.setVsOrdenTrabajo(or);
+        this.setVsTurno(tu);
+        this.setVsVehiculo(ve);
+        this.setBorrado(ok);
         if (ret!=null){
             clientes.removeFirstOccurrence(ret);
-            ret.setNombre(nombre);
-            ret.setDni(dni);
-            ret.setTelefono(telefono);
-            ret.setEmail(email);
-            ret.setAltura(altura);
-            ret.setCuit(cuit);
-            ret.setUnaLocalidad(localidad);
-            ret.setUnaCalle(calle);
-            ret.setPass(cuit);
-            ret.setVsOrdenTrabajo(or);
-            ret.setVsTurno(tu);
-            ret.setVsVehiculo(ve);
-            ret.setBorrado(ok);
+            ret = this;
             clientes.add(ret);
+        }else{
+            ret = this;
         }
         return ret;
     }
