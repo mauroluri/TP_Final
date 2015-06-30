@@ -165,25 +165,21 @@ public class TP_Final {
             Localidad localidad, Calle calle) throws PreexistingEntityException, Exception{
         Cliente miCliente = new Cliente();
         miCliente = miCliente.creaCliente(clientes, nombre, dni, telefono, email, cuit, altura, localidad, calle);
-        if (miCliente!=null)miPersistencia.crearCliente(miCliente);
+        if (miCliente!=null){
+            miPersistencia.crearCliente(miCliente);
+        }else{
+            System.out.println("existe en memoria");
+            throw new PreexistingEntityException("");
+        }
     }
     public void editarCliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
             Localidad localidad, Calle calle, Empresa emp, String contra, LinkedList<Vehiculo> ve,
         LinkedList<OrdenTrabajo> or, LinkedList<Turno> tu, boolean ok) throws PreexistingEntityException, Exception{
-        Cliente miCliente = this.miPersistencia.dameUnCliente(dni);
-        miCliente.setNombre(nombre);
-        miCliente.setDni(dni);
-        miCliente.setTelefono(telefono);
-        miCliente.setEmail(email);
-        miCliente.setAltura(altura);
-        miCliente.setCuit(cuit);
-        miCliente.setUnaLocalidad(localidad);
-        miCliente.setUnaCalle(calle);
-        miCliente.setPass(cuit);
-        miCliente.setVsOrdenTrabajo(or);
-        miCliente.setVsTurno(tu);
-        miCliente.setVsVehiculo(ve);
-        miCliente.setBorrado(ok);
+        Cliente miCliente = new Cliente();
+        miCliente = miCliente.editaCliente(clientes, nombre, dni, telefono, email, cuit, altura, localidad, calle,
+        emp, contra, ve, or, tu, ok);
+        
+        miCliente = this.miPersistencia.dameUnCliente(dni);
         this.miPersistencia.editarCliente(miCliente);}
     public void eliminarCliente(long dni) throws NonexistentEntityException{
         this.miPersistencia.eliminarCliente(dni);}

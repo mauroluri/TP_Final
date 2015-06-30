@@ -101,9 +101,9 @@ public class Cliente implements Serializable{
     
     //En memoria (sin persistencia)     
     //Metodos en memoria
-    private Cliente buscarCliente(LinkedList<Cliente> clientes, long dni){
-        Cliente cli=null, ret=null;
-        if (clientes!=null) {
+    public Cliente buscarCliente(LinkedList<Cliente> clientes, long dni){
+        Cliente cli, ret=null;
+        if (!clientes.isEmpty()) { 
             Iterator<Cliente> it = clientes.iterator();
             while(it.hasNext()&& ret==null){
                 cli= it.next();
@@ -116,19 +116,43 @@ public class Cliente implements Serializable{
     }
     public Cliente creaCliente(LinkedList<Cliente> clientes, String nombre, long dni, long telefono, String email, String cuit, int altura, 
             Localidad localidad, Calle calle){
-        Cliente ret=this;
-        if (buscarCliente(clientes, dni)==null){
+        Cliente ret = buscarCliente(clientes, dni);
+        if (ret==null){
+            this.setNombre(nombre);
+            this.setDni(dni);
+            this.setTelefono(telefono);
+            this.setEmail(email);
+            this.setCuit(cuit);
+            this.setAltura(altura);
+            this.setUnaLocalidad(localidad);
+            this.setUnaCalle(calle);
+            ret=this;
+            clientes.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Cliente editaCliente(LinkedList<Cliente> clientes, String nombre, long dni, long telefono, String email, String cuit, int altura, 
+            Localidad localidad, Calle calle, Empresa emp, String contra, LinkedList<Vehiculo> ve,
+            LinkedList<OrdenTrabajo> or, LinkedList<Turno> tu, boolean ok){
+        Cliente ret = buscarCliente(clientes, dni);
+        if (ret!=null){
+            clientes.removeFirstOccurrence(ret);
             ret.setNombre(nombre);
             ret.setDni(dni);
             ret.setTelefono(telefono);
             ret.setEmail(email);
-            ret.setCuit(cuit);
             ret.setAltura(altura);
+            ret.setCuit(cuit);
             ret.setUnaLocalidad(localidad);
             ret.setUnaCalle(calle);
+            ret.setPass(cuit);
+            ret.setVsOrdenTrabajo(or);
+            ret.setVsTurno(tu);
+            ret.setVsVehiculo(ve);
+            ret.setBorrado(ok);
             clientes.add(ret);
-        }else{
-            ret=null;
         }
         return ret;
     }
