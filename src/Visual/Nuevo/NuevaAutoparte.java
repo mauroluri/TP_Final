@@ -394,11 +394,8 @@ public class NuevaAutoparte extends javax.swing.JInternalFrame {
         String caract = txtCaract.getText();
         
         List<Modelo> Lista= cLocal.dameModelos();
-        if(control() && controlNumeros()){
+        if(control() && controlNumeros() && controlNombre()){
             try {
-                controlNombre();
-                
-                //Catch de los Autoparte nuevos
                 int cantr = tblModelosAutop.getRowCount();
                 List<Modelo> Nuevos= new LinkedList<Modelo>();
                 String nom;
@@ -471,6 +468,7 @@ public class NuevaAutoparte extends javax.swing.JInternalFrame {
         if (!rbtnAccesorio.isSelected() && !rbtnEquipamiento.isSelected() && !rbtnRepuesto.isSelected()) ok=false;
         return ok;
     }
+    
     private boolean controlNumeros(){
         boolean ok=true;        
         try{
@@ -499,7 +497,8 @@ public class NuevaAutoparte extends javax.swing.JInternalFrame {
         }        
         return ok;
     }
-    private void controlNombre() throws PreexistingEntityException {
+    
+    private boolean controlNombre() {
         descripcion = txtDescripcion.getText();
         LinkedList<Autoparte> partes=new LinkedList<Autoparte>();
         partes.addAll(cLocal.dameEquipamientos());
@@ -511,9 +510,12 @@ public class NuevaAutoparte extends javax.swing.JInternalFrame {
         while(it.hasNext() && b) {
             parte = it.next();
             if(parte.getDescripcion().equals(descripcion)){
-                throw new PreexistingEntityException("error cn nombre");
-            }
+                b=false;
+                System.out.println("Ya existe ese nombre de autoparte");
+                JOptionPane.showMessageDialog(this, "Ya existe ese nombre de autoparte", "Error de Carga", JOptionPane.ERROR_MESSAGE);
         }
+        }
+        return b;
     }
     
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class AAAControladora {
-    AccesorioJpaController miAccesorioJpa = new AccesorioJpaController();
+    AccesorioJpaControlle miAccesorioJpa = new AccesorioJpaControlle();
     ActividadJpaController miActividadJpa = new ActividadJpaController();
     AjusteJpaController miAjusteJpa = new AjusteJpaController();
     AtencionPublicoJpaController miAtencionPublicoJpa = new AtencionPublicoJpaController();

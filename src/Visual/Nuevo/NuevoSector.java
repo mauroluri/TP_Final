@@ -5,6 +5,7 @@ import LogicaDeNegocios.Localidad;
 import LogicaDeNegocios.Provincia;
 import LogicaDeNegocios.Sector;
 import LogicaDeNegocios.Sucursal;
+import LogicaDeNegocios.Taller;
 import Persistencia.exceptions.PreexistingEntityException;
 import Visual.Controladora;
 import java.util.Calendar;

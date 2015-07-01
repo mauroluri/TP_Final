@@ -392,11 +392,8 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAgregarTodoAActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        if(control() && controlMod()){
+        if(control() && controlNombre()){
             try {
-                controlNombre();
-                
-                 //Catch de los Autoparte nuevos
                 int cant = tblAutoparteGrup.getRowCount();
                 List<Autoparte> Todos= new LinkedList<Autoparte>();
                     Todos.addAll(cLocal.dameAccesorios());
@@ -476,6 +473,7 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
                 }
             } catch (Exception e){
             }
+        VaciarTabla();
         CargarTabla(mod); 
         }
         else{
@@ -501,9 +499,18 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
         });
         
         for(Autoparte unaAutoparte:Lista2){
-            if(unaAutoparte.getVsModelo().contains(mod)){
-                fila1[0]=unaAutoparte.getDescripcion();
-                miModeloTabla3.addRow(fila1);
+            List<Modelo> mods = unaAutoparte.getVsModelo();
+            
+            Iterator<Modelo> it = mods.iterator();
+            Modelo ok = null;
+            boolean b = true;
+            while(it.hasNext() && b) {
+                ok = it.next();
+                if(ok.getNombre().equals(mod.getNombre())){
+                    b=false;
+                    fila1[0]=unaAutoparte.getDescripcion();
+                    miModeloTabla3.addRow(fila1);
+                }
             }
         }
         tblAutoparteExistente.setModel(miModeloTabla3);
@@ -525,26 +532,11 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
     private boolean control(){
         boolean ok=true;        
         if (txtNombre.getText().equals("")) ok=false;
-        if (tblAutoparteGrup.getRowCount()== 0) ok=false;
+        if (tblAutoparteGrup.getRowCount() == 0) ok=false;
         return ok;
     }
     
-    private boolean controlMod(){
-        boolean b=true;
-        /*List<Modelo> Mods=cLocal.dameModelos();
-        for (Modelo miMod:Mods){
-            if (miMod.getUnaLocalidad().getCodigo()==Mode.getCodigo() && 
-               miMod.getCalleSuc().getNombre().equals(calle.getNombre())){
-                    b=false;
-                    String err = "Ya existe una Sucursal en esa Localidad y Calle.";
-                    System.err.println(err);
-                    JOptionPane.showMessageDialog(this, err, "Error de Carga", JOptionPane.ERROR_MESSAGE);
-            }            
-        }*/
-        return b;
-    }
-    
-    private boolean controlNombre() throws PreexistingEntityException{
+    private boolean controlNombre() {
         nombre = txtNombre.getText();
         List<GrupoParte> grupos= cLocal.dameGruposParte();
         Iterator<GrupoParte> it = grupos.iterator();
@@ -554,8 +546,9 @@ public class NuevoGrupoPartes extends javax.swing.JInternalFrame {
             parte = it.next();
             if(parte.getNombre().equals(nombre)){
                 b = false;
-                throw new PreexistingEntityException("Ya existe Grupo de Partes con ese Nombre");
-            }
+                System.out.println("Ya existe ese nombre de grupoParte");
+                JOptionPane.showMessageDialog(this, "Ya existe ese nombre de grupoParte", "Error de Carga", JOptionPane.ERROR_MESSAGE);
+        }
         }
         return b;
     }

@@ -15,13 +15,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class AccesorioJpaController implements Serializable {
+public class AccesorioJpaControlle implements Serializable {
 
-    public AccesorioJpaController() {
+    public AccesorioJpaControlle() {
         emf=Persistence.createEntityManagerFactory("TP_FinalPU");
     }
     
-    public AccesorioJpaController(EntityManagerFactory emf) {
+    public AccesorioJpaControlle(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
