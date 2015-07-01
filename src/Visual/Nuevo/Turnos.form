@@ -38,7 +38,7 @@
               <Component id="jPanelNuevoModelo" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="btnCancelar" min="-2" pref="74" max="-2" attributes="0"/>
-              <EmptySpace pref="35" max="32767" attributes="0"/>
+              <EmptySpace pref="43" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -116,7 +116,7 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jScrollPane3" min="-2" pref="294" max="-2" attributes="0"/>
                               <EmptySpace pref="42" max="32767" attributes="0"/>
-                              <Component id="btnCancelar1" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnVerTurnos" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -148,7 +148,7 @@
                                   <Component id="lblCategoria" min="-2" max="-2" attributes="0"/>
                                   <Component id="jScrollPane3" min="-2" pref="90" max="-2" attributes="0"/>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Component id="btnCancelar1" min="-2" pref="74" max="-2" attributes="0"/>
+                                      <Component id="btnVerTurnos" min="-2" pref="74" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -236,7 +236,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="btnCancelar1">
+            <Component class="javax.swing.JButton" name="btnVerTurnos">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Images/1414891154_Search.png"/>
@@ -260,7 +260,7 @@
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelar1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerTurnosActionPerformed"/>
               </Events>
             </Component>
             <Container class="javax.swing.JPanel" name="DATOS">

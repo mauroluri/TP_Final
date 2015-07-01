@@ -7,6 +7,7 @@ import LogicaDeNegocios.DetalleActividad;
 import LogicaDeNegocios.Diagnostico;
 import LogicaDeNegocios.Mecanico;
 import LogicaDeNegocios.OrdenTrabajo;
+import LogicaDeNegocios.Sucursal;
 import LogicaDeNegocios.Turno;
 import LogicaDeNegocios.Vehiculo;
 import Visual.Controladora;
@@ -660,8 +661,8 @@ public class NuevoTurno extends javax.swing.JInternalFrame {
     
     
     public void CargarTablaClientes(Mecanico mec){
-        
-        List<Cliente> ListaCli= cLocal.dameClientes();
+                
+        List<Cliente> ListaCli= cLocal.dameUnMecanico(mec.getDni()).getUnaSucursal().getVsCliente();
         Object[]fila= new Object[1];
         
         Collections.sort(ListaCli, new Comparator<Cliente>(){
@@ -673,23 +674,15 @@ public class NuevoTurno extends javax.swing.JInternalFrame {
             }
         });
         
-        for(Cliente unCliente:ListaCli){
-            
-            List<Cliente> l = cLocal.dameUnMecanico(mec.getDni()).getUnaSucursal().getVsCliente();
-            int b=0;
-
-            Iterator<Cliente> it = null;
-            it = l.iterator();
-            Cliente cli = null;
-            while(it.hasNext() && b==0) {
-                cli = it.next();
-                if(cli.getDni() == unCliente.getDni()){ b=1; }
-            }
-            if(b==1) {     
-                fila[0]=unCliente.getNombre();
-                miModeloTabla2.addRow(fila);
-            }
+        Iterator<Cliente> it = null;
+        it = ListaCli.iterator();
+        Cliente cli = null;
+        while(it.hasNext()) {
+            cli = it.next();
+            fila[0]=cli.getNombre();
+            miModeloTabla2.addRow(fila);
         }
+        
         tblClientes.setModel(miModeloTabla2);
     }
     

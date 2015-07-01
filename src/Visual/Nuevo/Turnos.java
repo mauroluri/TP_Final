@@ -52,6 +52,7 @@ public class Turnos extends javax.swing.JInternalFrame {
         miModeloTabla.addColumn("Cliente");
         miModeloTabla.addColumn("Vehículo");
         miModeloTabla2.addColumn("Mecanicos");
+        miModeloTabla2.addColumn("Sucursal");
         DATOS.setVisible(false);
         txtDni.setEnabled(false);
         txtCod.setEnabled(false);
@@ -75,7 +76,7 @@ public class Turnos extends javax.swing.JInternalFrame {
         Fechita = new com.toedter.calendar.JDateChooser();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblMecanicos = new javax.swing.JTable();
-        btnCancelar1 = new javax.swing.JButton();
+        btnVerTurnos = new javax.swing.JButton();
         DATOS = new javax.swing.JPanel();
         btnEditTurno = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -133,19 +134,19 @@ public class Turnos extends javax.swing.JInternalFrame {
         });
         jScrollPane3.setViewportView(tblMecanicos);
 
-        btnCancelar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/1414891154_Search.png"))); // NOI18N
-        btnCancelar1.setText("Ver turnos");
-        btnCancelar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnCancelar1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCancelar1.setIconTextGap(2);
-        btnCancelar1.setMaximumSize(new java.awt.Dimension(95, 73));
-        btnCancelar1.setMinimumSize(new java.awt.Dimension(95, 73));
-        btnCancelar1.setPreferredSize(new java.awt.Dimension(95, 73));
-        btnCancelar1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        btnCancelar1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnCancelar1.addActionListener(new java.awt.event.ActionListener() {
+        btnVerTurnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/1414891154_Search.png"))); // NOI18N
+        btnVerTurnos.setText("Ver turnos");
+        btnVerTurnos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVerTurnos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnVerTurnos.setIconTextGap(2);
+        btnVerTurnos.setMaximumSize(new java.awt.Dimension(95, 73));
+        btnVerTurnos.setMinimumSize(new java.awt.Dimension(95, 73));
+        btnVerTurnos.setPreferredSize(new java.awt.Dimension(95, 73));
+        btnVerTurnos.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnVerTurnos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnVerTurnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelar1ActionPerformed(evt);
+                btnVerTurnosActionPerformed(evt);
             }
         });
 
@@ -245,7 +246,7 @@ public class Turnos extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addComponent(btnCancelar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnVerTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)))
                 .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(DATOS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -270,7 +271,7 @@ public class Turnos extends javax.swing.JInternalFrame {
                             .addComponent(lblCategoria)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDNI6Layout.createSequentialGroup()
-                                .addComponent(btnCancelar1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnVerTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(8, 8, 8)))
                         .addComponent(lblDetAct)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -331,7 +332,7 @@ public class Turnos extends javax.swing.JInternalFrame {
                 .addComponent(jPanelNuevoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
@@ -403,11 +404,12 @@ public class Turnos extends javax.swing.JInternalFrame {
         this.hide();
     }//GEN-LAST:event_btnNuevoTurnoActionPerformed
 
-    private void btnCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar1ActionPerformed
-        btnNuevoTurno.setVisible(true);
-        DATOS.setVisible(false);
+    private void btnVerTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTurnosActionPerformed
+        
         if(tblMecanicos.getRowCount()>0){
-            if(tblMecanicos.getSelectedRow()>=0 && Fechita!=null){
+            if(tblMecanicos.getSelectedRow()>=0 && Fechita.getCalendar()!=null){
+                btnNuevoTurno.setVisible(true);
+                DATOS.setVisible(false);
                 try {
                     Date d1;
                     //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -450,7 +452,7 @@ public class Turnos extends javax.swing.JInternalFrame {
             System.err.println(err);
             JOptionPane.showMessageDialog(this, err, "Error de Lectura", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnCancelar1ActionPerformed
+    }//GEN-LAST:event_btnVerTurnosActionPerformed
 
     private void btnEditTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditTurnoActionPerformed
         // TODO add your handling code here:
@@ -460,113 +462,6 @@ public class Turnos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBorrarTurnoActionPerformed
 
-    
-    /*private boolean control(){
-        boolean ok=true;
-        if (txtNombre.getText().equals("")) ok=false;
-        if (cmbCategoria.getSelectedIndex()==0) ok=false;
-        if (cmbGrupoParte.getSelectedIndex()==0) ok=false;
-        if (tblDetallesAct.getRowCount()==0)ok = false;
-        
-        return ok;
-    }
-    
-    private boolean controlTiempo(){
-        boolean ok=true;
-        tiempoTotal();
-        if ((i.getMinutes()<30&&i.getHours()==0) || (i.getHours()>8&&i.getMinutes()==30)){
-            ok=false;
-        }
-        return ok;
-    }
-    
-   private void obtenerDetalles(){
-        DetalleActividad detact = new DetalleActividad();
-        List<DetalleActividad> lista= cLocal.dameDetallesActividad();
-        Iterator<DetalleActividad> it;
-        int n;
-        for (n=tblDetallesAct.getRowCount(); n>0; n--){
-            int b=1;
-            it = lista.iterator();
-            while(it.hasNext()&& b==1) {
-                detact = it.next();
-                if(detact.getCod().equals(tblDetallesAct.getValueAt(n-1, 0))){ 
-                    b=0;
-                }
-            }
-            nuevos.add(detact);
-        }        
-   }
-   
-   
-    public void actualizaHora(){
-        
-        int n, hora=0, min=0, cant=tblDetallesAct.getRowCount();
-        if(cant>0){
-            for (n=0; n<cant; n++){
-                int b=1;
-                DetalleActividad detact = new DetalleActividad();
-                List<DetalleActividad> lista= cLocal.dameDetallesActividad();
-                Iterator<DetalleActividad> it;
-                
-                it = lista.iterator();
-                while(it.hasNext()&& b==1) {
-                    detact = it.next();
-                    if(detact.getCod().equals(tblDetallesAct.getValueAt(n, 0))){ 
-                        System.out.println(n);
-                        hora = hora + detact.getDuracion().getHours();
-                        min = min + detact.getDuracion().getMinutes();
-                        if(min==60){
-                            min = 0;
-                            hora = hora+1;
-                        }
-                        txtHora.setText(String.valueOf(hora));
-                        txtMin.setText(String.valueOf(min));
-                        b=0;
-                    }
-                }
-            }
-        } else {
-            txtHora.setText("0");
-            txtMin.setText("0");
-        } 
-    }
-
-   private void tiempoTotal(){ 
-       Calendar cal = Calendar.getInstance();
-       cal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(txtHora.getText()));
-       cal.set(Calendar.MINUTE,Integer.parseInt(txtMin.getText()));
-       cal.set(Calendar.SECOND,0);
-       cal.set(Calendar.MILLISECOND,0);
-       i = cal.getTime();
-   }
-   
-   private GrupoParte obtenerGrupo(){
-        String nom= cmbGrupoParte.getSelectedItem().toString();
-        List<GrupoParte> misGrup = cLocal.dameGruposParte();
-        GrupoParte grupp = null;
-        int b=0;
-        Iterator<GrupoParte> it = misGrup.iterator();
-        while(it.hasNext() && b==0) {
-            grupp = it.next();
-            if(grupp.getNombre().equals(nom)){ b=1; }
-        }
-        return grupp;
-    }
-   
-   private Categoria obtenerCateg(){
-        String nom= cmbCategoria.getSelectedItem().toString();
-        List<Categoria> misCat = cLocal.dameCategorias();
-        Categoria cat = null;
-        int b=0;
-        Iterator<Categoria> it = misCat.iterator();
-        while(it.hasNext() && b==0) {
-            cat = it.next();
-            if(cat.getNombre().equals(nom)){ b=1; }
-        }
-        return cat;
-    }
-    */
     public void CargarTabla(Mecanico m, String date1){
         List<Turno> Lista= m.getVsTurno();
         Date f;
@@ -652,35 +547,14 @@ public class Turnos extends javax.swing.JInternalFrame {
         List<Mecanico> Lista= cLocal.dameMecanicos();
         int cant;
         Date ini;
-        Object[]fila= new Object[1];
+        Object[]fila= new Object[2];
         for(Mecanico unMecanico:Lista){
             fila[0]=unMecanico.getNombre();
+            fila[1]=unMecanico.getUnaSucursal().getCodSuc();
             miModeloTabla2.addRow(fila);
         }
         tblMecanicos.setModel(miModeloTabla2);
     }
-    
-    
-    /*
-    private void CargarComboCat(){
-        miModeloCombo= new DefaultComboBoxModel();
-        List<Categoria> misCat = cLocal.dameCategorias();
-        miModeloCombo.addElement("Seleccione una Categoria");
-        for(Categoria miCategoria:misCat){
-            miModeloCombo.addElement(miCategoria.getNombre());            
-        }
-        cmbCategoria.setModel(miModeloCombo);
-    }
-    
-    private void CargarComboGrupoPartes(){
-        miModeloCombo2= new DefaultComboBoxModel();
-        List<GrupoParte> misGrupPartes = cLocal.dameGruposParte();
-        miModeloCombo2.addElement("Seleccione un GrupoParte");
-        for(GrupoParte miGrupoParte:misGrupPartes){
-            miModeloCombo2.addElement(miGrupoParte.getNombre());            
-        }
-        cmbGrupoParte.setModel(miModeloCombo2);
-    }*/
     
     public void LimpiarTabla(){
         DefaultTableModel modelo=(DefaultTableModel) tblTurnos.getModel();
@@ -695,9 +569,9 @@ public class Turnos extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser Fechita;
     private javax.swing.JButton btnBorrarTurno;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnCancelar1;
     private javax.swing.JButton btnEditTurno;
     private javax.swing.JButton btnNuevoTurno;
+    private javax.swing.JButton btnVerTurnos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
