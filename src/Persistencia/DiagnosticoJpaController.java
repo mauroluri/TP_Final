@@ -20,7 +20,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author Alee
+ * @author Ale
  */
 public class DiagnosticoJpaController implements Serializable {
 
@@ -49,7 +49,12 @@ public class DiagnosticoJpaController implements Serializable {
             }
             em.persist(diagnostico);
             if (unTurno != null) {
-                unTurno.getVsOrdenTrabajo().add(diagnostico);
+                LogicaDeNegocios.OrdenTrabajo oldUnaOrdenTrabajoOfUnTurno = unTurno.getUnaOrdenTrabajo();
+                if (oldUnaOrdenTrabajoOfUnTurno != null) {
+                    oldUnaOrdenTrabajoOfUnTurno.setUnTurno(null);
+                    oldUnaOrdenTrabajoOfUnTurno = em.merge(oldUnaOrdenTrabajoOfUnTurno);
+                }
+                unTurno.setUnaOrdenTrabajo(diagnostico);
                 unTurno = em.merge(unTurno);
             }
             em.getTransaction().commit();
@@ -79,11 +84,16 @@ public class DiagnosticoJpaController implements Serializable {
             }
             diagnostico = em.merge(diagnostico);
             if (unTurnoOld != null && !unTurnoOld.equals(unTurnoNew)) {
-                unTurnoOld.getVsOrdenTrabajo().remove(diagnostico);
+                unTurnoOld.setUnaOrdenTrabajo(null);
                 unTurnoOld = em.merge(unTurnoOld);
             }
             if (unTurnoNew != null && !unTurnoNew.equals(unTurnoOld)) {
-                unTurnoNew.getVsOrdenTrabajo().add(diagnostico);
+                LogicaDeNegocios.OrdenTrabajo oldUnaOrdenTrabajoOfUnTurno = unTurnoNew.getUnaOrdenTrabajo();
+                if (oldUnaOrdenTrabajoOfUnTurno != null) {
+                    oldUnaOrdenTrabajoOfUnTurno.setUnTurno(null);
+                    oldUnaOrdenTrabajoOfUnTurno = em.merge(oldUnaOrdenTrabajoOfUnTurno);
+                }
+                unTurnoNew.setUnaOrdenTrabajo(diagnostico);
                 unTurnoNew = em.merge(unTurnoNew);
             }
             em.getTransaction().commit();
@@ -117,7 +127,7 @@ public class DiagnosticoJpaController implements Serializable {
             }
             Turno unTurno = diagnostico.getUnTurno();
             if (unTurno != null) {
-                unTurno.getVsOrdenTrabajo().remove(diagnostico);
+                unTurno.setUnaOrdenTrabajo(null);
                 unTurno = em.merge(unTurno);
             }
             em.remove(diagnostico);

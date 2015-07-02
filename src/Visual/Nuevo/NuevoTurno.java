@@ -494,7 +494,7 @@ public class NuevoTurno extends javax.swing.JInternalFrame {
         int pos = ve.getVsTurnosPend().size();
         
         if(pos>0){
-            if(!ve.getVsTurnosPend().get(pos-1).getVsOrdenTrabajo().isEmpty()){
+            /*if(!ve.getVsTurnosPend().get(pos-1).getVsOrdenTrabajo().isEmpty()){
                 or = ve.getVsTurnosPend().get(pos-1).getVsOrdenTrabajo();
                 OrdenTrabajo orTra = or.get(or.size()-1);
                 if(orTra instanceof Ajuste){
@@ -524,7 +524,7 @@ public class NuevoTurno extends javax.swing.JInternalFrame {
             String err = "Nunca se ha realizado un Diagnóstico.";
             System.err.println(err);
             JOptionPane.showMessageDialog(this, err, "", JOptionPane.ERROR_MESSAGE);
-            actualizaHora();
+            actualizaHora();*/
         }
     }//GEN-LAST:event_tblVehicMouseClicked
 

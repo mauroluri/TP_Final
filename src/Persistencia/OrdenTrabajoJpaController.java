@@ -1,5 +1,5 @@
 /*
- *  ERROR EN LINEA 53.. 
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package Persistencia;
@@ -20,7 +20,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author Alee
+ * @author Ale
  */
 public class OrdenTrabajoJpaController implements Serializable {
 
@@ -49,8 +49,13 @@ public class OrdenTrabajoJpaController implements Serializable {
             }
             em.persist(ordenTrabajo);
             if (unTurno != null) {
-                unTurno.getVsOrdenTrabajo().add(ordenTrabajo);
-                unTurno = em.merge(unTurno);//asdfasd
+                OrdenTrabajo oldUnaOrdenTrabajoOfUnTurno = unTurno.getUnaOrdenTrabajo();
+                if (oldUnaOrdenTrabajoOfUnTurno != null) {
+                    oldUnaOrdenTrabajoOfUnTurno.setUnTurno(null);
+                    oldUnaOrdenTrabajoOfUnTurno = em.merge(oldUnaOrdenTrabajoOfUnTurno);
+                }
+                unTurno.setUnaOrdenTrabajo(ordenTrabajo);
+                unTurno = em.merge(unTurno);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -79,11 +84,16 @@ public class OrdenTrabajoJpaController implements Serializable {
             }
             ordenTrabajo = em.merge(ordenTrabajo);
             if (unTurnoOld != null && !unTurnoOld.equals(unTurnoNew)) {
-                unTurnoOld.getVsOrdenTrabajo().remove(ordenTrabajo);
+                unTurnoOld.setUnaOrdenTrabajo(null);
                 unTurnoOld = em.merge(unTurnoOld);
             }
             if (unTurnoNew != null && !unTurnoNew.equals(unTurnoOld)) {
-                unTurnoNew.getVsOrdenTrabajo().add(ordenTrabajo);
+                OrdenTrabajo oldUnaOrdenTrabajoOfUnTurno = unTurnoNew.getUnaOrdenTrabajo();
+                if (oldUnaOrdenTrabajoOfUnTurno != null) {
+                    oldUnaOrdenTrabajoOfUnTurno.setUnTurno(null);
+                    oldUnaOrdenTrabajoOfUnTurno = em.merge(oldUnaOrdenTrabajoOfUnTurno);
+                }
+                unTurnoNew.setUnaOrdenTrabajo(ordenTrabajo);
                 unTurnoNew = em.merge(unTurnoNew);
             }
             em.getTransaction().commit();
@@ -117,7 +127,7 @@ public class OrdenTrabajoJpaController implements Serializable {
             }
             Turno unTurno = ordenTrabajo.getUnTurno();
             if (unTurno != null) {
-                unTurno.getVsOrdenTrabajo().remove(ordenTrabajo);
+                unTurno.setUnaOrdenTrabajo(null);
                 unTurno = em.merge(unTurno);
             }
             em.remove(ordenTrabajo);

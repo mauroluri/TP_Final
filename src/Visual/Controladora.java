@@ -514,11 +514,11 @@ public class Controladora {
     
     //Turno
     public void crearTurno(Vehiculo veh, Cliente cli, long codigo, Date fecha, String des, 
-            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS
+            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS, OrdenTrabajo ord
             ) throws PreexistingEntityException, Exception{
-        TP.crearTurno(veh, cli, codigo, fecha, des, duracionAprox, horaInicio, est, nivS);}
+        TP.crearTurno(veh, cli, codigo, fecha, des, duracionAprox, horaInicio, est, nivS, ord);}
     public void editarTurno(Vehiculo veh, Cliente cli, long codigo, Date fecha, String des, 
-            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS, List<OrdenTrabajo> unaO,
+            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS, OrdenTrabajo unaO,
             List<Empleado> vsEmp, boolean borrado
             ) throws PreexistingEntityException, Exception{
         TP.editarTurno(veh, cli, codigo, fecha, des, duracionAprox, horaInicio, est, nivS, 

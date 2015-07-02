@@ -17,7 +17,7 @@ public abstract class OrdenTrabajo implements Serializable{
     
     //Relaciones
         //Turno
-    @ManyToOne
+    @OneToOne
     private Turno unTurno;
         //GrupoParte
     @OneToMany

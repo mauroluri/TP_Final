@@ -20,7 +20,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author Alee
+ * @author Ale
  */
 public class AjusteJpaController implements Serializable {
 
@@ -49,7 +49,12 @@ public class AjusteJpaController implements Serializable {
             }
             em.persist(ajuste);
             if (unTurno != null) {
-                unTurno.getVsOrdenTrabajo().add(ajuste);
+                LogicaDeNegocios.OrdenTrabajo oldUnaOrdenTrabajoOfUnTurno = unTurno.getUnaOrdenTrabajo();
+                if (oldUnaOrdenTrabajoOfUnTurno != null) {
+                    oldUnaOrdenTrabajoOfUnTurno.setUnTurno(null);
+                    oldUnaOrdenTrabajoOfUnTurno = em.merge(oldUnaOrdenTrabajoOfUnTurno);
+                }
+                unTurno.setUnaOrdenTrabajo(ajuste);
                 unTurno = em.merge(unTurno);
             }
             em.getTransaction().commit();
@@ -79,11 +84,16 @@ public class AjusteJpaController implements Serializable {
             }
             ajuste = em.merge(ajuste);
             if (unTurnoOld != null && !unTurnoOld.equals(unTurnoNew)) {
-                unTurnoOld.getVsOrdenTrabajo().remove(ajuste);
+                unTurnoOld.setUnaOrdenTrabajo(null);
                 unTurnoOld = em.merge(unTurnoOld);
             }
             if (unTurnoNew != null && !unTurnoNew.equals(unTurnoOld)) {
-                unTurnoNew.getVsOrdenTrabajo().add(ajuste);
+                LogicaDeNegocios.OrdenTrabajo oldUnaOrdenTrabajoOfUnTurno = unTurnoNew.getUnaOrdenTrabajo();
+                if (oldUnaOrdenTrabajoOfUnTurno != null) {
+                    oldUnaOrdenTrabajoOfUnTurno.setUnTurno(null);
+                    oldUnaOrdenTrabajoOfUnTurno = em.merge(oldUnaOrdenTrabajoOfUnTurno);
+                }
+                unTurnoNew.setUnaOrdenTrabajo(ajuste);
                 unTurnoNew = em.merge(unTurnoNew);
             }
             em.getTransaction().commit();
@@ -117,7 +127,7 @@ public class AjusteJpaController implements Serializable {
             }
             Turno unTurno = ajuste.getUnTurno();
             if (unTurno != null) {
-                unTurno.getVsOrdenTrabajo().remove(ajuste);
+                unTurno.setUnaOrdenTrabajo(null);
                 unTurno = em.merge(unTurno);
             }
             em.remove(ajuste);

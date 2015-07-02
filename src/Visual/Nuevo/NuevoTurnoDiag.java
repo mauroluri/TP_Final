@@ -51,13 +51,14 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
         tblVehic.setVisible(false);
         txtCod.setEnabled(false);
         txtCod.setText(String.valueOf(cLocal.dameTurnos().size()+1));
+        txtFin.setEnabled(false);
         
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         String date1 = format1.format(fecha);
         txtFecha.setText(date1);
         txtFecha.setEnabled(false);
-        CargarTablaHorarios(mecLoc, date1);
         CargarTablaClientes(mecLoc);
+        CargarComboHorarios(mecLoc, date1);
         
     }
 
@@ -70,8 +71,6 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
         Tipo = new javax.swing.ButtonGroup();
         jPanelNuevoModelo = new javax.swing.JPanel();
         jPanelDNI6 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblTurnos = new javax.swing.JTable();
         lblDetAct = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
         txtCod = new javax.swing.JTextField();
@@ -85,7 +84,11 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
         tblVehic = new javax.swing.JTable();
         HoraReq = new javax.swing.JPanel();
         lblNombre2 = new javax.swing.JLabel();
+        cmbIni = new javax.swing.JComboBox();
+        lblNombre3 = new javax.swing.JLabel();
+        txtFin = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
 
         lblCategoria.setText("Categoria:");
 
@@ -99,22 +102,6 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
         jPanelNuevoModelo.setToolTipText("");
 
         jPanelDNI6.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 0, 0), null));
-
-        tblTurnos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tblTurnos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tblTurnos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblTurnosMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tblTurnos);
 
         lblDetAct.setText("Hora de inicio:");
 
@@ -179,24 +166,40 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        cmbIni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbIniActionPerformed(evt);
+            }
+        });
+
+        lblNombre3.setText("Hora de fin:");
+
         javax.swing.GroupLayout jPanelDNI6Layout = new javax.swing.GroupLayout(jPanelDNI6);
         jPanelDNI6.setLayout(jPanelDNI6Layout);
         jPanelDNI6Layout.setHorizontalGroup(
             jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDNI6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(HoraReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelDNI6Layout.createSequentialGroup()
+                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(HoraReq, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDNI6Layout.createSequentialGroup()
                         .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblNombre1)
                             .addComponent(lblNombre))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblDetAct)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCod)
-                            .addComponent(txtFecha))))
+                            .addComponent(txtFecha)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDNI6Layout.createSequentialGroup()
+                        .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDetAct)
+                            .addComponent(lblNombre3))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbIni, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanelDNI6Layout.createSequentialGroup()
+                                .addComponent(txtFin, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblDetAct2)
@@ -209,19 +212,15 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
             jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDNI6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanelDNI6Layout.createSequentialGroup()
                         .addComponent(lblDetAct1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(lblDetAct2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(lblDetAct2))
                     .addGroup(jPanelDNI6Layout.createSequentialGroup()
-                        .addComponent(HoraReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(58, 58, 58)
                         .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblNombre1)
                             .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -229,11 +228,20 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
                         .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblNombre))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(HoraReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelDNI6Layout.createSequentialGroup()
+                        .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblDetAct)
+                            .addComponent(cmbIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(lblDetAct)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNombre3)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/1414891178_Cancel.png"))); // NOI18N
@@ -252,6 +260,22 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
             }
         });
 
+        btnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/1414891160_Check.png"))); // NOI18N
+        btnAceptar.setText("Aceptar");
+        btnAceptar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAceptar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAceptar.setIconTextGap(2);
+        btnAceptar.setMaximumSize(new java.awt.Dimension(95, 73));
+        btnAceptar.setMinimumSize(new java.awt.Dimension(95, 73));
+        btnAceptar.setPreferredSize(new java.awt.Dimension(95, 73));
+        btnAceptar.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnAceptar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelNuevoModeloLayout = new javax.swing.GroupLayout(jPanelNuevoModelo);
         jPanelNuevoModelo.setLayout(jPanelNuevoModeloLayout);
         jPanelNuevoModeloLayout.setHorizontalGroup(
@@ -263,7 +287,9 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelNuevoModeloLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(166, 166, 166))
+                .addGap(18, 18, 18)
+                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
         );
         jPanelNuevoModeloLayout.setVerticalGroup(
             jPanelNuevoModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,7 +297,9 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanelDNI6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanelNuevoModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -289,11 +317,8 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanelNuevoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
-
-        jPanelNuevoModelo.getAccessibleContext().setAccessibleName("Nuevo Turno para Diagnóstico");
-        jPanelNuevoModelo.getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -302,10 +327,6 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
         this.hide();
         MAPALocal.setVisible(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void tblTurnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTurnosMouseClicked
-        
-    }//GEN-LAST:event_tblTurnosMouseClicked
 
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
         String nom = tblClientes.getValueAt(tblClientes.getSelectedRow(), 0).toString();
@@ -331,10 +352,39 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
     private void cmbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategoriaActionPerformed
 
     }//GEN-LAST:event_cmbCategoriaActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void cmbIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbIniActionPerformed
+        int hora=-1, min=-1;
+        if(!cmbIni.getSelectedItem().toString().equals("Hora..")){
+            if(cmbIni.getSelectedItem().toString().substring(1, 2).equals(":")){
+                hora = Integer.parseInt(cmbIni.getSelectedItem().toString().substring(0, 1));
+                min = Integer.parseInt(cmbIni.getSelectedItem().toString().substring(2, 4));
+            }
+            else{
+                hora = Integer.parseInt(cmbIni.getSelectedItem().toString().substring(0, 2));
+                min = Integer.parseInt(cmbIni.getSelectedItem().toString().substring(3, 5));
+            }
+        }
+        String alas;
+        if(hora!=-1 && min !=-1){
+            hora++;
+            if (min == 0)
+                alas= hora +":"+ min + "0";
+            else
+                alas= hora +":"+ min;
+            txtFin.setText(alas);
+        }
+        else txtFin.setText("");
+    }//GEN-LAST:event_cmbIniActionPerformed
     
-    
-    public void CargarTablaHorarios(Mecanico m, String date1){
-        List<Turno> Lista= m.getVsTurno();
+    private void CargarComboHorarios(Mecanico m, String date1){
+        miModeloCombo= new DefaultComboBoxModel();
+        List<Turno> Lista = m.getVsTurno();
+        miModeloCombo.addElement("Hora..");
         Date f;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Object[]fila= new Object[1];
@@ -371,24 +421,23 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
                     else if (bb==-30) {aa = aa - 1;}
                     
                     for(int j = 0;j<aa;j++){
-                        fila[0] = "-----";
+                        miModeloCombo.addElement("-----");
                         min = min + 30;
                         if(min == 60){
                             hora = hora+1;
                             min = 0;
                         }
-                        fila[1] = "-----";
-                        miModeloTabla.addRow(fila);
                         i++;
                     }
                     ban = 1;
                 }
             }
             if(ban==0){
+                String s;
                 if (min == 0)
-                    fila[0] = hora +":"+ min + "0";
+                    s = hora +":"+ min + "0";
                 else
-                    fila[0] = hora +":"+ min;
+                    s = hora +":"+ min;
                 min = min + 30;
                 if(min == 60){
                     hora = hora+1;
@@ -396,13 +445,11 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
                 }
                 int p = i+1;
                 if(p<a)
-                    miModeloTabla.addRow(fila);
+                    miModeloCombo.addElement(s);
             } else {i--;}
-            
         }
-        tblTurnos.setModel(miModeloTabla);
+        cmbIni.setModel(miModeloCombo);
     }
-    
     
     public void CargarTablaClientes(Mecanico mec){
                 
@@ -465,49 +512,29 @@ public class NuevoTurnoDiag extends javax.swing.JInternalFrame {
         tblVehic.setModel(miModeloTabla3);
     }
     
-    public void LimpiarTabla(){
-        DefaultTableModel modelo=(DefaultTableModel) tblTurnos.getModel();
-        int filas=tblTurnos.getRowCount();
-        for(int i=0; i<filas;i++){
-            modelo.removeRow(0);
-        }
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel HoraReq;
     private javax.swing.ButtonGroup Tipo;
-    private javax.swing.JButton btnAgregar1;
-    private javax.swing.JButton btnAgregarTodo1;
+    private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnQuitar1;
-    private javax.swing.JButton btnQuitarTodo1;
     private javax.swing.JComboBox cmbCategoria;
-    private javax.swing.JPanel jPanelDNI1;
+    private javax.swing.JComboBox cmbIni;
     private javax.swing.JPanel jPanelDNI6;
     private javax.swing.JPanel jPanelNuevoModelo;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JLabel lblCategoria;
-    private javax.swing.JLabel lblDescrip8;
-    private javax.swing.JLabel lblDescrip9;
     private javax.swing.JLabel lblDetAct;
     private javax.swing.JLabel lblDetAct1;
     private javax.swing.JLabel lblDetAct2;
-    private javax.swing.JLabel lblDetAct4;
-    private javax.swing.JLabel lblGrupopartesProv1;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblNombre1;
     private javax.swing.JLabel lblNombre2;
-    private javax.swing.JTable tblActividadesPend1;
-    private javax.swing.JTable tblActividadesPendTurno1;
+    private javax.swing.JLabel lblNombre3;
     private javax.swing.JTable tblClientes;
-    private javax.swing.JTable tblTurnos;
     private javax.swing.JTable tblVehic;
     private javax.swing.JTextField txtCod;
     private javax.swing.JTextField txtFecha;
-    private javax.swing.JTextField txtHora1;
-    private javax.swing.JTextField txtMin1;
+    private javax.swing.JTextField txtFin;
     // End of variables declaration//GEN-END:variables
 }

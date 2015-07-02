@@ -37,8 +37,8 @@ public class Turno implements Serializable{
     @OneToMany
     private List<Empleado> vsEmpleado;
         //OrdenTrabajo
-    @OneToMany
-    private List<OrdenTrabajo> vsOrdenTrabajo;
+    @OneToOne
+    private OrdenTrabajo unaOrdenTrabajo;
         //Estado
     @OneToOne
     private Estado unEstado;
@@ -53,7 +53,7 @@ public class Turno implements Serializable{
     public Cliente getUnCliente() { return unCliente; }
     public List<Empleado> getVsEmpleado() { return vsEmpleado; }
     public Vehiculo getUnVehiculo() { return unVehiculo; }
-    public List<OrdenTrabajo> getVsOrdenTrabajo() { return vsOrdenTrabajo; }
+    public OrdenTrabajo getUnaOrdenTrabajo() { return unaOrdenTrabajo; }
     public Date getHoraInicio() { return this.horaInicio; }
     public boolean getBorrado() {return this.borrado;}
     public boolean getRealizado() {return this.realizado;}
@@ -68,7 +68,7 @@ public class Turno implements Serializable{
     public void setUnCliente(Cliente unCliente) { this.unCliente = unCliente; }
     public void setVsEmpleado(List<Empleado> vsEmpleado) { this.vsEmpleado = vsEmpleado; }
     public void setUnVehiculo(Vehiculo unVehiculo) { this.unVehiculo = unVehiculo; }
-    public void setVsOrdenTrabajo(List<OrdenTrabajo> vsOrdenTrabajo) { this.vsOrdenTrabajo = vsOrdenTrabajo; }
+    public void setUnaOrdenTrabajo(OrdenTrabajo unaOrdenTrabajo) { this.unaOrdenTrabajo = unaOrdenTrabajo; }
     public void setHoraInicio(Date horaInicio) { this.horaInicio = horaInicio; }
     public void setBorrado (boolean borrado) {this.borrado = borrado;}
     public void setRealizado (boolean realizado) {this.realizado = realizado;}
@@ -84,14 +84,14 @@ public class Turno implements Serializable{
     public Turno() { }
 
     public Turno( Vehiculo veh, Cliente cli, long codigo, Date fecha, String des, 
-            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS) {
+            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS, OrdenTrabajo orden) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.duracionAprox = duracionAprox;
         this.horaInicio = horaInicio;
         this.unCliente = cli;
         this.unVehiculo = veh;
-        this.vsOrdenTrabajo = new LinkedList<OrdenTrabajo>();
+        this.unaOrdenTrabajo = orden;
         this.vsEmpleado = new LinkedList<Empleado>();
         this.borrado = false;
         this.realizado = false;
