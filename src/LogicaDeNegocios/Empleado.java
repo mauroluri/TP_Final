@@ -80,7 +80,17 @@ public abstract class Empleado implements Serializable{
 
     public Empleado(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, int sueldo, 
             String contra, Date horaInicio, Date horaFin) {
-        creaEmpleado(unaLoc, unaSuc, nombre, dni, telefono, sueldo, contra, horaInicio, horaFin);
+        this.nombre = nombre;
+            this.dni = dni;
+            this.telefono = telefono;
+            this.sueldo = sueldo;
+            this.borrado = false;
+            this.horaInicio = horaInicio;
+            this.horaFin = horaFin;
+            this.unaSucursal = unaSuc;
+            this.vsTurno = new LinkedList<Turno>();
+            this.unaLocalidad = unaLoc;
+            this.pass = contra;
     }    
     
         //En memoria (sin persistencia)    
@@ -105,28 +115,28 @@ public abstract class Empleado implements Serializable{
         }        
         return ret;
     }
-    public Empleado creaEmpleado(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, int sueldo, 
-            String contra, Date horaInicio, Date horaFin){
-        Empleado ret = buscarEmpleado( dni);
-        if (ret==null){
-            this.nombre = nombre;
-            this.dni = dni;
-            this.telefono = telefono;
-            this.sueldo = sueldo;
-            this.borrado = false;
-            this.horaInicio = horaInicio;
-            this.horaFin = horaFin;
-            this.unaSucursal = unaSuc;
-            this.vsTurno = new LinkedList<Turno>();
-            this.unaLocalidad = unaLoc;
-            this.pass = contra;
-            ret=this;
-            empleados.add(ret);
-        }else{
-            ret=null; 
-        }
-        return ret;
-    }    
+//    public Empleado creaEmpleado(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, int sueldo, 
+//            String contra, Date horaInicio, Date horaFin){
+//        Empleado ret = buscarEmpleado( dni);
+//        if (ret==null){
+//            this.nombre = nombre;
+//            this.dni = dni;
+//            this.telefono = telefono;
+//            this.sueldo = sueldo;
+//            this.borrado = false;
+//            this.horaInicio = horaInicio;
+//            this.horaFin = horaFin;
+//            this.unaSucursal = unaSuc;
+//            this.vsTurno = new LinkedList<Turno>();
+//            this.unaLocalidad = unaLoc;
+//            this.pass = contra;
+//            ret=this;
+//            empleados.add(ret);
+//        }else{
+//            ret=null; 
+//        }
+//        return ret;
+//    }    
     public Empleado editaEmpleado(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, int sueldo, 
             String contra, Date horaInicio, Date horaFin, LinkedList<Turno> tu, boolean ok){
         Empleado ret = buscarEmpleado( dni);
