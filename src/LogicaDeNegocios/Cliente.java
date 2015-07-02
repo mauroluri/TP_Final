@@ -80,23 +80,11 @@ public class Cliente implements Serializable{
                 + "\n[Borrado: "+this.getBorrado()+"]";
     }
     
-    public Cliente(){ };
-    
+    //CONSTRUCTORES
+    public Cliente (){}
     public Cliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
             Localidad localidad, Calle calle){
-        this.nombre=nombre;
-        this.dni=dni;
-        this.telefono=telefono;
-        this.email=email;
-        this.cuit=cuit;
-        this.altura=altura;
-        this.unaLocalidad=localidad;
-        this.borrado = false;
-        this.unaCalle = calle;
-        this.vsVehiculo = new LinkedList<Vehiculo>();
-        this.vsOrdenTrabajo = new LinkedList<OrdenTrabajo>();
-        this.vsTurno = new LinkedList<Turno>();
-        this.pass = "";
+        creaCliente(nombre, dni, telefono, email, cuit, altura, localidad, calle);
     }
     
     //En memoria (sin persistencia)    

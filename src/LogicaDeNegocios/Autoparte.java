@@ -2,6 +2,7 @@ package LogicaDeNegocios;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -72,19 +73,86 @@ public abstract class Autoparte implements Serializable{
     
     //CONSTRUCTORES
     public Autoparte() {}
-
     public Autoparte(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
             boolean recambio, long stock) {
-        this.codParte = codParte;
-        this.descripcion = descripcion;
-        this.caracteristicas = caracteristicas;
-        this.precio = precio;
-        this.impuesto = impuesto;
-        this.vsModelo = new LinkedList<Modelo>();
-        this.recambio = recambio;
-        this.stock = stock;
-        this.borrado = false;
-        this.vsItem = new LinkedList<Item>();
-        this.vsVehiculo = new LinkedList<Vehiculo>();
+        creaAutoparte(codParte, descripcion, caracteristicas, precio, impuesto, recambio, stock);
+    }
+    
+        //En memoria (sin persistencia)    
+    private static LinkedList<Autoparte> autopartes = new LinkedList<Autoparte>();
+//    private void setClientes(Cliente cli){
+//        clientes.add(cli);
+//    }
+//    private LinkedList<Cliente> getClientes(){
+//        return clientes;
+//    }
+    //Metodos en memoria
+    public Autoparte buscarAutoparte(int codParte){
+        Autoparte ap, ret=null;
+        if (!autopartes.isEmpty()) { 
+            Iterator<Autoparte> it = autopartes.iterator();
+            while(it.hasNext()&& ret==null){
+                ap= it.next();
+                if (ap.getCodParte()==codParte){
+                    ret=ap;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Autoparte creaAutoparte(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
+            boolean recambio, long stock){
+        Autoparte ret = buscarAutoparte( codParte);
+        if (ret==null){
+            this.codParte = codParte;
+            this.descripcion = descripcion;
+            this.caracteristicas = caracteristicas;
+            this.precio = precio;
+            this.impuesto = impuesto;
+            this.vsModelo = new LinkedList<Modelo>();
+            this.recambio = recambio;
+            this.stock = stock;
+            this.borrado = false;
+            this.vsItem = new LinkedList<Item>();
+            this.vsVehiculo = new LinkedList<Vehiculo>();
+            ret=this;
+            autopartes.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Autoparte editaAutoparte(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
+            boolean recambio, long stock, LinkedList<Vehiculo> ve, LinkedList<Item> it,
+            LinkedList<Modelo> mo, boolean ok){
+        Autoparte ret = buscarAutoparte( codParte);
+        this.setCodParte(codParte);
+        this.setDescripcion(descripcion);
+        this.setCaracteristicas(caracteristicas);
+        this.setPrecio(precio);
+        this.setImpuesto(impuesto);
+        this.setRecambio(recambio);
+        this.setStock(stock);
+        this.setVsItem(it);
+        this.setVsModelo(mo);
+        this.setVsVehiculo(ve);
+        this.setBorrado(ok);
+        if (ret!=null){
+            autopartes.removeFirstOccurrence(ret);
+            ret = this;
+            autopartes.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaAutoparte(int codParte){
+        Autoparte ret = buscarAutoparte (codParte);
+        if (ret!=null){
+            autopartes.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Autoparte> darAutopartes(){
+        return autopartes;
     }
 }

@@ -3,6 +3,8 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import javax.persistence.Temporal;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -43,14 +45,73 @@ public class Actividad implements Serializable {
         return "[Codigo: "+this.getNombre()+"] \n"
                 + "[Duración total: "+this.getDuracionTotal()+"]";
     }
-
+    
+    //CONSTRUCTORES
     public Actividad() { }
-
     public Actividad(String nombre, Categoria categ, Date duracionTotal, GrupoParte grupo,List<DetalleActividad> ac) {
-        this.nombre = nombre;
-        this.duracionTotal = duracionTotal;
-        this.unGrupoParte = grupo;
-        this.unaCategoria = categ;
-        this.vsEspDetActividad = ac;
+        creaActividad(nombre, categ, duracionTotal, grupo, ac);
+    }
+    
+            //En memoria (sin persistencia)    
+    private static LinkedList<Actividad> actividades = new LinkedList<Actividad>();
+//    private void setClientes(Cliente cli){
+//        clientes.add(cli);
+//    }
+//    private LinkedList<Cliente> getClientes(){
+//        return clientes;
+//    }
+    //Metodos en memoria
+    public Actividad buscarActividad(String nombre){
+        Actividad act, ret=null;
+        if (!actividades.isEmpty()) { 
+            Iterator<Actividad> it = actividades.iterator();
+            while(it.hasNext()&& ret==null){
+                act= it.next();
+                if (act.getNombre().equalsIgnoreCase(nombre)){
+                    ret=act;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Actividad creaActividad (String nombre, Categoria categ, Date duracionTotal, GrupoParte grupo,List<DetalleActividad> ac){
+        Actividad ret = buscarActividad(nombre);
+        if (ret==null){
+            this.nombre = nombre;
+            this.duracionTotal = duracionTotal;
+            this.unGrupoParte = grupo;
+            this.unaCategoria = categ;
+            this.vsEspDetActividad = ac;
+            ret=this;
+            actividades.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Actividad editaActividad(String nombre, Categoria categ, Date duracionTotal, GrupoParte grupo,List<DetalleActividad> ac){
+        Actividad ret = buscarActividad( nombre);
+        this.setNombre(nombre);
+        this.setUnaCategoria(categ);
+        this.setDuracionTotal(duracionTotal);
+        this.setUnGrupoParte(grupo);
+        this.setVsEspDetActividad(ac);
+        if (ret!=null){
+            actividades.removeFirstOccurrence(ret);
+            ret = this;
+            actividades.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaActividad(String nombre){
+        Actividad ret = buscarActividad (nombre);
+        if (ret!=null){
+            actividades.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Actividad> darActividad(){
+        return actividades;
     }
 }
