@@ -2,6 +2,7 @@ package LogicaDeNegocios;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -86,5 +87,85 @@ public abstract class Autoparte implements Serializable{
         this.borrado = false;
         this.vsItem = new LinkedList<Item>();
         this.vsVehiculo = new LinkedList<Vehiculo>();
+    }
+    
+        //En memoria (sin persistencia)    
+    private static LinkedList<Autoparte> autopartes = new LinkedList<Autoparte>();
+//    private void setClientes(Cliente cli){
+//        clientes.add(cli);
+//    }
+//    private LinkedList<Cliente> getClientes(){
+//        return clientes;
+//    }
+    //Metodos en memoria
+    public Autoparte buscarAutoparte(int codParte){
+        Autoparte cli, ret=null;
+        if (!autopartes.isEmpty()) { 
+            Iterator<Autoparte> it = autopartes.iterator();
+            while(it.hasNext()&& ret==null){
+                cli= it.next();
+                if (cli.getCodParte()==codParte){
+                    ret=cli;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Autoparte creaAutoparte(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
+            boolean recambio, long stock){
+        Autoparte ret = buscarAutoparte( codParte);
+        if (ret==null){
+            this.codParte = codParte;
+        this.descripcion = descripcion;
+        this.caracteristicas = caracteristicas;
+        this.precio = precio;
+        this.impuesto = impuesto;
+        this.vsModelo = new LinkedList<Modelo>();
+        this.recambio = recambio;
+        this.stock = stock;
+        this.borrado = false;
+        this.vsItem = new LinkedList<Item>();
+        this.vsVehiculo = new LinkedList<Vehiculo>();
+            ret=this;
+            autopartes.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Autoparte editaAutoparte(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
+            boolean recambio, long stock, LinkedList<Vehiculo> ve, LinkedList<Item> it,
+            LinkedList<Modelo> mo, boolean ok){
+        Autoparte ret = buscarAutoparte( codParte);
+        this.setNombre(nombre);
+        this.setCodParte(codParte);
+        this.setTelefono(telefono);
+        this.setEmail(email);
+        this.setAltura(altura);
+        this.setCuit(cuit);
+        this.setUnaLocalidad(localidad);
+        this.setUnaCalle(calle);
+        this.setPass(cuit);
+        this.setVsOrdenTrabajo(or);
+        this.setVsTurno(tu);
+        this.setVsVehiculo(ve);
+        this.setBorrado(ok);
+        if (ret!=null){
+            autopartes.removeFirstOccurrence(ret);
+            ret = this;
+            autopartes.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaAutoparte(int codParte){
+        Autoparte ret = buscarAutoparte (codParte);
+        if (ret!=null){
+            autopartes.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Autoparte> darAutopartes(){
+        return autopartes;
     }
 }
