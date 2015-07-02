@@ -871,12 +871,12 @@ public class TP_Final {
     
     //Turno
     public void crearTurno(Vehiculo veh, Cliente cli, long codigo, Date fecha, String des, 
-            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS
+            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS, OrdenTrabajo orden
             ) throws PreexistingEntityException, Exception{
-        Turno miTurno = new Turno(veh, cli, codigo, fecha, des, duracionAprox, horaInicio, est, nivS);
+        Turno miTurno = new Turno(veh, cli, codigo, fecha, des, duracionAprox, horaInicio, est, nivS, orden);
         miPersistencia.crearTurno(miTurno);}
     public void editarTurno(Vehiculo veh, Cliente cli, long codigo, Date fecha, String des, 
-            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS, List<OrdenTrabajo> unaO,
+            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS, OrdenTrabajo unaO,
             List<Empleado> vsEmp, boolean borrado) 
             throws PreexistingEntityException, Exception{
         Turno miTurno = this.miPersistencia.dameUnTurno(codigo);
@@ -886,7 +886,7 @@ public class TP_Final {
         miTurno.setUnCliente(cli);
         miTurno.setHoraInicio(horaInicio);
         miTurno.setUnVehiculo(veh);
-        miTurno.setVsOrdenTrabajo(unaO);
+        miTurno.setUnaOrdenTrabajo(unaO);
         miTurno.setVsEmpleado(vsEmp);
         miTurno.setBorrado(borrado);
         miTurno.setDescrip(des);
