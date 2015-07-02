@@ -73,20 +73,9 @@ public abstract class Autoparte implements Serializable{
     
     //CONSTRUCTORES
     public Autoparte() {}
-
     public Autoparte(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
             boolean recambio, long stock) {
-        this.codParte = codParte;
-        this.descripcion = descripcion;
-        this.caracteristicas = caracteristicas;
-        this.precio = precio;
-        this.impuesto = impuesto;
-        this.vsModelo = new LinkedList<Modelo>();
-        this.recambio = recambio;
-        this.stock = stock;
-        this.borrado = false;
-        this.vsItem = new LinkedList<Item>();
-        this.vsVehiculo = new LinkedList<Vehiculo>();
+        creaAutoparte(codParte, descripcion, caracteristicas, precio, impuesto, recambio, stock);
     }
     
         //En memoria (sin persistencia)    
@@ -99,13 +88,13 @@ public abstract class Autoparte implements Serializable{
 //    }
     //Metodos en memoria
     public Autoparte buscarAutoparte(int codParte){
-        Autoparte cli, ret=null;
+        Autoparte ap, ret=null;
         if (!autopartes.isEmpty()) { 
             Iterator<Autoparte> it = autopartes.iterator();
             while(it.hasNext()&& ret==null){
-                cli= it.next();
-                if (cli.getCodParte()==codParte){
-                    ret=cli;
+                ap= it.next();
+                if (ap.getCodParte()==codParte){
+                    ret=ap;
                 }
             }
         }        
@@ -116,16 +105,16 @@ public abstract class Autoparte implements Serializable{
         Autoparte ret = buscarAutoparte( codParte);
         if (ret==null){
             this.codParte = codParte;
-        this.descripcion = descripcion;
-        this.caracteristicas = caracteristicas;
-        this.precio = precio;
-        this.impuesto = impuesto;
-        this.vsModelo = new LinkedList<Modelo>();
-        this.recambio = recambio;
-        this.stock = stock;
-        this.borrado = false;
-        this.vsItem = new LinkedList<Item>();
-        this.vsVehiculo = new LinkedList<Vehiculo>();
+            this.descripcion = descripcion;
+            this.caracteristicas = caracteristicas;
+            this.precio = precio;
+            this.impuesto = impuesto;
+            this.vsModelo = new LinkedList<Modelo>();
+            this.recambio = recambio;
+            this.stock = stock;
+            this.borrado = false;
+            this.vsItem = new LinkedList<Item>();
+            this.vsVehiculo = new LinkedList<Vehiculo>();
             ret=this;
             autopartes.add(ret);
         }else{
@@ -137,17 +126,15 @@ public abstract class Autoparte implements Serializable{
             boolean recambio, long stock, LinkedList<Vehiculo> ve, LinkedList<Item> it,
             LinkedList<Modelo> mo, boolean ok){
         Autoparte ret = buscarAutoparte( codParte);
-        this.setNombre(nombre);
         this.setCodParte(codParte);
-        this.setTelefono(telefono);
-        this.setEmail(email);
-        this.setAltura(altura);
-        this.setCuit(cuit);
-        this.setUnaLocalidad(localidad);
-        this.setUnaCalle(calle);
-        this.setPass(cuit);
-        this.setVsOrdenTrabajo(or);
-        this.setVsTurno(tu);
+        this.setDescripcion(descripcion);
+        this.setCaracteristicas(caracteristicas);
+        this.setPrecio(precio);
+        this.setImpuesto(impuesto);
+        this.setRecambio(recambio);
+        this.setStock(stock);
+        this.setVsItem(it);
+        this.setVsModelo(mo);
         this.setVsVehiculo(ve);
         this.setBorrado(ok);
         if (ret!=null){

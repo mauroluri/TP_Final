@@ -1,6 +1,7 @@
 package LogicaDeNegocios;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
@@ -52,12 +53,74 @@ public abstract class OrdenTrabajo implements Serializable{
     public OrdenTrabajo() { }
 
     public OrdenTrabajo(Turno unTur, long codOrden, String descripcion) {
-        this.codOrden = codOrden;
-        this.descripcion = descripcion;
-        this.borrado = false;
-        this.unTurno = unTur;
-        this.vsAutoparte = new LinkedList<Autoparte>();
-        this.vsActividadesRealizadas = new LinkedList<Actividad>();
-        this.vsActividadesPendientes = new LinkedList<Actividad>();
+        creaOrdenTrabajo(unTur, codOrden, descripcion);
+    }  
+    
+            //En memoria (sin persistencia)    
+    private static LinkedList<OrdenTrabajo> ordenes = new LinkedList<OrdenTrabajo>();
+//    private void setClientes(Cliente cli){
+//        clientes.add(cli);
+//    }
+//    private LinkedList<Cliente> getClientes(){
+//        return clientes;
+//    }
+    //Metodos en memoria
+    public OrdenTrabajo buscarOrdenTrabajo(long codOrden){
+        OrdenTrabajo ord, ret=null;
+        if (!ordenes.isEmpty()) { 
+            Iterator<OrdenTrabajo> it = ordenes.iterator();
+            while(it.hasNext()&& ret==null){
+                ord= it.next();
+                if (ord.getCodOrden()==codOrden){
+                    ret=ord;
+                }
+            }
+        }        
+        return ret;
+    }
+    public OrdenTrabajo creaOrdenTrabajo(Turno unTur, long codOrden, String descripcion){
+        OrdenTrabajo ret = buscarOrdenTrabajo( codOrden);
+        if (ret==null){
+            this.codOrden = codOrden;
+            this.descripcion = descripcion;
+            this.borrado = false;
+            this.unTurno = unTur;
+            this.vsAutoparte = new LinkedList<Autoparte>();
+            this.vsActividadesRealizadas = new LinkedList<Actividad>();
+            this.vsActividadesPendientes = new LinkedList<Actividad>();
+            ret=this;
+            ordenes.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
     }    
+    public OrdenTrabajo editaOrdenTrabajo(Turno unTur, long codOrden, String descripcion, LinkedList<Autoparte> ap, 
+            LinkedList<Actividad> acr, LinkedList<Actividad> acp, boolean ok){
+        OrdenTrabajo ret = buscarOrdenTrabajo( codOrden);
+        this.setCodOrden(codOrden);
+        this.setUnTurno(unTur);
+        this.setDescripcion(descripcion);
+        this.setVsAutoparte(ap);
+        this.setVsActividadesRealizadas(acr);
+        this.setVsActividadesPendientes(acp);
+        this.setBorrado(ok);
+        if (ret!=null){
+            ordenes.removeFirstOccurrence(ret);
+            ret = this;
+            ordenes.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaOrdenTrabajo(long codOrden){
+        OrdenTrabajo ret = buscarOrdenTrabajo (codOrden);
+        if (ret!=null){
+            ordenes.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<OrdenTrabajo> darOrdenTrabajo(){
+        return ordenes;
+    }
 }
