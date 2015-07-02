@@ -58,7 +58,8 @@ public class Turnos extends javax.swing.JInternalFrame {
         txtCod.setEnabled(false);
         txtDomi.setEnabled(false);
         escLocal = esc;
-        btnNuevoTurno.setVisible(false);
+        btnDiag.setEnabled(false);
+        btnAju.setEnabled(false);
         CargarTblMecanicos();
     }
 
@@ -79,14 +80,17 @@ public class Turnos extends javax.swing.JInternalFrame {
         btnVerTurnos = new javax.swing.JButton();
         DATOS = new javax.swing.JPanel();
         btnEditTurno = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        txtCodTur = new javax.swing.JLabel();
         txtCod = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        txtVehic = new javax.swing.JLabel();
         txtDni = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        txtCli = new javax.swing.JLabel();
         txtDomi = new javax.swing.JTextField();
         btnBorrarTurno = new javax.swing.JButton();
-        btnNuevoTurno = new javax.swing.JButton();
+        DATOS1 = new javax.swing.JPanel();
+        txtNuevo = new javax.swing.JLabel();
+        btnDiag = new javax.swing.JButton();
+        btnAju = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
         jPanelNuevoModelo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Turnos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 36), new java.awt.Color(0, 0, 0))); // NOI18N
@@ -117,6 +121,14 @@ public class Turnos extends javax.swing.JInternalFrame {
 
         Fechita.setDateFormatString("yyyy-MM-dd");
         Fechita.setMaxSelectableDate(new java.util.Date(253370779286000L));
+        Fechita.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FechitaMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                FechitaMousePressed(evt);
+            }
+        });
 
         tblMecanicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -160,11 +172,11 @@ public class Turnos extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setText("Cod. Turno:");
+        txtCodTur.setText("Cod. Turno:");
 
-        jLabel2.setText("Vehiculo:");
+        txtVehic.setText("Vehiculo:");
 
-        jLabel3.setText("Cliente nro.:");
+        txtCli.setText("Cliente nro.:");
 
         btnBorrarTurno.setText("Borrar");
         btnBorrarTurno.addActionListener(new java.awt.event.ActionListener() {
@@ -181,46 +193,104 @@ public class Turnos extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(DATOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEditTurno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtCod)
-                    .addComponent(txtDni)
+                    .addComponent(btnBorrarTurno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(DATOSLayout.createSequentialGroup()
+                        .addComponent(txtVehic)
+                        .addGap(35, 35, 35)
+                        .addComponent(txtDomi, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))
                     .addGroup(DATOSLayout.createSequentialGroup()
                         .addGroup(DATOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(txtDomi)
-                    .addComponent(btnBorrarTurno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtCli)
+                            .addComponent(txtCodTur))
+                        .addGap(18, 18, 18)
+                        .addGroup(DATOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtCod)
+                            .addComponent(txtDni))))
                 .addContainerGap())
         );
         DATOSLayout.setVerticalGroup(
             DATOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DATOSLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(DATOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCodTur)
+                    .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(DATOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCli)
+                    .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDomi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(DATOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtVehic)
+                    .addComponent(txtDomi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(btnEditTurno)
                 .addGap(18, 18, 18)
                 .addComponent(btnBorrarTurno)
                 .addContainerGap())
         );
 
-        btnNuevoTurno.setText("Nuevo Turno");
-        btnNuevoTurno.addActionListener(new java.awt.event.ActionListener() {
+        DATOS1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 0, 0), null));
+        DATOS1.setToolTipText("");
+
+        txtNuevo.setText("Nuevo turno:");
+
+        btnDiag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Diagnostico.png"))); // NOI18N
+        btnDiag.setText("Diagnóstico");
+        btnDiag.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDiag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDiag.setIconTextGap(2);
+        btnDiag.setMaximumSize(new java.awt.Dimension(95, 73));
+        btnDiag.setMinimumSize(new java.awt.Dimension(95, 73));
+        btnDiag.setPreferredSize(new java.awt.Dimension(95, 73));
+        btnDiag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDiag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoTurnoActionPerformed(evt);
+                btnDiagActionPerformed(evt);
             }
         });
+
+        btnAju.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Ajuste.png"))); // NOI18N
+        btnAju.setText("Ajuste");
+        btnAju.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAju.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAju.setIconTextGap(2);
+        btnAju.setMaximumSize(new java.awt.Dimension(95, 73));
+        btnAju.setMinimumSize(new java.awt.Dimension(95, 73));
+        btnAju.setPreferredSize(new java.awt.Dimension(95, 73));
+        btnAju.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAju.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAjuActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout DATOS1Layout = new javax.swing.GroupLayout(DATOS1);
+        DATOS1.setLayout(DATOS1Layout);
+        DATOS1Layout.setHorizontalGroup(
+            DATOS1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DATOS1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(DATOS1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(DATOS1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(btnDiag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAju, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNuevo))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        DATOS1Layout.setVerticalGroup(
+            DATOS1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DATOS1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtNuevo)
+                .addGap(7, 7, 7)
+                .addGroup(DATOS1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDiag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAju, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanelDNI6Layout = new javax.swing.GroupLayout(jPanelDNI6);
         jPanelDNI6.setLayout(jPanelDNI6Layout);
@@ -228,54 +298,49 @@ public class Turnos extends javax.swing.JInternalFrame {
             jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDNI6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDetAct)
                     .addGroup(jPanelDNI6Layout.createSequentialGroup()
                         .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addGroup(jPanelDNI6Layout.createSequentialGroup()
-                                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblDetAct)
-                                    .addGroup(jPanelDNI6Layout.createSequentialGroup()
-                                        .addComponent(lblNombre)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(Fechita, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(18, 18, 18))
-                    .addGroup(jPanelDNI6Layout.createSequentialGroup()
-                        .addComponent(lblCategoria)
+                            .addComponent(lblCategoria)
+                            .addComponent(lblNombre))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addComponent(btnVerTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)))
+                        .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Fechita, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelDNI6Layout.createSequentialGroup()
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(btnVerTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
                 .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(DATOS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnNuevoTurno, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(DATOS1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DATOS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelDNI6Layout.setVerticalGroup(
             jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDNI6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDNI6Layout.createSequentialGroup()
-                        .addComponent(DATOS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnNuevoTurno))
+                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelDNI6Layout.createSequentialGroup()
                         .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Fechita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblNombre))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblCategoria)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDNI6Layout.createSequentialGroup()
-                                .addComponent(btnVerTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(8, 8, 8)))
-                        .addComponent(lblDetAct)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanelDNI6Layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(btnVerTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(DATOS1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDetAct)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelDNI6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(DATOS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -285,8 +350,8 @@ public class Turnos extends javax.swing.JInternalFrame {
             jPanelNuevoModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelNuevoModeloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelDNI6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanelDNI6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelNuevoModeloLayout.setVerticalGroup(
             jPanelNuevoModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,12 +383,12 @@ public class Turnos extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelNuevoModelo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanelNuevoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
+                .addGap(100, 100, 100))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,7 +397,7 @@ public class Turnos extends javax.swing.JInternalFrame {
                 .addComponent(jPanelNuevoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -360,55 +425,27 @@ public class Turnos extends javax.swing.JInternalFrame {
             txtCod.setText(tblTurnos.getValueAt(tblTurnos.getSelectedRow(), 0).toString());
             txtDomi.setText(tblTurnos.getValueAt(tblTurnos.getSelectedRow(), 4).toString());
             DATOS.setVisible(true);
+            btnAju.setEnabled(false);
+            btnDiag.setEnabled(false);
         } else {
             DATOS.setVisible(false);
+            btnAju.setEnabled(true);
+            btnDiag.setEnabled(true);
         }
     }//GEN-LAST:event_tblTurnosMouseClicked
 
     private void tblMecanicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMecanicosMouseClicked
-
-    }//GEN-LAST:event_tblMecanicosMouseClicked
-
-    private void btnNuevoTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoTurnoActionPerformed
-        Calendar cale = Calendar.getInstance();
-        cale = Fechita.getCalendar();
-        Date dd1 = cale.getTime();
-        
-        String mec = tblMecanicos.getValueAt(tblMecanicos.getSelectedRow(),0).toString();
-        Mecanico mecan = new Mecanico();
-        List<Mecanico> lista= cLocal.dameMecanicos();
-        Iterator<Mecanico> it3;
-        int nop;
-        for (nop=tblMecanicos.getRowCount(); nop>0; nop--){
-            int b=1;
-            it3 = lista.iterator();
-            while(it3.hasNext()&& b==1) {
-                mecan = it3.next();
-                if(mecan.getNombre().equals(mec)){ 
-                    b=0;
-                }
-            }
-        }  
-        
-        NuevoTurno nt = new NuevoTurno(this, cLocal, dd1, mecan);
-        Dimension desktopSize = escLocal.getSize();
-        Dimension jInternalFrameSize = nt.getSize();
-        nt.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
-        (desktopSize.height - jInternalFrameSize.height)/2);
-        
-        escLocal.add(nt);
-        nt.show();
-        DefaultTableModel miModeloTabla= new DefaultTableModel();
         LimpiarTabla();
-        btnNuevoTurno.setVisible(false);
-        this.hide();
-    }//GEN-LAST:event_btnNuevoTurnoActionPerformed
+        btnAju.setEnabled(false);
+        btnDiag.setEnabled(false);
+    }//GEN-LAST:event_tblMecanicosMouseClicked
 
     private void btnVerTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTurnosActionPerformed
         
+        btnAju.setEnabled(false);
+        btnDiag.setEnabled(false);
         if(tblMecanicos.getRowCount()>0){
             if(tblMecanicos.getSelectedRow()>=0 && Fechita.getCalendar()!=null){
-                btnNuevoTurno.setVisible(true);
                 DATOS.setVisible(false);
                 try {
                     Date d1;
@@ -462,6 +499,52 @@ public class Turnos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBorrarTurnoActionPerformed
 
+    private void btnAjuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAjuActionPerformed
+
+    private void btnDiagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiagActionPerformed
+        Calendar cale = Calendar.getInstance();
+        cale = Fechita.getCalendar();
+        Date dd1 = cale.getTime();
+        
+        String mec = tblMecanicos.getValueAt(tblMecanicos.getSelectedRow(),0).toString();
+        Mecanico mecan = new Mecanico();
+        List<Mecanico> lista= cLocal.dameMecanicos();
+        Iterator<Mecanico> it3;
+        int nop;
+        for (nop=tblMecanicos.getRowCount(); nop>0; nop--){
+            int b=1;
+            it3 = lista.iterator();
+            while(it3.hasNext()&& b==1) {
+                mecan = it3.next();
+                if(mecan.getNombre().equals(mec)){ 
+                    b=0;
+                }
+            }
+        }  
+        
+        NuevoTurnoDiag nt = new NuevoTurnoDiag(this, cLocal, dd1, mecan);
+        Dimension desktopSize = escLocal.getSize();
+        Dimension jInternalFrameSize = nt.getSize();
+        nt.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
+        (desktopSize.height - jInternalFrameSize.height)/2);
+        
+        escLocal.add(nt);
+        nt.show();
+        DefaultTableModel miModeloTabla= new DefaultTableModel();
+        LimpiarTabla();
+        btnAju.setEnabled(false);
+        btnDiag.setEnabled(false);
+        this.hide();
+    }//GEN-LAST:event_btnDiagActionPerformed
+
+    private void FechitaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FechitaMouseClicked
+    }//GEN-LAST:event_FechitaMouseClicked
+
+    private void FechitaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FechitaMousePressed
+    }//GEN-LAST:event_FechitaMousePressed
+
     public void CargarTabla(Mecanico m, String date1){
         List<Turno> Lista= m.getVsTurno();
         Date f;
@@ -479,6 +562,7 @@ public class Turnos extends javax.swing.JInternalFrame {
             int ban = 0;
             for(Turno unTurno:Lista){
                 String aaaaa;
+                System.out.println(unTurno.getCodigo());
                 f = unTurno.getFecha();
                 SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
                 String date2 = format2.format(f);
@@ -566,15 +650,14 @@ public class Turnos extends javax.swing.JInternalFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel DATOS;
+    private javax.swing.JPanel DATOS1;
     private com.toedter.calendar.JDateChooser Fechita;
+    private javax.swing.JButton btnAju;
     private javax.swing.JButton btnBorrarTurno;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnDiag;
     private javax.swing.JButton btnEditTurno;
-    private javax.swing.JButton btnNuevoTurno;
     private javax.swing.JButton btnVerTurnos;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanelDNI6;
     private javax.swing.JPanel jPanelNuevoModelo;
     private javax.swing.JScrollPane jScrollPane1;
@@ -584,8 +667,12 @@ public class Turnos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblNombre;
     private javax.swing.JTable tblMecanicos;
     private javax.swing.JTable tblTurnos;
+    private javax.swing.JLabel txtCli;
     private javax.swing.JTextField txtCod;
+    private javax.swing.JLabel txtCodTur;
     private javax.swing.JTextField txtDni;
     private javax.swing.JTextField txtDomi;
+    private javax.swing.JLabel txtNuevo;
+    private javax.swing.JLabel txtVehic;
     // End of variables declaration//GEN-END:variables
 }

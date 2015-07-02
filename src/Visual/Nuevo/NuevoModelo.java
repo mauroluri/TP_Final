@@ -235,6 +235,7 @@ public class NuevoModelo extends javax.swing.JInternalFrame {
         }
         cmbMarca.setModel(miModeloCombo);
     }
+    
     private boolean control(){
         boolean b;
         if ((!txtNombre.getText().equals("")) && (!txtAño.getText().equals(""))){
