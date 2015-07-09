@@ -39,4 +39,72 @@ public class Mecanico extends Empleado implements Serializable{
         this.unaEspecialidad = profesion;
         this.vsOrdenTrabajo = new LinkedList<OrdenTrabajo>();
     }
+    
+    
+    
+    //En memoria (sin persistencia)        
+    //Metodos en memoria
+    private static LinkedList<Mecanico> mecs = new LinkedList<Mecanico>();
+    
+    public Mecanico buscarMecanico(long dni){
+        Mecanico me, ret=null;
+        if (!mecs.isEmpty()) { 
+            Iterator<Mecanico> it = mecs.iterator();
+            while(it.hasNext()&& ret==null){
+                me= it.next();
+                if (me.getDni()==dni){
+                    ret=me;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Mecanico creaMecanico(Localidad unaLoc,Sucursal unaSuc, String nombre, long dni, long telefono, int sueldo, 
+            String pass, Date horaInicio, Date horaFin, Especialidad profesion){
+        Mecanico ret;
+        if (super.buscarDni(dni)<0){
+            ret = new Mecanico(unaLoc, unaSuc, nombre, dni, telefono, sueldo, pass, horaInicio, horaFin, profesion);
+            mecs.add(ret);
+            super.agregaEmpleado(dni);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }
+    public Mecanico editaMecanico(Localidad unaLoc,Sucursal unaSuc, String nombre, long dni, long telefono, int sueldo, 
+            String pass, Date horaInicio, Date horaFin, Especialidad profesion, LinkedList<Interno> in, LinkedList<OrdenTrabajo> or,
+            boolean ok){
+        Mecanico ret = buscarMecanico(dni);
+        this.setNombre(nombre);
+        this.setDni(dni);
+        this.setTelefono(telefono);
+        this.setSueldo(sueldo);
+        this.setBorrado(ok);
+        this.setHoraInicio(horaInicio);
+        this.setHoraFin(horaFin);
+        this.setUnaSucursal(unaSuc);
+        this.setVsInterno(in);
+        this.setVsOrdenTrabajo(or);
+        this.setUnaEspecialidad(profesion);
+        this.setUnaLocalidad(unaLoc);
+        this.setPass(pass);
+        if (ret!=null){
+            mecs.removeFirstOccurrence(ret);
+            ret = this;
+            mecs.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaMecanico(long dni){
+        Mecanico ret = buscarMecanico (dni);
+        if (ret!=null){
+            super.eliminaEmpleado(dni);
+            mecs.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Mecanico> darMecanico(){
+        return mecs;
+    }
 }

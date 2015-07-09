@@ -2,7 +2,6 @@ package LogicaDeNegocios;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -75,84 +74,45 @@ public abstract class Autoparte implements Serializable{
     public Autoparte() {}
     public Autoparte(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
             boolean recambio, long stock) {
-        creaAutoparte(codParte, descripcion, caracteristicas, precio, impuesto, recambio, stock);
+        this.codParte = codParte;
+        this.descripcion = descripcion;
+        this.caracteristicas = caracteristicas;
+        this.precio = precio;
+        this.impuesto = impuesto;
+        this.vsModelo = new LinkedList<Modelo>();
+        this.recambio = recambio;
+        this.stock = stock;
+        this.borrado = false;
+        this.vsItem = new LinkedList<Item>();
+        this.vsVehiculo = new LinkedList<Vehiculo>();
     }
     
+
         //En memoria (sin persistencia)    
-    private static LinkedList<Autoparte> autopartes = new LinkedList<Autoparte>();
-//    private void setClientes(Cliente cli){
-//        clientes.add(cli);
-//    }
-//    private LinkedList<Cliente> getClientes(){
-//        return clientes;
-//    }
+    private static int[] autopartes;
     //Metodos en memoria
-    public Autoparte buscarAutoparte(int codParte){
-        Autoparte ap, ret=null;
-        if (!autopartes.isEmpty()) { 
-            Iterator<Autoparte> it = autopartes.iterator();
-            while(it.hasNext()&& ret==null){
-                ap= it.next();
-                if (ap.getCodParte()==codParte){
-                    ret=ap;
+    public int buscarCodParte(int codParte){
+        int res=-1;
+        if (autopartes.length>0) {
+            for (int i=0;i<autopartes.length;i++){
+                if (autopartes[i]==codParte){
+                    res=i;
                 }
             }
         }        
-        return ret;
+        return res;
     }
-    public Autoparte creaAutoparte(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
-            boolean recambio, long stock){
-        Autoparte ret = buscarAutoparte( codParte);
-        if (ret==null){
-            this.codParte = codParte;
-            this.descripcion = descripcion;
-            this.caracteristicas = caracteristicas;
-            this.precio = precio;
-            this.impuesto = impuesto;
-            this.vsModelo = new LinkedList<Modelo>();
-            this.recambio = recambio;
-            this.stock = stock;
-            this.borrado = false;
-            this.vsItem = new LinkedList<Item>();
-            this.vsVehiculo = new LinkedList<Vehiculo>();
-            ret=this;
-            autopartes.add(ret);
-        }else{
-            ret=null; 
-        }
-        return ret;
-    }    
-    public Autoparte editaAutoparte(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
-            boolean recambio, long stock, LinkedList<Vehiculo> ve, LinkedList<Item> it,
-            LinkedList<Modelo> mo, boolean ok){
-        Autoparte ret = buscarAutoparte( codParte);
-        this.setCodParte(codParte);
-        this.setDescripcion(descripcion);
-        this.setCaracteristicas(caracteristicas);
-        this.setPrecio(precio);
-        this.setImpuesto(impuesto);
-        this.setRecambio(recambio);
-        this.setStock(stock);
-        this.setVsItem(it);
-        this.setVsModelo(mo);
-        this.setVsVehiculo(ve);
-        this.setBorrado(ok);
-        if (ret!=null){
-            autopartes.removeFirstOccurrence(ret);
-            ret = this;
-            autopartes.add(ret);
-        }else{
-            ret = this;
-        }
-        return ret;
+    public void agregaAutoparte(int codParte){
+        autopartes[autopartes.length]=codParte;
     }
     public void eliminaAutoparte(int codParte){
-        Autoparte ret = buscarAutoparte (codParte);
-        if (ret!=null){
-            autopartes.removeFirstOccurrence(ret);
-        }
+        for (int i=0;i<autopartes.length;i++){
+            if (autopartes[i]==codParte){
+                autopartes[i]=autopartes[i+1];
+            }
+        } 
     }
-    public LinkedList<Autoparte> darAutopartes(){
+    public int[] darAutopartes(){
         return autopartes;
     }
 }

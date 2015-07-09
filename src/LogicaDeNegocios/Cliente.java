@@ -84,17 +84,18 @@ public class Cliente implements Serializable{
     public Cliente (){}
     public Cliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
             Localidad localidad, Calle calle){
-        creaCliente(nombre, dni, telefono, email, cuit, altura, localidad, calle);
+        this.nombre=nombre;
+        this.dni=dni;
+        this.telefono=telefono;
+        this.email=email;
+        this.cuit=cuit;
+        this.altura=altura;
+        this.unaLocalidad=localidad;
+        this.unaCalle=calle;    
     }
     
     //En memoria (sin persistencia)    
     private static LinkedList<Cliente> clientes = new LinkedList<Cliente>();
-//    private void setClientes(Cliente cli){
-//        clientes.add(cli);
-//    }
-//    private LinkedList<Cliente> getClientes(){
-//        return clientes;
-//    }
     //Metodos en memoria
     public Cliente buscarCliente(long dni){
         Cliente cli, ret=null;
@@ -113,15 +114,7 @@ public class Cliente implements Serializable{
             Localidad localidad, Calle calle){
         Cliente ret = buscarCliente( dni);
         if (ret==null){
-            this.setNombre(nombre);
-            this.setDni(dni);
-            this.setTelefono(telefono);
-            this.setEmail(email);
-            this.setCuit(cuit);
-            this.setAltura(altura);
-            this.setUnaLocalidad(localidad);
-            this.setUnaCalle(calle);
-            ret=this;
+            ret=new Cliente(nombre, dni, telefono, email, cuit, altura, localidad, calle);
             clientes.add(ret);
         }else{
             ret=null; 

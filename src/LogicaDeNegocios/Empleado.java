@@ -3,7 +3,6 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import javax.persistence.Temporal;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
@@ -93,80 +92,32 @@ public abstract class Empleado implements Serializable{
             this.pass = contra;
     }    
     
+    
         //En memoria (sin persistencia)    
-    private static LinkedList<Empleado> empleados = new LinkedList<Empleado>();
-//    private void setClientes(Cliente cli){
-//        clientes.add(cli);
-//    }
-//    private LinkedList<Cliente> getClientes(){
-//        return clientes;
-//    }
+    private static long[] empleados;
     //Metodos en memoria
-    public Empleado buscarEmpleado(long dni){
-        Empleado emp, ret=null;
-        if (!empleados.isEmpty()) { 
-            Iterator<Empleado> it = empleados.iterator();
-            while(it.hasNext()&& ret==null){
-                emp= it.next();
-                if (emp.getDni()==dni){
-                    ret=emp;
+    public int buscarDni(long dni){
+        int res=-1;
+        if (empleados.length>0) {
+            for (int i=0;i<empleados.length;i++){
+                if (empleados[i]==dni){
+                    res=i;
                 }
             }
         }        
-        return ret;
+        return res;
     }
-//    public Empleado creaEmpleado(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, int sueldo, 
-//            String contra, Date horaInicio, Date horaFin){
-//        Empleado ret = buscarEmpleado( dni);
-//        if (ret==null){
-//            this.nombre = nombre;
-//            this.dni = dni;
-//            this.telefono = telefono;
-//            this.sueldo = sueldo;
-//            this.borrado = false;
-//            this.horaInicio = horaInicio;
-//            this.horaFin = horaFin;
-//            this.unaSucursal = unaSuc;
-//            this.vsTurno = new LinkedList<Turno>();
-//            this.unaLocalidad = unaLoc;
-//            this.pass = contra;
-//            ret=this;
-//            empleados.add(ret);
-//        }else{
-//            ret=null; 
-//        }
-//        return ret;
-//    }    
-    public Empleado editaEmpleado(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, int sueldo, 
-            String contra, Date horaInicio, Date horaFin, LinkedList<Turno> tu, boolean ok){
-        Empleado ret = buscarEmpleado( dni);
-        this.setNombre(nombre);
-        this.setDni(dni);
-        this.setTelefono(telefono);
-        this.setSueldo(sueldo);
-        this.setBorrado(ok);
-        this.setHoraInicio(horaInicio);
-        this.setHoraFin(horaFin);
-        this.setUnaSucursal(unaSuc);
-        this.setVsTurno(tu);
-        this.setUnaLocalidad(unaLoc);
-        this.setPass(contra);
-        if (ret!=null){
-            empleados.removeFirstOccurrence(ret);
-            ret = this;
-            empleados.add(ret);
-        }else{
-            ret = this;
-        }
-        return ret;
+    public void agregaEmpleado(long dni){
+        empleados[empleados.length]=dni;
     }
     public void eliminaEmpleado(long dni){
-        Empleado ret = buscarEmpleado (dni);
-        if (ret!=null){
-            empleados.removeFirstOccurrence(ret);
-        }
+        for (int i=0;i<empleados.length;i++){
+            if (empleados[i]==dni){
+                empleados[i]=empleados[i+1];
+            }
+        } 
     }
-    public LinkedList<Empleado> darEmpleado(){
+    public long[] darEmpleados(){
         return empleados;
     }
 }

@@ -3,6 +3,8 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import javax.persistence.Temporal;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -51,4 +53,57 @@ public class Garantia implements Serializable {
         this.vigencia = vigencia;
         this.vsAutoparte = partes;
     }    
+    
+                //En memoria (sin persistencia)    
+    private static LinkedList<Garantia> garantias = new LinkedList<Garantia>();
+
+    //Metodos en memoria
+    public Garantia buscarGarantia(String detalle){
+        Garantia ga, ret=null;
+        if (!garantias.isEmpty()) { 
+            Iterator<Garantia> it = garantias.iterator();
+            while(it.hasNext()&& ret==null){
+                ga= it.next();
+                if (ga.getDetalle().equalsIgnoreCase(detalle)){
+                    ret=ga;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Garantia creaGarantia (Date fecha, int duracion, String detalle, boolean vigencia, List<Autoparte> partes){
+        Garantia ret = buscarGarantia(detalle);
+        if (ret==null){
+            ret=new Garantia(fecha, duracion, detalle, vigencia, partes);
+            garantias.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Garantia editaGarantia(Date fecha, int duracion, String detalle, boolean vigencia, List<Autoparte> partes){
+        Garantia ret = buscarGarantia( detalle);
+        this.setDetalle(detalle);
+        this.setDuracion(duracion);
+        this.setFecha(fecha);
+        this.setVigencia(vigencia);
+        this.setVsAutoparte(partes);
+        if (ret!=null){
+            garantias.removeFirstOccurrence(ret);
+            ret = this;
+            garantias.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaGarantia(String detalle){
+        Garantia ret = buscarGarantia (detalle);
+        if (ret!=null){
+            garantias.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Garantia> darGarantia(){
+        return garantias;
+    }
 }

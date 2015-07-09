@@ -49,17 +49,16 @@ public class Actividad implements Serializable {
     //CONSTRUCTORES
     public Actividad() { }
     public Actividad(String nombre, Categoria categ, Date duracionTotal, GrupoParte grupo,List<DetalleActividad> ac) {
-        creaActividad(nombre, categ, duracionTotal, grupo, ac);
+        this.nombre = nombre;
+        this.duracionTotal = duracionTotal;
+        this.unGrupoParte = grupo;
+        this.unaCategoria = categ;
+        this.vsEspDetActividad = ac;    
     }
     
             //En memoria (sin persistencia)    
     private static LinkedList<Actividad> actividades = new LinkedList<Actividad>();
-//    private void setClientes(Cliente cli){
-//        clientes.add(cli);
-//    }
-//    private LinkedList<Cliente> getClientes(){
-//        return clientes;
-//    }
+
     //Metodos en memoria
     public Actividad buscarActividad(String nombre){
         Actividad act, ret=null;
@@ -77,12 +76,7 @@ public class Actividad implements Serializable {
     public Actividad creaActividad (String nombre, Categoria categ, Date duracionTotal, GrupoParte grupo,List<DetalleActividad> ac){
         Actividad ret = buscarActividad(nombre);
         if (ret==null){
-            this.nombre = nombre;
-            this.duracionTotal = duracionTotal;
-            this.unGrupoParte = grupo;
-            this.unaCategoria = categ;
-            this.vsEspDetActividad = ac;
-            ret=this;
+            ret=new Actividad(nombre, categ, duracionTotal, grupo, ac);
             actividades.add(ret);
         }else{
             ret=null; 

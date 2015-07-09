@@ -1,6 +1,7 @@
 package LogicaDeNegocios;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
@@ -25,9 +26,68 @@ public class Diagnostico extends OrdenTrabajo implements Serializable{
     
     public Diagnostico(){}
     
-    public Diagnostico( Turno unTur, int codOrden, String descripcion, int kilometraje, boolean inicial){
+    public Diagnostico( Turno unTur, long codOrden, String descripcion, int kilometraje, boolean inicial){
         super(unTur, codOrden, descripcion);
         this.kilometraje=kilometraje;
         this.inicial = inicial;
+    }
+       //En memoria (sin persistencia)        
+    //Metodos en memoria
+    private static LinkedList<Diagnostico> diags = new LinkedList<Diagnostico>();
+    
+    public Diagnostico buscarDiagnostico(long codOrden){
+        Diagnostico di, ret=null;
+        if (!diags.isEmpty()) { 
+            Iterator<Diagnostico> it = diags.iterator();
+            while(it.hasNext()&& ret==null){
+                di= it.next();
+                if (di.getCodOrden()==codOrden){
+                    ret=di;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Diagnostico creaDiagnostico(Turno unTur, long codOrden, String descripcion, int kilometraje, boolean inicial){
+        Diagnostico ret;
+        if (super.buscarOrdenTrabajo(codOrden)<0){
+            ret = new Diagnostico(unTur, codOrden, descripcion, kilometraje, inicial);
+            diags.add(ret);
+            super.agregaOrdenTrabajo(codOrden);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }
+    public Diagnostico editaDiagnostico(Turno unTur, long codOrden, String descripcion, LinkedList<OrdenTrabajo> or, LinkedList<Actividad> acr,
+            LinkedList<Actividad> acp, boolean ok, int kilometraje, boolean inicial){
+        Diagnostico ret = buscarDiagnostico(codOrden);
+        this.setBorrado(ok);
+        this.setKilometraje(kilometraje);
+        this.setInicial(inicial);
+        this.setCodOrden(codOrden);
+        this.setDescripcion(descripcion);
+        this.setUnTurno(unTur);
+        this.setVsOrdenTrabajo(or);
+        this.setVsActividadesRealizadas(acr);
+        this.setVsActividadesPendientes(acp);
+        if (ret!=null){
+            diags.removeFirstOccurrence(ret);
+            ret = this;
+            diags.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaDiagnostico(long codOrden){
+        Diagnostico ret = buscarDiagnostico (codOrden);
+        if (ret!=null){
+            super.eliminaOrdenTrabajo(codOrden);
+            diags.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Diagnostico> darDiagnostico(){
+        return diags;
     }
 }

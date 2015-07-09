@@ -2,6 +2,7 @@ package LogicaDeNegocios;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,5 +44,56 @@ public class Calle implements Serializable {
         this.vsCliente = new LinkedList<Cliente>();
         this.vsLocalidad = new LinkedList<Localidad>();
     }
-    
+       
+            //En memoria (sin persistencia)    
+    private static LinkedList<Calle> calles = new LinkedList<Calle>();
+
+    //Metodos en memoria
+    public Calle buscarCalle(String nombre){
+        Calle ca, ret=null;
+        if (!calles.isEmpty()) { 
+            Iterator<Calle> it = calles.iterator();
+            while(it.hasNext()&& ret==null){
+                ca= it.next();
+                if (ca.getNombre().equalsIgnoreCase(nombre)){
+                    ret=ca;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Calle creaCalle (String nombre){
+        Calle ret = buscarCalle(nombre);
+        if (ret==null){
+            ret=new Calle(nombre);
+            calles.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Calle editaCalle(String nombre, Sucursal suc, LinkedList<Cliente> cli, LinkedList<Localidad> loc){
+        Calle ret = buscarCalle( nombre);
+        this.setNombre(nombre);
+        this.setUnaSucursal(suc);
+        this.setVsCliente(cli);
+        this.setVsLocalidad(loc);
+        if (ret!=null){
+            calles.removeFirstOccurrence(ret);
+            ret = this;
+            calles.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaCalle(String nombre){
+        Calle ret = buscarCalle (nombre);
+        if (ret!=null){
+            calles.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Calle> darCalle(){
+        return calles;
+    }
 }
