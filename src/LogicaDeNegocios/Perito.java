@@ -31,7 +31,7 @@ public class Perito extends Empleado implements Serializable{
     }
     
          
-    
+   
     //En memoria (sin persistencia)        
     //Metodos en memoria
     private static LinkedList<Perito> pers = new LinkedList<Perito>();

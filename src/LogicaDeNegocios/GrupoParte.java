@@ -47,10 +47,10 @@ public class GrupoParte implements Serializable{
 
     public GrupoParte() { }
 
-    public GrupoParte(String nombre, int codGrupo, Modelo mods, LinkedList<Autoparte> parts) {
+    public GrupoParte(String nombre, int codGrupo, Modelo mod, LinkedList<Autoparte> parts) {
         this.nombre = nombre;
         this.codGrupo = codGrupo;
-        this.unModelo = mods;
+        this.unModelo = mod;
         this.vsAutoparte = parts;
         this.vsProveedor = new LinkedList<Proveedor>();
     }
@@ -58,37 +58,38 @@ public class GrupoParte implements Serializable{
     
     //En memoria (sin persistencia)    
     private static LinkedList<GrupoParte> grupos = new LinkedList<GrupoParte>();
-
     //Metodos en memoria
-    public GrupoParte buscarGrupoParte(String nombre){
-        GrupoParte ca, ret=null;
+    public GrupoParte buscarGrupoParte(long codGrupo){
+        GrupoParte gr, ret=null;
         if (!grupos.isEmpty()) { 
             Iterator<GrupoParte> it = grupos.iterator();
             while(it.hasNext()&& ret==null){
-                ca= it.next();
-                if (ca.getNombre().equalsIgnoreCase(nombre)){
-                    ret=ca;
+                gr= it.next();
+                if (gr.getCodGrupo()==codGrupo){
+                    ret=gr;
                 }
             }
         }        
         return ret;
     }
-    public GrupoParte creaGrupoParte (String nombre, int codGrupo, Modelo mods, LinkedList<Autoparte> parts){
-        GrupoParte ret = buscarGrupoParte(nombre);
+    public GrupoParte creaGrupoParte(String nombre, int codGrupo, Modelo mod, LinkedList<Autoparte> parts){
+        GrupoParte ret = buscarGrupoParte( codGrupo);
         if (ret==null){
-            ret=new GrupoParte(nombre, codGrupo, mods, parts);
+            ret=new GrupoParte(nombre, codGrupo, mod, parts);
             grupos.add(ret);
         }else{
             ret=null; 
         }
         return ret;
     }    
-    public GrupoParte editaGrupoParte(String nombre, Sucursal suc, LinkedList<Cliente> cli, LinkedList<Localidad> loc){
-        GrupoParte ret = buscarGrupoParte( nombre);
+    public GrupoParte editaGrupoParte(String nombre, int codGrupo, Modelo mod, LinkedList<Autoparte> parts, 
+            LinkedList<Proveedor> provs){
+        GrupoParte ret = buscarGrupoParte( codGrupo);
         this.setNombre(nombre);
-        this.setUnaSucursal(suc);
-        this.setVsCliente(cli);
-        this.setVsLocalidad(loc);
+        this.setCodGrupo(codGrupo);
+        this.setUnModelo(mod);
+        this.setVsAutoparte(parts);
+        this.setVsProveedor(provs);
         if (ret!=null){
             grupos.removeFirstOccurrence(ret);
             ret = this;
@@ -98,13 +99,13 @@ public class GrupoParte implements Serializable{
         }
         return ret;
     }
-    public void eliminaGrupoParte(String nombre){
-        GrupoParte ret = buscarGrupoParte (nombre);
+    public void eliminaGrupoParte(long codGrupo){
+        GrupoParte ret = buscarGrupoParte (codGrupo);
         if (ret!=null){
             grupos.removeFirstOccurrence(ret);
         }
     }
-    public LinkedList<GrupoParte> darGrupoParte(){
+    public LinkedList<GrupoParte> darGrupoPartes(){
         return grupos;
     }
 }

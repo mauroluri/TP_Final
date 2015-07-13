@@ -49,4 +49,32 @@ public abstract class Sector implements Serializable {
         this.horaFin=horaFin;
         this.vsEmpleado = new LinkedList<Empleado>();
     }       
+    
+       //En memoria (sin persistencia)    
+    private static int[] sectores;
+    //Metodos en memoria
+    public int buscarCod(int cod){
+        int res=-1;
+        if (sectores.length>0) {
+            for (int i=0;i<sectores.length;i++){
+                if (sectores[i]==cod){
+                    res=i;
+                }
+            }
+        }        
+        return res;
+    }
+    public void agregaSector(int cod){
+        sectores[sectores.length]=cod;
+    }
+    public void eliminaSector(int cod){
+        for (int i=0;i<sectores.length;i++){
+            if (sectores[i]==cod){
+                sectores[i]=sectores[i+1];
+            }
+        } 
+    }
+    public int[] darSectores(){
+        return sectores;
+    }
 }

@@ -2,6 +2,8 @@ package LogicaDeNegocios;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 @Entity
 public class Item implements Serializable{
@@ -44,5 +46,56 @@ public class Item implements Serializable{
         this.ok = ok;
         this.unaAutoparte = unaAut;
         this.unDeposito = unD;
+    }
+    
+        //En memoria (sin persistencia)    
+    private static LinkedList<Item> items = new LinkedList<Item>();
+    //Metodos en memoria
+    public Item buscarItem(int cod){
+        Item im, ret=null;
+        if (!items.isEmpty()) { 
+            Iterator<Item> it = items.iterator();
+            while(it.hasNext()&& ret==null){
+                im= it.next();
+                if (im.getCod()==cod){
+                    ret=im;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Item creaItem(Autoparte unaAut, int cod, boolean ok,Deposito unD){
+        Item ret = buscarItem( cod);
+        if (ret==null){
+            ret=new Item(unaAut, cod, ok, unD);
+            items.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Item editaItem(Autoparte unaAut, int cod, boolean ok,Deposito unD){
+        Item ret = buscarItem( cod);
+        this.setCod(cod);
+        this.setOk(ok);
+        this.setUnDeposito(unDeposito);
+        this.setUnaAutoparte(unaAutoparte);
+        if (ret!=null){
+            items.removeFirstOccurrence(ret);
+            ret = this;
+            items.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaItem(int cod){
+        Item ret = buscarItem (cod);
+        if (ret!=null){
+            items.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Item> darItems(){
+        return items;
     }
 }

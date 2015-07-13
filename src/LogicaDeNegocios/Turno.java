@@ -99,4 +99,67 @@ public class Turno implements Serializable{
         this.unEstado = est;
         this.unNivelSeveridad = nivS;
     }
+    
+        //En memoria (sin persistencia)    
+    private static LinkedList<Cliente> clientes = new LinkedList<Cliente>();
+    //Metodos en memoria
+    public Cliente buscarCliente(long dni){
+        Cliente cli, ret=null;
+        if (!clientes.isEmpty()) { 
+            Iterator<Cliente> it = clientes.iterator();
+            while(it.hasNext()&& ret==null){
+                cli= it.next();
+                if (cli.getDni()==dni){
+                    ret=cli;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Cliente creaCliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
+            Localidad localidad, Calle calle){
+        Cliente ret = buscarCliente( dni);
+        if (ret==null){
+            ret=new Cliente(nombre, dni, telefono, email, cuit, altura, localidad, calle);
+            clientes.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Cliente editaCliente(String nombre, long dni, long telefono, String email, String cuit,
+            int altura, Localidad localidad, Calle calle, String contra, LinkedList<Vehiculo> ve, LinkedList<OrdenTrabajo> or,
+            LinkedList<Turno> tu, boolean ok){
+        Cliente ret = buscarCliente( dni);
+        this.setNombre(nombre);
+        this.setDni(dni);
+        this.setTelefono(telefono);
+        this.setEmail(email);
+        this.setAltura(altura);
+        this.setCuit(cuit);
+        this.setUnaLocalidad(localidad);
+        this.setUnaCalle(calle);
+        this.setPass(cuit);
+        this.setVsOrdenTrabajo(or);
+        this.setVsTurno(tu);
+        this.setVsVehiculo(ve);
+        this.setBorrado(ok);
+        if (ret!=null){
+            clientes.removeFirstOccurrence(ret);
+            ret = this;
+            clientes.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaCliente(long dni){
+        Cliente ret = buscarCliente (dni);
+        if (ret!=null){
+            clientes.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Cliente> darClientes(){
+        return clientes;
+    }
 }

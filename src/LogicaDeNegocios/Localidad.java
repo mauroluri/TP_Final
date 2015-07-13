@@ -1,6 +1,7 @@
 package LogicaDeNegocios;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
@@ -68,5 +69,63 @@ public class Localidad implements Serializable {
         this.vsCliente = new LinkedList<Cliente>();
         this.vsProveedor = new LinkedList<Proveedor>();
         this.vsEmpleado = new LinkedList<Empleado>();
+    }
+    
+        //En memoria (sin persistencia)    
+    private static LinkedList<Localidad> locs = new LinkedList<Localidad>();
+    //Metodos en memoria
+    public Localidad buscarLocalidad(int cod){
+        Localidad cli, ret=null;
+        if (!locs.isEmpty()) { 
+            Iterator<Localidad> it = locs.iterator();
+            while(it.hasNext()&& ret==null){
+                cli= it.next();
+                if (cli.getCodigo()==cod){
+                    ret=cli;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Localidad creaLocalidad(int codigo, String nombre,int codPost, Provincia provincia){
+        Localidad ret = buscarLocalidad(codigo);
+        if (ret==null){
+            ret=new Localidad(codigo, nombre, codPost, provincia);
+            locs.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Localidad editaLocalidad(int cod, String nombre,int codPost, Provincia provincia, LinkedList<Calle> ca,
+            LinkedList<Sucursal> suc, LinkedList<Cliente> cli, LinkedList<Proveedor> pro, LinkedList<Empleado> em,
+            boolean ok){
+        Localidad ret = buscarLocalidad( cod);
+        this.setCodPost(codPost);
+        this.setCodigo(cod);
+        this.setNombre(nombre);
+        this.setProvincia(provincia);
+        this.setVsCalle(ca);
+        this.setVsCliente(cli);
+        this.setVsEmpleado(em);
+        this.setVsProveedor(pro);
+        this.setVsSucursal(suc);
+        if (ret!=null){
+            locs.removeFirstOccurrence(ret);
+            ret = this;
+            locs.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaLocalidad(int cod){
+        Localidad ret = buscarLocalidad (cod);
+        if (ret!=null){
+            locs.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Localidad> darLocalidads(){
+        return locs;
     }
 }

@@ -1,6 +1,8 @@
 package LogicaDeNegocios;
 
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.LinkedList;
 import javax.persistence.*;
 
 @Entity
@@ -20,5 +22,55 @@ public class Marca implements Serializable {
     
     public Marca(String nombre){
         this.nombre=nombre;
+    }
+    
+       
+            //En memoria (sin persistencia)    
+    private static LinkedList<Marca> marcas = new LinkedList<Marca>();
+
+    //Metodos en memoria
+    public Marca buscarMarca(String nombre){
+        Marca ma, ret=null;
+        if (!marcas.isEmpty()) { 
+            Iterator<Marca> it = marcas.iterator();
+            while(it.hasNext()&& ret==null){
+                ma= it.next();
+                if (ma.getNombre().equalsIgnoreCase(nombre)){
+                    ret=ma;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Marca creaMarca (String nombre){
+        Marca ret = buscarMarca(nombre);
+        if (ret==null){
+            ret=new Marca(nombre);
+            marcas.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Marca editaMarca(String nombre){
+        Marca ret = buscarMarca( nombre);
+        this.setNombre(nombre);
+        if (ret!=null){
+            marcas.removeFirstOccurrence(ret);
+            ret = this;
+            marcas.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaMarca(String nombre){
+        Marca ret = buscarMarca (nombre);
+        if (ret!=null){
+            marcas.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Marca> darMarca(){
+        return marcas;
     }
 }

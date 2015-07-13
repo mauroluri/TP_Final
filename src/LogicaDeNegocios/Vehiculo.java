@@ -1,6 +1,7 @@
 package LogicaDeNegocios;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
@@ -91,7 +92,8 @@ public class Vehiculo implements Serializable {
     
     public Vehiculo(){}
     
-    public Vehiculo(Segmento seg, Modelo mod, Garantia gar, Cliente cli, String dominio, String nroChasis, String nroMotor, int anio, String color, int puertas){
+    public Vehiculo(Segmento seg, Modelo mod, Garantia gar, Cliente cli, String dominio, String nroChasis, String nroMotor,
+            int anio, String color, int puertas){
         this.dominio=dominio;
         this.nroChasis=nroChasis;
         this.nroMotor=nroMotor;
@@ -108,4 +110,70 @@ public class Vehiculo implements Serializable {
         this.vsOrdenTrabajo = new LinkedList<OrdenTrabajo>();
         this.vsTurnos = new LinkedList<Turno>();
     }    
+    
+                //En memoria (sin persistencia)    
+    private static LinkedList<Vehiculo> vehs = new LinkedList<Vehiculo>();
+
+    //Metodos en memoria
+    public Vehiculo buscarVehiculo(String NroChasis){
+        Vehiculo ve, ret=null;
+        if (!vehs.isEmpty()) { 
+            Iterator<Vehiculo> it = vehs.iterator();
+            while(it.hasNext()&& ret==null){
+                ve= it.next();
+                if (ve.getNroChasis().equalsIgnoreCase(NroChasis)){
+                    ret=ve;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Vehiculo creaVehiculo (Segmento seg, Modelo mod, Garantia gar, Cliente cli, String dominio, String nroChasis,
+            String nroMotor, int anio, String color, int puertas){
+        Vehiculo ret = buscarVehiculo(nroChasis);
+        if (ret==null){
+            ret=new Vehiculo(seg, mod, gar, cli, dominio, nroChasis, nroMotor, anio, color, puertas);
+            vehs.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Vehiculo editaVehiculo(Segmento seg, Modelo mod, Garantia gar, Cliente cli, String dominio, String nroChasis,
+            String nroMotor, int anio, String color, int puertas,LinkedList<Actividad> pend, LinkedList<Actividad> rea, 
+            LinkedList<OrdenTrabajo> ot, LinkedList<Turno> tu, boolean borrado){
+        Vehiculo ret = buscarVehiculo(nroChasis);
+        this.setNroChasis(nroChasis);
+        this.setAnio(anio);
+        this.setBorrado(borrado);
+        this.setColor(color);
+        this.setDominio(dominio);
+        this.setNroMotor(nroMotor);
+        this.setPuertas(puertas);
+        this.setUnCliente(cli);
+        this.setUnGarantia(gar);
+        this.setUnModelo(mod);
+        this.setUnSegmento(seg);
+        this.setVsActividadesPend(pend);
+        this.setVsActividadesRealiz(rea);
+        this.setVsOrdenTrabajo(ot);
+        this.setVsTurnosPend(tu);
+        if (ret!=null){
+            vehs.removeFirstOccurrence(ret);
+            ret = this;
+            vehs.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaVehiculo(String nroChasis){
+        Vehiculo ret = buscarVehiculo (nroChasis);
+        if (ret!=null){
+            vehs.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Vehiculo> darVehiculo(){
+        return vehs;
+    }
 }

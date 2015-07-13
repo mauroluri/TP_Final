@@ -1,6 +1,8 @@
 package LogicaDeNegocios;
 
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.LinkedList;
 import javax.persistence.*;
 
 @Entity
@@ -35,5 +37,56 @@ public class Modelo implements Serializable {
         this.nombre=nombre;
         this.anio=anio;
         this.unaMarca = mar;
+    }
+       
+            //En memoria (sin persistencia)    
+    private static LinkedList<Modelo> mods = new LinkedList<Modelo>();
+
+    //Metodos en memoria
+    public Modelo buscarModelo(String nombre){
+        Modelo mo, ret=null;
+        if (!mods.isEmpty()) { 
+            Iterator<Modelo> it = mods.iterator();
+            while(it.hasNext()&& ret==null){
+                mo= it.next();
+                if (mo.getNombre().equalsIgnoreCase(nombre)){
+                    ret=mo;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Modelo creaModelo (Marca mar, String nombre, int anio){
+        Modelo ret = buscarModelo(nombre);
+        if (ret==null){
+            ret=new Modelo(mar, nombre, anio);
+            mods.add(ret);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }    
+    public Modelo editaModelo(Marca mar, String nombre, int anio){
+        Modelo ret = buscarModelo( nombre);
+        this.setNombre(nombre);
+        this.setAnio(anio);
+        this.setUnaMarca(mar);
+        if (ret!=null){
+            mods.removeFirstOccurrence(ret);
+            ret = this;
+            mods.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaModelo(String nombre){
+        Modelo ret = buscarModelo (nombre);
+        if (ret!=null){
+            mods.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Modelo> darModelo(){
+        return mods;
     }
 }

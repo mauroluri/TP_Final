@@ -62,7 +62,7 @@ public abstract class OrdenTrabajo implements Serializable{
         this.vsActividadesPendientes = new LinkedList<Actividad>();
     }  
     
-        //En memoria (sin persistencia)    
+       //En memoria (sin persistencia)    
     private static long[] ordenes;
     //Metodos en memoria
     public int buscarOrdenTrabajo(long codOrden){

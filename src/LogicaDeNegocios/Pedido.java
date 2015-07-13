@@ -23,7 +23,7 @@ public abstract class Pedido implements Serializable{
         //Vehiculo
     @OneToOne
     private Vehiculo unVehiculo;
-        //Autoparte
+        //Pedido
     @OneToOne
     private Autoparte unaAutoparte;
 
@@ -56,5 +56,34 @@ public abstract class Pedido implements Serializable{
         this.borrado = false;
         this.unVehiculo = unVeh;
         this.unaAutoparte = unaAut;
+    }
+    
+    
+        //En memoria (sin persistencia)    
+    private static long[] pedidos;
+    //Metodos en memoria
+    public int buscarCodPedido(long codPedido){
+        int res=-1;
+        if (pedidos.length>0) {
+            for (int i=0;i<pedidos.length;i++){
+                if (pedidos[i]==codPedido){
+                    res=i;
+                }
+            }
+        }        
+        return res;
+    }
+    public void agregaPedido(long codPedido){
+        pedidos[pedidos.length]= codPedido;
+    }
+    public void eliminaPedido(long codPedido){
+        for (int i=0;i<pedidos.length;i++){
+            if (pedidos[i]==codPedido){
+                pedidos[i]=pedidos[i+1];
+            }
+        } 
+    }
+    public long[] darPedidos(){
+        return pedidos;
     }
 }

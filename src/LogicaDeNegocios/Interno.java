@@ -3,6 +3,8 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import javax.persistence.Temporal;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import javax.persistence.*;
 
 @Entity
@@ -41,4 +43,66 @@ public class Interno extends Pedido implements Serializable {
         //this.unEncargado = unEnc;
         this.unMecanico = unMec;
     }
+    
+        //En memoria (sin persistencia)        
+    //Metodos en memoria
+    private static LinkedList<Interno> ints = new LinkedList<Interno>();
+    
+    public Interno buscarInterno(long codPedido){
+        Interno in, ret=null;
+        if (!ints.isEmpty()) { 
+            Iterator<Interno> it = ints.iterator();
+            while(it.hasNext()&& ret==null){
+                in= it.next();
+                if (in.getCodPedido()==codPedido){
+                    ret=in;
+                }
+            }
+        }        
+        return ret;
+    }
+    public Interno creaInterno(Mecanico unMec, Vehiculo unVeh, Autoparte unaAut, long codPedido, Date fecha,
+            int cantidad){
+        Interno ret;
+        if (super.buscarCodPedido(codPedido)<0){
+            ret = new Interno(unMec, unVeh, unaAut, codPedido, fecha, cantidad);
+            ints.add(ret);
+            super.agregaPedido(codPedido);
+        }else{
+            ret=null; 
+        }
+        return ret;
+    }
+    public Interno editaInterno(Mecanico unMec, Vehiculo unVeh, Autoparte unaAut, long codPedido, Date fecha,
+            int cantidad,boolean aprobado, boolean borrado, boolean resuelto){
+        Interno ret = buscarInterno(codPedido);
+        this.setAprobado(aprobado);
+        this.setBorrado(borrado);
+        this.setCantidad(cantidad);
+        this.setCodPedido(codPedido);
+        this.setFecha(fecha);
+        this.setResuelto(resuelto);
+        this.setUnMecanico(unMec);
+        this.setUnVehiculo(unVeh);
+        this.setUnaAutoparte(unaAut);
+        if (ret!=null){
+            ints.removeFirstOccurrence(ret);
+            ret = this;
+            ints.add(ret);
+        }else{
+            ret = this;
+        }
+        return ret;
+    }
+    public void eliminaInterno(long codPedido){
+        Interno ret = buscarInterno (codPedido);
+        if (ret!=null){
+            super.eliminaPedido(codPedido);
+            ints.removeFirstOccurrence(ret);
+        }
+    }
+    public LinkedList<Interno> darInterno(){
+        return ints;
+    }
+    
 }

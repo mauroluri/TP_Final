@@ -13,7 +13,7 @@ public class Repuesto extends Autoparte implements Serializable{
     public Repuesto(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
             boolean recambio, long stock) {
         super(codParte, descripcion, caracteristicas, precio, impuesto, recambio, stock); }
-    
+     
     //En memoria (sin persistencia)        
     //Metodos en memoria
     private static LinkedList<Repuesto> reps = new LinkedList<Repuesto>();
