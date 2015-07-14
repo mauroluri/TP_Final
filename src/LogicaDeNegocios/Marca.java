@@ -85,7 +85,6 @@ public class Marca implements Serializable {
         if (miCliente!=null){
             miPersistencia.crearCliente(miCliente);
         }else{
-            System.out.println("existe en memoria");
             throw new PreexistingEntityException("");
         }
     }
