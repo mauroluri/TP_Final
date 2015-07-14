@@ -67,12 +67,12 @@ public class Proveedor implements Serializable{
     public Proveedor() { }
 
     public Proveedor(Localidad unaLoc, String nombre, long telefono, String cuit, long dni, 
-            String responsabilidadFiscal, String eMail) {
+            String resp, String eMail) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.cuit = cuit;
         this.dni = dni;
-        this.responsabilidadFiscal = responsabilidadFiscal;
+        this.responsabilidadFiscal = resp;
         this.eMail = eMail;
         this.tiempoEntrega = "";
         this.borrado = false;
@@ -81,65 +81,61 @@ public class Proveedor implements Serializable{
     } 
     
         //En memoria (sin persistencia)    
-    private static LinkedList<Cliente> clientes = new LinkedList<Cliente>();
+    private static LinkedList<Proveedor> provs = new LinkedList<Proveedor>();
     //Metodos en memoria
-    public Cliente buscarCliente(long dni){
-        Cliente cli, ret=null;
-        if (!clientes.isEmpty()) { 
-            Iterator<Cliente> it = clientes.iterator();
+    public Proveedor buscarProveedor(long dni){
+        Proveedor pro, ret=null;
+        if (!provs.isEmpty()) { 
+            Iterator<Proveedor> it = provs.iterator();
             while(it.hasNext()&& ret==null){
-                cli= it.next();
-                if (cli.getDni()==dni){
-                    ret=cli;
+                pro= it.next();
+                if (pro.getDni()==dni){
+                    ret=pro;
                 }
             }
         }        
         return ret;
     }
-    public Cliente creaCliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
-            Localidad localidad, Calle calle){
-        Cliente ret = buscarCliente( dni);
+    public Proveedor creaProveedor(Localidad unaLoc, String nombre, long telefono, String cuit, long dni, 
+            String resp, String eMail){
+        Proveedor ret = buscarProveedor( dni);
         if (ret==null){
-            ret=new Cliente(nombre, dni, telefono, email, cuit, altura, localidad, calle);
-            clientes.add(ret);
+            ret=new Proveedor(unaLoc, nombre, telefono, cuit, dni, resp, eMail);
+            provs.add(ret);
         }else{
             ret=null; 
         }
         return ret;
     }    
-    public Cliente editaCliente(String nombre, long dni, long telefono, String email, String cuit,
-            int altura, Localidad localidad, Calle calle, String contra, LinkedList<Vehiculo> ve, LinkedList<OrdenTrabajo> or,
-            LinkedList<Turno> tu, boolean ok){
-        Cliente ret = buscarCliente( dni);
+    public Proveedor editaProveedor(String nombre, long telefono, String cuit, long dni, 
+            String resp, String eMail,String tiempo, LinkedList<GrupoParte> gp, Localidad loc, boolean ok){
+        Proveedor ret = buscarProveedor( dni);
         this.setNombre(nombre);
+        this.setResponsabilidadFiscal(resp);
+        this.seteMail(eMail);
+        this.setVsGrupoParte(gp);
+        this.setTiempoEntrega(tiempo);
         this.setDni(dni);
         this.setTelefono(telefono);
-        this.setEmail(email);
-        this.setAltura(altura);
         this.setCuit(cuit);
-        this.setUnaLocalidad(localidad);
-        this.setUnaCalle(calle);
-        this.setPass(cuit);
-        this.setVsOrdenTrabajo(or);
-        this.setVsTurno(tu);
-        this.setVsVehiculo(ve);
+        this.setUnaLocalidad(loc);
         this.setBorrado(ok);
         if (ret!=null){
-            clientes.removeFirstOccurrence(ret);
+            provs.removeFirstOccurrence(ret);
             ret = this;
-            clientes.add(ret);
+            provs.add(ret);
         }else{
             ret = this;
         }
         return ret;
     }
-    public void eliminaCliente(long dni){
-        Cliente ret = buscarCliente (dni);
+    public void eliminaProveedor(long dni){
+        Proveedor ret = buscarProveedor (dni);
         if (ret!=null){
-            clientes.removeFirstOccurrence(ret);
+            provs.removeFirstOccurrence(ret);
         }
     }
-    public LinkedList<Cliente> darClientes(){
-        return clientes;
+    public LinkedList<Proveedor> darProveedors(){
+        return provs;
     }
 }

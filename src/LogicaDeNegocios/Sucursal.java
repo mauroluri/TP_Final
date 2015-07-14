@@ -109,65 +109,66 @@ public class Sucursal implements Serializable{
     }
     
         //En memoria (sin persistencia)    
-    private static LinkedList<Cliente> clientes = new LinkedList<Cliente>();
+    private static LinkedList<Sucursal> sucs = new LinkedList<Sucursal>();
     //Metodos en memoria
-    public Cliente buscarCliente(long dni){
-        Cliente cli, ret=null;
-        if (!clientes.isEmpty()) { 
-            Iterator<Cliente> it = clientes.iterator();
+    public Sucursal buscarSucursal(int cod){
+        Sucursal su, ret=null;
+        if (!sucs.isEmpty()) { 
+            Iterator<Sucursal> it = sucs.iterator();
             while(it.hasNext()&& ret==null){
-                cli= it.next();
-                if (cli.getDni()==dni){
-                    ret=cli;
+                su= it.next();
+                if (su.getCodSuc()==cod){
+                    ret=su;
                 }
             }
         }        
         return ret;
     }
-    public Cliente creaCliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
-            Localidad localidad, Calle calle){
-        Cliente ret = buscarCliente( dni);
+    public Sucursal creaSucursal(int cod, Localidad unaLoc, long telefono, int altura, Calle calleSuc, Date horaInicio,
+            Date horaFin){
+        Sucursal ret = buscarSucursal(cod);
         if (ret==null){
-            ret=new Cliente(nombre, dni, telefono, email, cuit, altura, localidad, calle);
-            clientes.add(ret);
+            ret=new Sucursal(cod, unaLoc, telefono, altura, calleSuc, horaInicio, horaFin);
+            sucs.add(ret);
         }else{
             ret=null; 
         }
         return ret;
     }    
-    public Cliente editaCliente(String nombre, long dni, long telefono, String email, String cuit,
-            int altura, Localidad localidad, Calle calle, String contra, LinkedList<Vehiculo> ve, LinkedList<OrdenTrabajo> or,
-            LinkedList<Turno> tu, boolean ok){
-        Cliente ret = buscarCliente( dni);
-        this.setNombre(nombre);
-        this.setDni(dni);
-        this.setTelefono(telefono);
-        this.setEmail(email);
-        this.setAltura(altura);
-        this.setCuit(cuit);
-        this.setUnaLocalidad(localidad);
-        this.setUnaCalle(calle);
-        this.setPass(cuit);
-        this.setVsOrdenTrabajo(or);
-        this.setVsTurno(tu);
-        this.setVsVehiculo(ve);
+    public Sucursal editaSucursal(int cod, Localidad unaLoc, long telefono, int altura, Calle calleSuc, Date horaInicio,
+            Date horaFin,boolean ok,LinkedList<Turno> tu, LinkedList<Sector> sec, LinkedList<Empleado> emp, LinkedList<Pedido> pe, 
+            LinkedList<Cliente> cli, LinkedList<Calle> ca){
+        Sucursal ret = buscarSucursal(cod);
         this.setBorrado(ok);
+        this.setAltura(altura);
+        this.setCalleSuc(calleSuc);
+        this.setCodSuc(cod);
+        this.setHoraFin(horaFin);
+        this.setHoraInicio(horaInicio);
+        this.setTelefono(telefono);
+        this.setUnaLocalidad(unaLoc);
+        this.setVsCalle(ca);
+        this.setVsCliente(cli);
+        this.setVsEmpleado(emp);
+        this.setVsPedido(pe);
+        this.setVsSector(sec);
+        this.setVsTurno(tu);
         if (ret!=null){
-            clientes.removeFirstOccurrence(ret);
+            sucs.removeFirstOccurrence(ret);
             ret = this;
-            clientes.add(ret);
+            sucs.add(ret);
         }else{
             ret = this;
         }
         return ret;
     }
-    public void eliminaCliente(long dni){
-        Cliente ret = buscarCliente (dni);
+    public void eliminaSucursal(int cod){
+        Sucursal ret = buscarSucursal (cod);
         if (ret!=null){
-            clientes.removeFirstOccurrence(ret);
+            sucs.removeFirstOccurrence(ret);
         }
     }
-    public LinkedList<Cliente> darClientes(){
-        return clientes;
+    public LinkedList<Sucursal> darSucursal(){
+        return sucs;
     }
 }

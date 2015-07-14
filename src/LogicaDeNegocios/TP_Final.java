@@ -21,25 +21,20 @@ public class TP_Final {
     public void crearAccesorio(int codParte, String descripcion, String caracteristicas, float precio, 
             int impuesto, boolean recambio, long stock) throws 
             PreexistingEntityException, Exception{
-        Accesorio miAccesorio = new Accesorio(codParte, descripcion, caracteristicas, precio, impuesto, 
-                recambio,  stock);
-        miPersistencia.crearAccesorio(miAccesorio);}
+        Accesorio miAccesorio = new Accesorio();
+        miAccesorio = miAccesorio.creaAccesorio(codParte, descripcion, caracteristicas, precio, impuesto, recambio, stock);
+        if (miAccesorio!=null){
+            miPersistencia.crearAccesorio(miAccesorio);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
     public void editarAccesorio(int codParte, String descripcion, String caracteristicas, float precio, 
             int impuesto, boolean recambio, long stock, boolean ok
-            , List<Item> it, List<Modelo> mo, List<Vehiculo> ve) throws 
+            , LinkedList<Item> it, LinkedList<Modelo> mo, LinkedList<Vehiculo> ve) throws 
             NonexistentEntityException, Exception{
-        Accesorio miAccesorio = this.miPersistencia.dameUnAccesorio(codParte);
-        miAccesorio.setCodParte(codParte);
-        miAccesorio.setBorrado(recambio);
-        miAccesorio.setCaracteristicas(caracteristicas);
-        miAccesorio.setDescripcion(descripcion);
-        miAccesorio.setImpuesto(impuesto);
-        miAccesorio.setVsModelo(mo);
-        miAccesorio.setPrecio(precio);
-        miAccesorio.setStock(stock);
-        miAccesorio.setBorrado(ok);
-        miAccesorio.setVsItem(it);
-        miAccesorio.setVsVehiculo(ve);
+        Accesorio miAccesorio = new Accesorio();
+        miAccesorio = miAccesorio.editaAccesorio(codParte, descripcion, caracteristicas, precio, impuesto, recambio, stock, it, mo,ve, ok);
         this.miPersistencia.editarAccesorio(miAccesorio);}
     public void eliminarAccesorio(int cod) throws NonexistentEntityException{
         this.miPersistencia.eliminarAccesorio(cod);}

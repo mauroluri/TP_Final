@@ -1,6 +1,5 @@
 package LogicaDeNegocios;
 
-import javax.persistence.Temporal;
 import java.util.Date;
 import java.io.Serializable;
 import java.util.Iterator;

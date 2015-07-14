@@ -101,65 +101,65 @@ public class Turno implements Serializable{
     }
     
         //En memoria (sin persistencia)    
-    private static LinkedList<Cliente> clientes = new LinkedList<Cliente>();
+    private static LinkedList<Turno> turnos = new LinkedList<Turno>();
     //Metodos en memoria
-    public Cliente buscarCliente(long dni){
-        Cliente cli, ret=null;
-        if (!clientes.isEmpty()) { 
-            Iterator<Cliente> it = clientes.iterator();
+    public Turno buscarTurno(long codigo){
+        Turno tu, ret=null;
+        if (!turnos.isEmpty()) { 
+            Iterator<Turno> it = turnos.iterator();
             while(it.hasNext()&& ret==null){
-                cli= it.next();
-                if (cli.getDni()==dni){
-                    ret=cli;
+                tu= it.next();
+                if (tu.getCodigo()==codigo){
+                    ret=tu;
                 }
             }
         }        
         return ret;
     }
-    public Cliente creaCliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
-            Localidad localidad, Calle calle){
-        Cliente ret = buscarCliente( dni);
+    public Turno creaTurno(Vehiculo veh, Cliente cli, long codigo, Date fecha, String des, 
+            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS, OrdenTrabajo orden){
+        Turno ret = buscarTurno(codigo);
         if (ret==null){
-            ret=new Cliente(nombre, dni, telefono, email, cuit, altura, localidad, calle);
-            clientes.add(ret);
+            ret=new Turno(veh, cli, codigo, fecha, des, duracionAprox, horaInicio, est, nivS, orden);
+            turnos.add(ret);
         }else{
             ret=null; 
         }
         return ret;
     }    
-    public Cliente editaCliente(String nombre, long dni, long telefono, String email, String cuit,
-            int altura, Localidad localidad, Calle calle, String contra, LinkedList<Vehiculo> ve, LinkedList<OrdenTrabajo> or,
-            LinkedList<Turno> tu, boolean ok){
-        Cliente ret = buscarCliente( dni);
-        this.setNombre(nombre);
-        this.setDni(dni);
-        this.setTelefono(telefono);
-        this.setEmail(email);
-        this.setAltura(altura);
-        this.setCuit(cuit);
-        this.setUnaLocalidad(localidad);
-        this.setUnaCalle(calle);
-        this.setPass(cuit);
-        this.setVsOrdenTrabajo(or);
-        this.setVsTurno(tu);
-        this.setVsVehiculo(ve);
+    public Turno editaTurno(Vehiculo veh, Cliente cli, long codigo, Date fecha, String des, 
+            Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS, OrdenTrabajo orden,
+            LinkedList<Empleado> emp, boolean listo, boolean ok){
+        Turno ret = buscarTurno( codigo);
         this.setBorrado(ok);
+        this.setCodigo(codigo);
+        this.setDescrip(des);
+        this.setDuracionAprox(duracionAprox);
+        this.setFecha(fecha);
+        this.setHoraInicio(horaInicio);
+        this.setRealizado(listo);
+        this.setUnCliente(cli);
+        this.setUnEstado(est);
+        this.setUnNivelSeveridad(nivS);
+        this.setUnVehiculo(veh);
+        this.setUnaOrdenTrabajo(orden);
+        this.setVsEmpleado(emp);
         if (ret!=null){
-            clientes.removeFirstOccurrence(ret);
+            turnos.removeFirstOccurrence(ret);
             ret = this;
-            clientes.add(ret);
+            turnos.add(ret);
         }else{
             ret = this;
         }
         return ret;
     }
-    public void eliminaCliente(long dni){
-        Cliente ret = buscarCliente (dni);
+    public void eliminaTurno(long codigo){
+        Turno ret = buscarTurno (codigo);
         if (ret!=null){
-            clientes.removeFirstOccurrence(ret);
+            turnos.removeFirstOccurrence(ret);
         }
     }
-    public LinkedList<Cliente> darClientes(){
-        return clientes;
+    public LinkedList<Turno> darTurnos(){
+        return turnos;
     }
 }
