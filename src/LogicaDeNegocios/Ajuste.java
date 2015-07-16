@@ -68,7 +68,7 @@ public class Ajuste extends OrdenTrabajo implements Serializable{
             ajustes.removeFirstOccurrence(ret);
         }
     }
-    public LinkedList<Ajuste> darAjuste(){
+    public LinkedList<Ajuste> darAjustes(){
         return ajustes;
     }
 }

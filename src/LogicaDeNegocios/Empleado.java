@@ -32,9 +32,6 @@ public abstract class Empleado implements Serializable{
         //Sucursal
     @ManyToOne
     private Sucursal unaSucursal;
-        //Turno
-    @OneToMany
-    private List<Turno> vsTurno;
         //Localidad
     @ManyToOne
     private Localidad unaLocalidad;
@@ -47,7 +44,6 @@ public abstract class Empleado implements Serializable{
     public int getSueldo() { return this.sueldo; }
     public boolean getBorrado() {return this.borrado;}
     public Sucursal getUnaSucursal() { return this.unaSucursal; }
-    public List<Turno> getVsTurno() { return this.vsTurno; }
     public Localidad getUnaLocalidad() { return this.unaLocalidad; }
     public String getPass() { return this.pass; }
     public Date getHoraFin() { return this.horaFin; }
@@ -62,7 +58,6 @@ public abstract class Empleado implements Serializable{
     public void setSueldo(int sueldo) { this.sueldo = sueldo; }
     public void setBorrado (boolean borrado) {this.borrado = borrado;}
     public void setUnaSucursal(Sucursal unaSucursal) { this.unaSucursal = unaSucursal; }
-    public void setVsTurno(List<Turno> vsTurno) { this.vsTurno = vsTurno; }
     public void setUnaLocalidad(Localidad unaLocalidad) { this.unaLocalidad = unaLocalidad; }
     public void setPass(String pass) { this.pass = pass; }
     public void setHoraInicio(Date horaInicio) { this.horaInicio = horaInicio; }    
@@ -87,7 +82,6 @@ public abstract class Empleado implements Serializable{
             this.horaInicio = horaInicio;
             this.horaFin = horaFin;
             this.unaSucursal = unaSuc;
-            this.vsTurno = new LinkedList<Turno>();
             this.unaLocalidad = unaLoc;
             this.pass = contra;
     }    
