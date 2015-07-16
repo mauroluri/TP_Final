@@ -407,7 +407,7 @@ public class TP_Final {
     }
     public void editarEncargado(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, 
             int sueldo, String p, Date horaInicio, Date horaFin, boolean ok, LinkedList<Interno> in, LinkedList<Item> it, 
-            List<OrdenTrabajo> or) throws PreexistingEntityException, Exception{
+            LinkedList<OrdenTrabajo> or) throws PreexistingEntityException, Exception{
         Encargado miEncargado = new Encargado();
         miEncargado = miEncargado.editaEncargado(unaLoc, unaSuc, nombre, dni, telefono, sueldo, p, horaInicio, horaFin, it, or, ok);
         this.miPersistencia.editarEncargado(miEncargado);}
@@ -436,278 +436,451 @@ public class TP_Final {
     public void crearEquipamiento(int codParte, String descripcion, String caracteristicas, float precio, 
             int impuesto, boolean recambio, long stock) throws 
             PreexistingEntityException, Exception{
-        Equipamiento miEquipamiento = new Equipamiento(codParte, descripcion, caracteristicas, precio, 
-                impuesto, recambio, stock);
-        miPersistencia.crearEquipamiento(miEquipamiento);}
+        Equipamiento miEquipamiento = new Equipamiento();
+        miEquipamiento = miEquipamiento.creaEquipamiento(codParte, descripcion, caracteristicas, precio, impuesto, recambio, stock);
+        if (miEquipamiento!=null){
+            miPersistencia.crearEquipamiento(miEquipamiento);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
     public void editarEquipamiento(int codParte, String descripcion, String caracteristicas, float precio, 
             int impuesto, boolean recambio, long stock, boolean ok, 
-            List<Item> it, List<Modelo> mo, List<Vehiculo> ve) throws 
+            LinkedList<Item> it, LinkedList<Modelo> mo, LinkedList<Vehiculo> ve) throws 
             PreexistingEntityException, Exception{
-        Equipamiento miEquipamiento = this.miPersistencia.dameUnEquipamiento(codParte);
-        miEquipamiento.setCodParte(codParte);
-        miEquipamiento.setPrecio(precio);
-        miEquipamiento.setDescripcion(descripcion);
-        miEquipamiento.setCaracteristicas(caracteristicas);
-        miEquipamiento.setImpuesto(impuesto);
-        miEquipamiento.setVsModelo(mo);
-        miEquipamiento.setRecambio(recambio);
-        miEquipamiento.setStock(stock);
-        miEquipamiento.setBorrado(recambio);
-        miEquipamiento.setVsItem(it);
-        miEquipamiento.setVsVehiculo(ve);
+        Equipamiento miEquipamiento = new Equipamiento();
+        miEquipamiento = miEquipamiento.editaEquipamiento(codParte, descripcion, caracteristicas, precio, impuesto, recambio, stock, it, mo, ve, ok);
         this.miPersistencia.editarEquipamiento(miEquipamiento);}
     public void eliminarEquipamiento(int codParte) throws NonexistentEntityException{
+        Equipamiento miEquipamiento = new Equipamiento();
+        miEquipamiento.eliminaEquipamiento(codParte);
         this.miPersistencia.eliminarEquipamiento(codParte);}
     public Equipamiento dameUnEquipamiento(int codParte){
-        return this.miPersistencia.dameUnEquipamiento(codParte);}
+        Equipamiento miEquipamiento = new Equipamiento();
+        miEquipamiento = miEquipamiento.buscarEquipamiento(codParte);
+        if (miEquipamiento==null){        
+            miEquipamiento= this.miPersistencia.dameUnEquipamiento(codParte);
+        }
+        return miEquipamiento;
+    }
     public List<Equipamiento> dameEquipamientos(){
-        return this.miPersistencia.dameEquipamientos();}
+        Equipamiento miEquipamiento = new Equipamiento();
+        List<Equipamiento> misEquipamientos = miEquipamiento.darEquipamiento();
+        if (misEquipamientos.isEmpty()){
+            misEquipamientos = this.miPersistencia.dameEquipamientos();
+        }
+        return misEquipamientos;
+    }
     
     //Especialidad
     public void crearEspecialidad(String nombre) throws PreexistingEntityException, Exception{
-        Especialidad miEspecialidad = new Especialidad(nombre);
-        miPersistencia.crearEspecialidad(miEspecialidad);}
-    public void editarEspecialidad(String nombre, List<Mecanico> me) throws PreexistingEntityException, Exception{
-        Especialidad miEspecialidad = this.miPersistencia.dameUnaEspecialidad(nombre);
-        miEspecialidad.setNombre(nombre);
-        miEspecialidad.setVsMecanico(me);
+        Especialidad miEspecialidad = new Especialidad();
+        miEspecialidad = miEspecialidad.creaEspecialidad(nombre);
+        if (miEspecialidad!=null){
+            miPersistencia.crearEspecialidad(miEspecialidad);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }    public void editarEspecialidad(String nombre, LinkedList<Mecanico> me) throws PreexistingEntityException, Exception{
+        Especialidad miEspecialidad = new Especialidad();
+        miEspecialidad = miEspecialidad.editaEspecialidad(nombre, me);
         this.miPersistencia.editarEspecialidad(miEspecialidad);}
     public void eliminarEspecialidad(String nombre) throws NonexistentEntityException{
+        Especialidad miEspecialidad = new Especialidad();
+        miEspecialidad.eliminaEspecialidad(nombre);
         this.miPersistencia.eliminarEspecialidad(nombre);}
     public Especialidad dameUnaEspecialidad(String nombre){
-        return this.miPersistencia.dameUnaEspecialidad(nombre);}
+        Especialidad miEspecialidad = new Especialidad();
+        miEspecialidad = miEspecialidad.buscarEspecialidad(nombre);
+        if (miEspecialidad==null){        
+            miEspecialidad= this.miPersistencia.dameUnaEspecialidad(nombre);
+        }
+        return miEspecialidad;
+    }
     public List<Especialidad> dameEspecialidades(){
-        return this.miPersistencia.dameEspecialidades();}
+        Especialidad miEspecialidad = new Especialidad();
+        List<Especialidad> misEspecialidads = miEspecialidad.darEspecialidad();
+        if (misEspecialidads.isEmpty()){
+            misEspecialidads = this.miPersistencia.dameEspecialidades();
+        }
+        return misEspecialidads;
+    }
     
     //DetalleActividad
     public void crearDetalleActividad(String cod, String descripcion, Date duracion) 
             throws PreexistingEntityException, Exception{
-        DetalleActividad miDetalleActividad = new 
-                DetalleActividad(cod, descripcion, duracion);
-        miPersistencia.crearDetalleActividad(miDetalleActividad);}
+        DetalleActividad miDetalleActividad = new DetalleActividad();
+        miDetalleActividad = miDetalleActividad.creaDetalleActividad(cod, descripcion, duracion);
+        if (miDetalleActividad!=null){
+            miPersistencia.crearDetalleActividad(miDetalleActividad);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
     public void editarDetalleActividad(String cod, String descripcion, Date duracion) 
             throws PreexistingEntityException, Exception{
-        DetalleActividad miDetalleActividad = this.miPersistencia.dameUnDetalleActividad(cod);
-        miDetalleActividad.setCod(cod);
-        miDetalleActividad.setDuracion(duracion);
-        miDetalleActividad.setDescripcion(descripcion);
+        DetalleActividad miDetalleActividad = new DetalleActividad();
+        miDetalleActividad = miDetalleActividad.editaDetalleActividad(cod, descripcion, duracion);
         this.miPersistencia.editarDetalleActividad(miDetalleActividad);}
-    public void eliminarDetalleActividad(String nombre) throws NonexistentEntityException{
-        this.miPersistencia.eliminarDetalleActividad(nombre);}
-    public DetalleActividad dameUnDetalleActividad(String nombre){
-        return this.miPersistencia.dameUnDetalleActividad(nombre);}
+    public void eliminarDetalleActividad(String cod) throws NonexistentEntityException{
+        DetalleActividad miDetalleActividad = new DetalleActividad();
+        miDetalleActividad.eliminaDetalleActividad(cod);
+        this.miPersistencia.eliminarDetalleActividad(cod);}
+    public DetalleActividad dameUnDetalleActividad(String cod){
+        DetalleActividad miDetalleActividad = new DetalleActividad();
+        miDetalleActividad = miDetalleActividad.buscarDetalleActividad(cod);
+        if (miDetalleActividad==null){        
+            miDetalleActividad= this.miPersistencia.dameUnDetalleActividad(cod);
+        }
+        return miDetalleActividad;
+    }
     public List<DetalleActividad> dameDetallesActividad(){
-        return this.miPersistencia.dameDetallesActividad();}
+        DetalleActividad miDetalleActividad = new DetalleActividad();
+        List<DetalleActividad> misDetalleActividades = miDetalleActividad.darDetalleActividad();
+        if (misDetalleActividades.isEmpty()){
+            misDetalleActividades = this.miPersistencia.dameDetallesActividad();
+        }
+        return misDetalleActividades;
+    }
       
     //Estado
     public void crearEstado(String nombre) 
             throws PreexistingEntityException, Exception{
-        Estado miEstado = new Estado(nombre);
-        miPersistencia.crearEstado(miEstado);}
+        Estado miEstado = new Estado();
+        miEstado = miEstado.creaEstado(nombre);
+        if (miEstado!=null){
+            miPersistencia.crearEstado(miEstado);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
     public void editarEstado(String nombre) 
             throws PreexistingEntityException, Exception{
-        Estado miEstado = this.miPersistencia.dameUnEstado(nombre);
-        miEstado.setNombre(nombre);
+        Estado miEstado = new Estado();
+        miEstado = miEstado.editaEstado(nombre);
         this.miPersistencia.editarEstado(miEstado);}
     public void eliminarEstado(String nombre) throws NonexistentEntityException{
+        Estado miEstado = new Estado();
+        miEstado.eliminaEstado(nombre);
         this.miPersistencia.eliminarEstado(nombre);}
     public Estado dameUnEstado(String nombre){
-        return this.miPersistencia.dameUnEstado(nombre);}
+        Estado miEstado = new Estado();
+        miEstado = miEstado.buscarEstado(nombre);
+        if (miEstado==null){        
+            miEstado= this.miPersistencia.dameUnEstado(nombre);
+        }
+        return miEstado;
+    }
     public List<Estado> dameEstados(){
-        return this.miPersistencia.dameEstados();}
+        Estado miEstado = new Estado();
+        List<Estado> misEstados = miEstado.darEstado();
+        if (misEstados.isEmpty()){
+            misEstados = this.miPersistencia.dameEstados();
+        }
+        return misEstados;
+    }
     
     //Externo
     public void crearExterno(Mecanico mec, NivelImportancia niv, AtencionPublico remitente, Proveedor destinatario, 
             Vehiculo unVeh, Autoparte unaAut, 
             long codPedido, Date fecha, int cantidad) throws PreexistingEntityException, Exception{
-        Externo miExterno = new Externo(mec, niv, remitente, destinatario, unVeh, unaAut, codPedido, fecha, cantidad);
-        miPersistencia.crearExterno(miExterno);}
+        Externo miExterno = new Externo();
+        miExterno = miExterno.creaExterno(mec, niv, remitente, destinatario, unVeh, unaAut, codPedido, fecha, cantidad);
+        if (miExterno!=null){
+            miPersistencia.crearExterno(miExterno);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
     public void editarExterno(Mecanico mec, NivelImportancia niv, AtencionPublico remitente, Proveedor destinatario, 
             Vehiculo unVeh, Autoparte unaAut, long codPedido, Date fecha, int cantidad, boolean ok, boolean re) 
             throws PreexistingEntityException, Exception{
-        Externo miExterno = this.miPersistencia.dameUnExterno(codPedido);
-        miExterno.setCantidad(cantidad);
-        miExterno.setCodPedido(codPedido);
-        miExterno.setDestinatario(destinatario);
-        miExterno.setFecha(fecha);
-        miExterno.setRemitente(remitente);
-        miExterno.setUnMecanico(mec);
-        miExterno.setUnNivelImportancia(niv);
-        miExterno.setUnVehiculo(unVeh);
-        miExterno.setUnaAutoparte(unaAut);
-        miExterno.setBorrado(ok);
-        miExterno.setResuelto(re);
+        Externo miExterno = new Externo();
+        miExterno = miExterno.editaExterno(mec, niv, remitente, destinatario, unVeh, unaAut, codPedido, fecha, cantidad, ok, re);
         this.miPersistencia.editarExterno(miExterno);}
     public void eliminarExterno(long codPedido) throws NonexistentEntityException{
+        Externo miExterno = new Externo();
+        miExterno.eliminaExterno(codPedido);
         this.miPersistencia.eliminarExterno(codPedido);}
     public Externo dameUnExterno(long codPedido){
-        return this.miPersistencia.dameUnExterno(codPedido);}
+        Externo miExterno = new Externo();
+        miExterno = miExterno.buscarExterno(codPedido);
+        if (miExterno==null){        
+            miExterno= this.miPersistencia.dameUnExterno(codPedido);
+        }
+        return miExterno;
+    }
     public List<Externo> dameExternos(){
-        return this.miPersistencia.dameExternos();}
+        Externo miExterno = new Externo();
+        List<Externo> misExternos = miExterno.darExterno();
+        if (misExternos.isEmpty()){
+            misExternos = this.miPersistencia.dameExternos();
+        }
+        return misExternos;
+    }
     
     //Garantia
     public void crearGarantia( Date fecha, int duracion, String detalle, boolean vigencia, List<Autoparte> partes) 
             throws PreexistingEntityException, Exception{
-        Garantia miGarantia = new Garantia( fecha, duracion, detalle, vigencia, partes);
-        miPersistencia.crearGarantia(miGarantia);}
+        Garantia miGarantia = new Garantia();
+        miGarantia = miGarantia.creaGarantia(fecha, duracion, detalle, vigencia, partes);
+        if (miGarantia!=null){
+            miPersistencia.crearGarantia(miGarantia);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
     public void editarGarantia( Date fecha, int duracion, String detalle, boolean vigencia, 
             List<Autoparte> partes) throws PreexistingEntityException, Exception{
-        Garantia miGarantia = this.miPersistencia.dameUnaGarantia(detalle);
-        miGarantia.setDetalle(detalle);
-        miGarantia.setDuracion(duracion);
-        miGarantia.setFecha(fecha);
-        miGarantia.setVigencia(vigencia);
-        miGarantia.setVsAutoparte(partes);
+        Garantia miGarantia = new Garantia();
+        miGarantia = miGarantia.editaGarantia(fecha, duracion, detalle, vigencia, partes);
         this.miPersistencia.editarGarantia(miGarantia);}
     public void eliminarGarantia(String detalle) throws NonexistentEntityException{
+        Garantia miGarantia = new Garantia();
+        miGarantia.eliminaGarantia(detalle);
         this.miPersistencia.eliminarGarantia(detalle);}
     public Garantia dameUnaGarantia(String detalle){
-        return this.miPersistencia.dameUnaGarantia(detalle);}
+        Garantia miGarantia = new Garantia();
+        miGarantia = miGarantia.buscarGarantia(detalle);
+        if (miGarantia==null){        
+            miGarantia= this.miPersistencia.dameUnaGarantia(detalle);
+        }
+        return miGarantia;
+    }
     public List<Garantia> dameGarantias(){
-        return this.miPersistencia.dameGarantias();}
+        Garantia miGarantia = new Garantia();
+        List<Garantia> misGarantias = miGarantia.darGarantia();
+        if (misGarantias.isEmpty()){
+            misGarantias = this.miPersistencia.dameGarantias();
+        }
+        return misGarantias;
+    }
    
     //GrupoParte
     public void crearGrupoParte(String nombre, int codGrupo, Modelo mods, LinkedList<Autoparte> parts) throws 
             PreexistingEntityException, Exception{
-        GrupoParte miGrupoParte = new GrupoParte(nombre, codGrupo, mods, parts);
-        miPersistencia.crearGrupoParte(miGrupoParte);}
-    public void editarGrupoParte(String nombre, int codGrupo, List<Actividad> ac, Modelo mo, 
-            List<Autoparte> au, List<Proveedor> pr) throws  PreexistingEntityException, Exception{
-        GrupoParte miGrupoParte = this.miPersistencia.dameUnGrupoParte(codGrupo);
-        miGrupoParte.setNombre(nombre);
-        miGrupoParte.setCodGrupo(codGrupo);
-        miGrupoParte.setUnModelo(mo);
-        miGrupoParte.setVsAutoparte(au);
-        miGrupoParte.setVsProveedor(pr);
+        GrupoParte miGrupoParte = new GrupoParte();
+        miGrupoParte = miGrupoParte.creaGrupoParte(nombre, codGrupo, mods, parts);
+        if (miGrupoParte!=null){
+            miPersistencia.crearGrupoParte(miGrupoParte);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
+    public void editarGrupoParte(String nombre, int codGrupo, Modelo mo, 
+            LinkedList<Autoparte> au, LinkedList<Proveedor> pr) throws  PreexistingEntityException, Exception{
+        GrupoParte miGrupoParte = new GrupoParte();
+        miGrupoParte = miGrupoParte.editaGrupoParte(nombre, codGrupo, mo, au, pr);
         this.miPersistencia.editarGrupoParte(miGrupoParte);}
     public void eliminarGrupoParte(int codGrupo) throws NonexistentEntityException{
+        GrupoParte miGrupoParte = new GrupoParte();
+        miGrupoParte.eliminaGrupoParte(codGrupo);
         this.miPersistencia.eliminarGrupoParte(codGrupo);}
     public GrupoParte dameUnGrupoParte(int codGrupo){
-        return this.miPersistencia.dameUnGrupoParte(codGrupo);}
+        GrupoParte miGrupoParte = new GrupoParte();
+        miGrupoParte = miGrupoParte.buscarGrupoParte(codGrupo);
+        if (miGrupoParte==null){        
+            miGrupoParte= this.miPersistencia.dameUnGrupoParte(codGrupo);
+        }
+        return miGrupoParte;
+    }
     public List<GrupoParte> dameGruposParte(){
-        return this.miPersistencia.dameGruposParte();}
+        GrupoParte miGrupoParte = new GrupoParte();
+        List<GrupoParte> misGrupoPartes = miGrupoParte.darGrupoPartes();
+        if (misGrupoPartes.isEmpty()){
+            misGrupoPartes = this.miPersistencia.dameGruposParte();
+        }
+        return misGrupoPartes;
+    }
         
     
     //Interno
     public void crearInterno(/*Encargado unEnc,*/ Mecanico unMec, Vehiculo unVeh, Autoparte unaAut, 
             long codPedido, Date fecha, int cantidad) throws PreexistingEntityException, Exception{
-        Interno miInterno = new Interno(/*unEnc, */unMec, unVeh, unaAut, codPedido, fecha, cantidad);
-        miPersistencia.crearInterno(miInterno);}
+        Interno miInterno = new Interno();
+        miInterno = miInterno.creaInterno(unMec, unVeh, unaAut, codPedido, fecha, cantidad);
+        if (miInterno!=null){
+            miPersistencia.crearInterno(miInterno);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
     public void editarInterno(Encargado unEnc, Mecanico unMec, boolean resu, boolean aprobado, Vehiculo unVeh, 
             Autoparte unaAut, long codPedido, Date fecha, int cantidad, boolean ok) 
             throws PreexistingEntityException, Exception{
-        Interno miInterno = this.miPersistencia.dameUnInterno(codPedido);
-        miInterno.setAprobado(aprobado);
-        miInterno.setCantidad(cantidad);
-        miInterno.setCodPedido(codPedido);
-        miInterno.setFecha(fecha);
-        miInterno.setResuelto(resu);
-        //miInterno.setUnEncargado(unEnc);l
-        miInterno.setUnMecanico(unMec);
-        miInterno.setUnVehiculo(unVeh);
-        miInterno.setUnaAutoparte(unaAut);
-        miInterno.setBorrado(ok);
+        Interno miInterno = new Interno();
+        miInterno = miInterno.editaInterno(unMec, unVeh, unaAut, codPedido, fecha, cantidad, aprobado, aprobado, resu);
         this.miPersistencia.editarInterno(miInterno);}
     public void eliminarInterno(long cod) throws NonexistentEntityException{
+        Interno miInterno = new Interno();
+        miInterno.eliminaInterno(cod);
         this.miPersistencia.eliminarInterno(cod);}
     public Interno dameUnInterno(long cod){
-        return this.miPersistencia.dameUnInterno(cod);}
+        Interno miInterno = new Interno();
+        miInterno = miInterno.buscarInterno(cod);
+        if (miInterno==null){        
+            miInterno= this.miPersistencia.dameUnInterno(cod);
+        }
+        return miInterno;
+    }
     public List<Interno> dameInternos(){
-        return this.miPersistencia.dameInternos();}
+        Interno miInterno = new Interno();
+        List<Interno> misInternos = miInterno.darInterno();
+        if (misInternos.isEmpty()){
+            misInternos = this.miPersistencia.dameInternos();
+        }
+        return misInternos;
+    }
     
     //Item
     public void crearItem(Autoparte unaAut, int cod, boolean ok,Deposito dep) 
             throws PreexistingEntityException, Exception{
-        Item miItem = new Item(unaAut, cod, ok, dep);
-        miPersistencia.crearItem(miItem);}
+        Item miItem = new Item();
+        miItem = miItem.creaItem(unaAut, cod, ok, dep);
+        if (miItem!=null){
+            miPersistencia.crearItem(miItem);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
     public void editarItem(Autoparte unaAut, int cod, boolean ok,Deposito dep) 
             throws PreexistingEntityException, Exception{
-        Item miItem = this.miPersistencia.dameUnItem(cod);
-        miItem.setOk(ok);
-        miItem.setUnaAutoparte(unaAut);
-        miItem.setCod(cod);
-        miItem.setUnDeposito(dep);
+        Item miItem = new Item();
+        miItem = miItem.editaItem(unaAut, cod, ok, dep);
         this.miPersistencia.editarItem(miItem);}
     public void eliminarItem(int cod) throws NonexistentEntityException{
+        Item miItem = new Item();
+        miItem.eliminaItem(cod);
         this.miPersistencia.eliminarItem(cod);}
     public Item dameUnItem(int cod){
-        return this.miPersistencia.dameUnItem(cod);}
+        Item miItem = new Item();
+        miItem = miItem.buscarItem(cod);
+        if (miItem==null){        
+            miItem= this.miPersistencia.dameUnItem(cod);
+        }
+        return miItem;
+    }
     public List<Item> dameItems(){
-        return this.miPersistencia.dameItems();}
+        Item miItem = new Item();
+        List<Item> misItems = miItem.darItems();
+        if (misItems.isEmpty()){
+            misItems = this.miPersistencia.dameItems();
+        }
+        return misItems;
+    }
     
     //Localidad
     public void crearLocalidad(int codigo, String nombre, int codPost, Provincia provincia) 
             throws PreexistingEntityException, Exception{
-        Localidad miLocalidad = new Localidad(codigo, nombre, codPost, provincia);
-        miPersistencia.crearLocalidad(miLocalidad);}
-    public void editarLocalidad(int codigo, String nombre, int codPost, Provincia provincia, List<Calle> ca, 
-            List<Cliente> cl, List<Empleado> em, List<Proveedor> pr, List<Sucursal> su) 
+        Localidad miLocalidad = new Localidad();
+        miLocalidad = miLocalidad.creaLocalidad(codigo, nombre, codPost, provincia);
+        if (miLocalidad!=null){
+            miPersistencia.crearLocalidad(miLocalidad);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
+    public void editarLocalidad(int codigo, String nombre, int codPost, Provincia provincia, LinkedList<Calle> ca, 
+            LinkedList<Cliente> cl, LinkedList<Empleado> em, LinkedList<Proveedor> pr, LinkedList<Sucursal> su, boolean ok) 
             throws PreexistingEntityException, Exception{
-        Localidad miLocalidad = this.miPersistencia.dameUnaLocalidad(codigo);
-        miLocalidad.setCodigo(codigo);
-        miLocalidad.setCodPost(codPost);
-        miLocalidad.setProvincia(provincia);
-        miLocalidad.setNombre(nombre);
-        miLocalidad.setVsCalle(ca);
-        miLocalidad.setVsCliente(cl);
-        miLocalidad.setVsEmpleado(em);
-        miLocalidad.setVsProveedor(pr);
-        miLocalidad.setVsSucursal(su);
+        Localidad miLocalidad = new Localidad();
+        miLocalidad = miLocalidad.editaLocalidad(codigo, nombre, codPost, provincia, ca, su, cl, pr, em, ok);
         this.miPersistencia.editarLocalidad(miLocalidad);}
     public void eliminarLocalidad(int cod) throws NonexistentEntityException{
+        Localidad miLocalidad = new Localidad();
+        miLocalidad.eliminaLocalidad(cod);
         this.miPersistencia.eliminarLocalidad(cod);}
     public Localidad dameUnaLocalidad(int cod){
-        return this.miPersistencia.dameUnaLocalidad(cod);}
+        Localidad miLocalidad = new Localidad();
+        miLocalidad = miLocalidad.buscarLocalidad(cod);
+        if (miLocalidad==null){        
+            miLocalidad= this.miPersistencia.dameUnaLocalidad(cod);
+        }
+        return miLocalidad;
+    }
     public List<Localidad> dameLocalidades(){
-        return this.miPersistencia.dameLocalidades();}
+        Localidad miLocalidad = new Localidad();
+        List<Localidad> misLocalidads = miLocalidad.darLocalidads();
+        if (misLocalidads.isEmpty()){
+            misLocalidads = this.miPersistencia.dameLocalidades();
+        }
+        return misLocalidads;
+    }
     
     //Marca
     public void crearMarca(String nombre) throws PreexistingEntityException, Exception{
-        Marca miMarca = new Marca(nombre);
-        miPersistencia.crearMarca(miMarca);}
+        Marca miMarca = new Marca();
+        miMarca = miMarca.creaMarca(nombre);
+        if (miMarca!=null){
+            miPersistencia.crearMarca(miMarca);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
     public void editarMarca(String nombre) 
             throws PreexistingEntityException, Exception{
-        Marca miMarca = this.miPersistencia.dameUnaMarca(nombre);
-        miMarca.setNombre(nombre);
+        Marca miMarca = new Marca();
+        miMarca = miMarca.editaMarca(nombre);
         this.miPersistencia.editarMarca(miMarca);}
     public void eliminarMarca(String nombre) throws NonexistentEntityException{
+        Marca miMarca = new Marca();
+        miMarca.eliminaMarca(nombre);
         this.miPersistencia.eliminarMarca(nombre);}
     public Marca dameUnaMarca(String nombre){
-        return this.miPersistencia.dameUnaMarca(nombre);}
+        Marca miMarca = new Marca();
+        miMarca = miMarca.buscarMarca(nombre);
+        if (miMarca==null){        
+            miMarca= this.miPersistencia.dameUnaMarca(nombre);
+        }
+        return miMarca;
+    }
     public List<Marca> dameMarcas(){
-        return this.miPersistencia.dameMarcas();}
+        Marca miMarca = new Marca();
+        List<Marca> misMarcas = miMarca.darMarca();
+        if (misMarcas.isEmpty()){
+            misMarcas = this.miPersistencia.dameMarcas();
+        }
+        return misMarcas;
+    }
     
     //Mecanico
     public void crearMecanico(Localidad unaLoc,Sucursal unaSuc, String nombre, long dni, long telefono, 
             int sueldo, String p, Date horaInicio, Date horaFin, Especialidad profesion) throws 
             PreexistingEntityException, Exception{
-        Mecanico miMecanico = new Mecanico(unaLoc,unaSuc, nombre, dni, telefono, sueldo, p,horaInicio,horaFin, profesion);
-        miPersistencia.crearMecanico(miMecanico);}
+        Mecanico miMecanico = new Mecanico();
+        miMecanico = miMecanico.creaMecanico(unaLoc, unaSuc, nombre, dni, telefono, sueldo, p, horaInicio, horaFin, profesion);
+        if (miMecanico!=null){
+            miPersistencia.crearMecanico(miMecanico);
+        }else{
+            throw new PreexistingEntityException("");
+        }
+    }
     public void editarMecanico(Localidad unaLoc,Sucursal unaSuc, String nombre, long dni, long telefono, 
-            int sueldo, String p, Date horaInicio, Date horaFin, Especialidad profesion, boolean ok, List<Interno> in,
-            List<OrdenTrabajo> or, List<Turno> tu) throws PreexistingEntityException, Exception{
-        Mecanico miMecanico = this.miPersistencia.dameUnMecanico(dni);
-        miMecanico.setDni(dni);
-        miMecanico.setNombre(nombre);
-        miMecanico.setPass(p);
-        miMecanico.setSueldo(sueldo);
-        miMecanico.setTelefono(telefono);
-        miMecanico.setUnaLocalidad(unaLoc);
-        miMecanico.setUnaSucursal(unaSuc);
-        miMecanico.setHoraInicio(horaInicio);
-        miMecanico.setHoraFin(horaFin);
-        miMecanico.setUnaEspecialidad(profesion);
-        miMecanico.setBorrado(ok);
-        miMecanico.setVsInterno(in);
-        miMecanico.setVsOrdenTrabajo(or);
-        miMecanico.setVsTurno(tu);
+            int sueldo, String p, Date horaInicio, Date horaFin, Especialidad profesion, boolean ok, LinkedList<Interno> in,
+            LinkedList<OrdenTrabajo> or, LinkedList<Turno> tu) throws PreexistingEntityException, Exception{
+        Mecanico miMecanico = new Mecanico();
+        miMecanico = miMecanico.editaMecanico(unaLoc, unaSuc, nombre, dni, telefono, sueldo, p, horaInicio, horaFin, profesion, in, or, ok, tu);
         this.miPersistencia.editarMecanico(miMecanico);}
-    public void eliminarMecanico(long cod) throws NonexistentEntityException{
-        this.miPersistencia.eliminarInterno(cod);}
-    public Mecanico dameUnMecanico(long cod){
-        return this.miPersistencia.dameUnMecanico(cod);}
+    public void eliminarMecanico(long dni) throws NonexistentEntityException{
+        Mecanico miMecanico = new Mecanico();
+        miMecanico.eliminaMecanico(dni);
+        this.miPersistencia.eliminarMecanico(dni);}
+    public Mecanico dameUnMecanico(long dni){
+        Mecanico miMecanico = new Mecanico();
+        miMecanico = miMecanico.buscarMecanico(dni);
+        if (miMecanico==null){        
+            miMecanico= this.miPersistencia.dameUnMecanico(dni);
+        }
+        return miMecanico;
+    }
     public List<Mecanico> dameMecanicos(){
-        return this.miPersistencia.dameMecanicos();}
+        Mecanico miMecanico = new Mecanico();
+        List<Mecanico> misMecanicos = miMecanico.darMecanico();
+        if (misMecanicos.isEmpty()){
+            misMecanicos = this.miPersistencia.dameMecanicos();
+        }
+        return misMecanicos;
+    }
     
     //Modelo
     public void crearModelo(Marca mar, String nombre, int anio) 
