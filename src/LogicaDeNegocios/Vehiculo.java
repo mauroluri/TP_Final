@@ -112,7 +112,7 @@ public class Vehiculo implements Serializable {
     }    
     
                 //En memoria (sin persistencia)    
-    private static LinkedList<Vehiculo> vehs = new LinkedList<Vehiculo>();
+    private static List<Vehiculo> vehs = new LinkedList<Vehiculo>();
 
     //Metodos en memoria
     public Vehiculo buscarVehiculo(String NroChasis){
@@ -140,8 +140,8 @@ public class Vehiculo implements Serializable {
         return ret;
     }    
     public Vehiculo editaVehiculo(Segmento seg, Modelo mod, Garantia gar, Cliente cli, String dominio, String nroChasis,
-            String nroMotor, int anio, String color, int puertas,LinkedList<Actividad> pend, LinkedList<Actividad> rea, 
-            LinkedList<OrdenTrabajo> ot, LinkedList<Turno> tu, boolean borrado){
+            String nroMotor, int anio, String color, int puertas,List<Actividad> pend, List<Actividad> rea, 
+            List<OrdenTrabajo> ot, List<Turno> tu, boolean borrado){
         Vehiculo ret = buscarVehiculo(nroChasis);
         this.setNroChasis(nroChasis);
         this.setAnio(anio);
@@ -159,7 +159,7 @@ public class Vehiculo implements Serializable {
         this.setVsOrdenTrabajo(ot);
         this.setVsTurnosPend(tu);
         if (ret!=null){
-            vehs.removeFirstOccurrence(ret);
+            vehs.remove(ret);
             ret = this;
             vehs.add(ret);
         }else{
@@ -170,10 +170,10 @@ public class Vehiculo implements Serializable {
     public void eliminaVehiculo(String nroChasis){
         Vehiculo ret = buscarVehiculo (nroChasis);
         if (ret!=null){
-            vehs.removeFirstOccurrence(ret);
+            vehs.remove(ret);
         }
     }
-    public LinkedList<Vehiculo> darVehiculo(){
+    public List<Vehiculo> darVehiculo(){
         return vehs;
     }
 }

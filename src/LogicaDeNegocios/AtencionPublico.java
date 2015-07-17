@@ -30,7 +30,7 @@ public class AtencionPublico extends Empleado implements Serializable{
     
     //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<AtencionPublico> atps = new LinkedList<AtencionPublico>();
+    private static List<AtencionPublico> atps = new LinkedList<AtencionPublico>();
     
     public AtencionPublico buscarAtencionPublico(long dni){
         AtencionPublico at, ret=null;
@@ -58,7 +58,7 @@ public class AtencionPublico extends Empleado implements Serializable{
         return ret;
     }
     public AtencionPublico editaAtencionPublico(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, 
-            int sueldo, String pass, Date horaInicio, Date horaFin, LinkedList<Externo> ex, boolean ok){
+            int sueldo, String pass, Date horaInicio, Date horaFin, List<Externo> ex, boolean ok){
         AtencionPublico ret = buscarAtencionPublico(dni);
         this.setNombre(nombre);
         this.setDni(dni);
@@ -72,7 +72,7 @@ public class AtencionPublico extends Empleado implements Serializable{
         this.setUnaLocalidad(unaLoc);
         this.setPass(pass);
         if (ret!=null){
-            atps.removeFirstOccurrence(ret);
+            atps.remove(ret);
             ret = this;
             atps.add(ret);
         }else{
@@ -84,10 +84,10 @@ public class AtencionPublico extends Empleado implements Serializable{
         AtencionPublico ret = buscarAtencionPublico (dni);
         if (ret!=null){
             super.eliminaEmpleado(dni);
-            atps.removeFirstOccurrence(ret);
+            atps.remove(ret);
         }
     }
-    public LinkedList<AtencionPublico> darAtencionPublico(){
+    public List<AtencionPublico> darAtencionPublico(){
         return atps;
     }
 }

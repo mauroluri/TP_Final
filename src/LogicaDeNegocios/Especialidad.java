@@ -34,7 +34,7 @@ public class Especialidad implements Serializable {
     }
     
     //En memoria (sin persistencia)    
-    private static LinkedList<Especialidad> esps = new LinkedList<Especialidad>();
+    private static List<Especialidad> esps = new LinkedList<Especialidad>();
 
     //Metodos en memoria
     public Especialidad buscarEspecialidad(String nombre){
@@ -60,12 +60,12 @@ public class Especialidad implements Serializable {
         }
         return ret;
     }    
-    public Especialidad editaEspecialidad(String nombre, LinkedList<Mecanico> me){
+    public Especialidad editaEspecialidad(String nombre, List<Mecanico> me){
         Especialidad ret = buscarEspecialidad( nombre);
         this.setNombre(nombre);
         this.setVsMecanico(me);
         if (ret!=null){
-            esps.removeFirstOccurrence(ret);
+            esps.remove(ret);
             ret = this;
             esps.add(ret);
         }else{
@@ -76,10 +76,10 @@ public class Especialidad implements Serializable {
     public void eliminaEspecialidad(String nombre){
         Especialidad ret = buscarEspecialidad (nombre);
         if (ret!=null){
-            esps.removeFirstOccurrence(ret);
+            esps.remove(ret);
         }
     }
-    public LinkedList<Especialidad> darEspecialidad(){
+    public List<Especialidad> darEspecialidad(){
         return esps;
     }
 }

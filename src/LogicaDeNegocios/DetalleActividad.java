@@ -5,6 +5,7 @@ import javax.persistence.Temporal;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -38,7 +39,7 @@ public class DetalleActividad implements Serializable {
         this.descripcion = descripcion;
     }
                //En memoria (sin persistencia)    
-    private static LinkedList<DetalleActividad> detalles = new LinkedList<DetalleActividad>();
+    private static List<DetalleActividad> detalles = new LinkedList<DetalleActividad>();
 
     //Metodos en memoria
     public DetalleActividad buscarDetalleActividad(String cod){
@@ -70,7 +71,7 @@ public class DetalleActividad implements Serializable {
         this.setDescripcion(descripcion);
         this.setDuracion(duracion);
         if (ret!=null){
-            detalles.removeFirstOccurrence(ret);
+            detalles.remove(ret);
             ret = this;
             detalles.add(ret);
         }else{
@@ -81,10 +82,10 @@ public class DetalleActividad implements Serializable {
     public void eliminaDetalleActividad(String cod){
         DetalleActividad ret = buscarDetalleActividad (cod);
         if (ret!=null){
-            detalles.removeFirstOccurrence(ret);
+            detalles.remove(ret);
         }
     }
-    public LinkedList<DetalleActividad> darDetalleActividad(){
+    public List<DetalleActividad> darDetalleActividad(){
         return detalles;
     }
 }

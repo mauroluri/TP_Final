@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 public class Item implements Serializable{
@@ -49,7 +50,7 @@ public class Item implements Serializable{
     }
     
         //En memoria (sin persistencia)    
-    private static LinkedList<Item> items = new LinkedList<Item>();
+    private static List<Item> items = new LinkedList<Item>();
     //Metodos en memoria
     public Item buscarItem(int cod){
         Item im, ret=null;
@@ -81,7 +82,7 @@ public class Item implements Serializable{
         this.setUnDeposito(unDeposito);
         this.setUnaAutoparte(unaAutoparte);
         if (ret!=null){
-            items.removeFirstOccurrence(ret);
+            items.remove(ret);
             ret = this;
             items.add(ret);
         }else{
@@ -92,10 +93,10 @@ public class Item implements Serializable{
     public void eliminaItem(int cod){
         Item ret = buscarItem (cod);
         if (ret!=null){
-            items.removeFirstOccurrence(ret);
+            items.remove(ret);
         }
     }
-    public LinkedList<Item> darItems(){
+    public List<Item> darItems(){
         return items;
     }
 }

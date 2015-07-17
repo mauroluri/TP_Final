@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -16,7 +17,7 @@ public class Equipamiento extends Autoparte implements Serializable{
     
     //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Equipamiento> eqps = new LinkedList<Equipamiento>();
+    private static List<Equipamiento> eqps = new LinkedList<Equipamiento>();
     
     public Equipamiento buscarEquipamiento(int codParte){
         Equipamiento eq, ret=null;
@@ -44,7 +45,7 @@ public class Equipamiento extends Autoparte implements Serializable{
         return ret;
     }
     public Equipamiento editaEquipamiento(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
-            boolean recambio, long stock, LinkedList<Item> it, LinkedList<Modelo> mo, LinkedList<Vehiculo> ve, boolean ok){
+            boolean recambio, long stock, List<Item> it, List<Modelo> mo, List<Vehiculo> ve, boolean ok){
         Equipamiento ret = buscarEquipamiento(codParte);
         this.setBorrado(ok);
         this.setCaracteristicas(caracteristicas);
@@ -58,7 +59,7 @@ public class Equipamiento extends Autoparte implements Serializable{
         this.setVsModelo(mo);
         this.setVsVehiculo(ve);
         if (ret!=null){
-            eqps.removeFirstOccurrence(ret);
+            eqps.remove(ret);
             ret = this;
             eqps.add(ret);
         }else{
@@ -70,10 +71,10 @@ public class Equipamiento extends Autoparte implements Serializable{
         Equipamiento ret = buscarEquipamiento (codParte);
         if (ret!=null){
             super.eliminaAutoparte(codParte);
-            eqps.removeFirstOccurrence(ret);
+            eqps.remove(ret);
         }
     }
-    public LinkedList<Equipamiento> darEquipamiento(){
+    public List<Equipamiento> darEquipamiento(){
         return eqps;
     }
 }

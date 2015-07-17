@@ -101,7 +101,7 @@ public class Turno implements Serializable{
     }
     
         //En memoria (sin persistencia)    
-    private static LinkedList<Turno> turnos = new LinkedList<Turno>();
+    private static List<Turno> turnos = new LinkedList<Turno>();
     //Metodos en memoria
     public Turno buscarTurno(long codigo){
         Turno tu, ret=null;
@@ -129,7 +129,7 @@ public class Turno implements Serializable{
     }    
     public Turno editaTurno(Vehiculo veh, Cliente cli, long codigo, Date fecha, String des, 
             Date duracionAprox, Date horaInicio, Estado est, NivelSeveridad nivS, OrdenTrabajo orden,
-            LinkedList<Empleado> emp, boolean listo, boolean ok){
+            List<Empleado> emp, boolean listo, boolean ok){
         Turno ret = buscarTurno( codigo);
         this.setBorrado(ok);
         this.setCodigo(codigo);
@@ -145,7 +145,7 @@ public class Turno implements Serializable{
         this.setUnaOrdenTrabajo(orden);
         this.setVsEmpleado(emp);
         if (ret!=null){
-            turnos.removeFirstOccurrence(ret);
+            turnos.remove(ret);
             ret = this;
             turnos.add(ret);
         }else{
@@ -156,10 +156,10 @@ public class Turno implements Serializable{
     public void eliminaTurno(long codigo){
         Turno ret = buscarTurno (codigo);
         if (ret!=null){
-            turnos.removeFirstOccurrence(ret);
+            turnos.remove(ret);
         }
     }
-    public LinkedList<Turno> darTurnos(){
+    public List<Turno> darTurnos(){
         return turnos;
     }
 }

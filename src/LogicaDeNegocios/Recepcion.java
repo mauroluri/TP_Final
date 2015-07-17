@@ -30,7 +30,7 @@ public class Recepcion extends Sector implements Serializable {
     
         //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Recepcion> deps = new LinkedList<Recepcion>();
+    private static List<Recepcion> deps = new LinkedList<Recepcion>();
     
     public Recepcion buscarRecepcion(int cod){
         Recepcion de, ret=null;
@@ -56,8 +56,8 @@ public class Recepcion extends Sector implements Serializable {
         }
         return ret;
     }
-    public Recepcion editaRecepcion(int cod, Date horaInicio, Date horaFin, LinkedList<Empleado> emps,
-            LinkedList<Turno> turs ){
+    public Recepcion editaRecepcion(int cod, Date horaInicio, Date horaFin, List<Empleado> emps,
+            List<Turno> turs ){
         Recepcion ret = buscarRecepcion(cod);
         this.setCod(cod);
         this.setHoraFin(horaFin);
@@ -65,7 +65,7 @@ public class Recepcion extends Sector implements Serializable {
         this.setVsEmpleado(emps);
         this.setVsTurno(turs);
         if (ret!=null){
-            deps.removeFirstOccurrence(ret);
+            deps.remove(ret);
             ret = this;
             deps.add(ret);
         }else{
@@ -77,10 +77,10 @@ public class Recepcion extends Sector implements Serializable {
         Recepcion ret = buscarRecepcion (cod);
         if (ret!=null){
             super.eliminaSector(cod);
-            deps.removeFirstOccurrence(ret);
+            deps.remove(ret);
         }
     }
-    public LinkedList<Recepcion> darRecepcion(){
+    public List<Recepcion> darRecepcion(){
         return deps;
     }
 }

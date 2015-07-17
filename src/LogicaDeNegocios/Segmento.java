@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -25,7 +26,7 @@ public class Segmento implements Serializable {
     }
            
             //En memoria (sin persistencia)    
-    private static LinkedList<Segmento> segs = new LinkedList<Segmento>();
+    private static List<Segmento> segs = new LinkedList<Segmento>();
 
     //Metodos en memoria
     public Segmento buscarSegmento(String nombre){
@@ -55,7 +56,7 @@ public class Segmento implements Serializable {
         Segmento ret = buscarSegmento( nombre);
         this.setNombre(nombre);
         if (ret!=null){
-            segs.removeFirstOccurrence(ret);
+            segs.remove(ret);
             ret = this;
             segs.add(ret);
         }else{
@@ -66,10 +67,10 @@ public class Segmento implements Serializable {
     public void eliminaSegmento(String nombre){
         Segmento ret = buscarSegmento (nombre);
         if (ret!=null){
-            segs.removeFirstOccurrence(ret);
+            segs.remove(ret);
         }
     }
-    public LinkedList<Segmento> darSegmento(){
+    public List<Segmento> darSegmento(){
         return segs;
     }
 }

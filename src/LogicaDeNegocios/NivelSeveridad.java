@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -30,7 +31,7 @@ public class NivelSeveridad implements Serializable{
     }
     
         //En memoria (sin persistencia)    
-    private static LinkedList<NivelSeveridad> clientes = new LinkedList<NivelSeveridad>();
+    private static List<NivelSeveridad> clientes = new LinkedList<NivelSeveridad>();
     //Metodos en memoria
     public NivelSeveridad buscarNivelSeveridad(int nivel){
         NivelSeveridad cli, ret=null;
@@ -60,7 +61,7 @@ public class NivelSeveridad implements Serializable{
         this.setNombre(nombre);
         this.setNivel(nivel);
         if (ret!=null){
-            clientes.removeFirstOccurrence(ret);
+            clientes.remove(ret);
             ret = this;
             clientes.add(ret);
         }else{
@@ -71,10 +72,10 @@ public class NivelSeveridad implements Serializable{
     public void eliminaNivelSeveridad(int nivel){
         NivelSeveridad ret = buscarNivelSeveridad (nivel);
         if (ret!=null){
-            clientes.removeFirstOccurrence(ret);
+            clientes.remove(ret);
         }
     }
-    public LinkedList<NivelSeveridad> darNivelSeveridads(){
+    public List<NivelSeveridad> darNivelSeveridads(){
         return clientes;
     }
 }

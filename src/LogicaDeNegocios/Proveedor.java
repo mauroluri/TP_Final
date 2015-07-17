@@ -81,7 +81,7 @@ public class Proveedor implements Serializable{
     } 
     
         //En memoria (sin persistencia)    
-    private static LinkedList<Proveedor> provs = new LinkedList<Proveedor>();
+    private static List<Proveedor> provs = new LinkedList<Proveedor>();
     //Metodos en memoria
     public Proveedor buscarProveedor(long dni){
         Proveedor pro, ret=null;
@@ -108,7 +108,7 @@ public class Proveedor implements Serializable{
         return ret;
     }    
     public Proveedor editaProveedor(String nombre, long telefono, String cuit, long dni, 
-            String resp, String eMail,String tiempo, LinkedList<GrupoParte> gp, Localidad loc, boolean ok){
+            String resp, String eMail,String tiempo, List<GrupoParte> gp, Localidad loc, boolean ok){
         Proveedor ret = buscarProveedor( dni);
         this.setNombre(nombre);
         this.setResponsabilidadFiscal(resp);
@@ -121,7 +121,7 @@ public class Proveedor implements Serializable{
         this.setUnaLocalidad(loc);
         this.setBorrado(ok);
         if (ret!=null){
-            provs.removeFirstOccurrence(ret);
+            provs.remove(ret);
             ret = this;
             provs.add(ret);
         }else{
@@ -132,10 +132,10 @@ public class Proveedor implements Serializable{
     public void eliminaProveedor(long dni){
         Proveedor ret = buscarProveedor (dni);
         if (ret!=null){
-            provs.removeFirstOccurrence(ret);
+            provs.remove(ret);
         }
     }
-    public LinkedList<Proveedor> darProveedors(){
+    public List<Proveedor> darProveedors(){
         return provs;
     }
 }

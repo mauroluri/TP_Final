@@ -46,7 +46,7 @@ public class Calle implements Serializable {
     }
        
             //En memoria (sin persistencia)    
-    private static LinkedList<Calle> calles = new LinkedList<Calle>();
+    private static List<Calle> calles = new LinkedList<Calle>();
 
     //Metodos en memoria
     public Calle buscarCalle(String nombre){
@@ -72,14 +72,14 @@ public class Calle implements Serializable {
         }
         return ret;
     }    
-    public Calle editaCalle(String nombre, Sucursal suc, LinkedList<Cliente> cli, LinkedList<Localidad> loc){
+    public Calle editaCalle(String nombre, Sucursal suc, List<Cliente> cli, List<Localidad> loc){
         Calle ret = buscarCalle( nombre);
         this.setNombre(nombre);
         this.setUnaSucursal(suc);
         this.setVsCliente(cli);
         this.setVsLocalidad(loc);
         if (ret!=null){
-            calles.removeFirstOccurrence(ret);
+            calles.remove(ret);
             ret = this;
             calles.add(ret);
         }else{
@@ -90,10 +90,10 @@ public class Calle implements Serializable {
     public void eliminaCalle(String nombre){
         Calle ret = buscarCalle (nombre);
         if (ret!=null){
-            calles.removeFirstOccurrence(ret);
+            calles.remove(ret);
         }
     }
-    public LinkedList<Calle> darCalle(){
+    public List<Calle> darCalle(){
         return calles;
     }
 }

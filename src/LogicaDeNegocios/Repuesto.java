@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -16,7 +17,7 @@ public class Repuesto extends Autoparte implements Serializable{
      
     //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Repuesto> reps = new LinkedList<Repuesto>();
+    private static List<Repuesto> reps = new LinkedList<Repuesto>();
     
     public Repuesto buscarRepuesto(int codParte){
         Repuesto re, ret=null;
@@ -44,7 +45,7 @@ public class Repuesto extends Autoparte implements Serializable{
         return ret;
     }
     public Repuesto editaRepuesto(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
-            boolean recambio, long stock, LinkedList<Item> it, LinkedList<Modelo> mo, LinkedList<Vehiculo> ve, boolean ok){
+            boolean recambio, long stock, List<Item> it, List<Modelo> mo, List<Vehiculo> ve, boolean ok){
         Repuesto ret = buscarRepuesto(codParte);
         this.setBorrado(ok);
         this.setCaracteristicas(caracteristicas);
@@ -58,7 +59,7 @@ public class Repuesto extends Autoparte implements Serializable{
         this.setVsModelo(mo);
         this.setVsVehiculo(ve);
         if (ret!=null){
-            reps.removeFirstOccurrence(ret);
+            reps.remove(ret);
             ret = this;
             reps.add(ret);
         }else{
@@ -70,10 +71,10 @@ public class Repuesto extends Autoparte implements Serializable{
         Repuesto ret = buscarRepuesto (codParte);
         if (ret!=null){
             super.eliminaAutoparte(codParte);
-            reps.removeFirstOccurrence(ret);
+            reps.remove(ret);
         }
     }
-    public LinkedList<Repuesto> darRepuesto(){
+    public List<Repuesto> darRepuesto(){
         return reps;
     }
 }

@@ -72,7 +72,7 @@ public class Localidad implements Serializable {
     }
     
         //En memoria (sin persistencia)    
-    private static LinkedList<Localidad> locs = new LinkedList<Localidad>();
+    private static List<Localidad> locs = new LinkedList<Localidad>();
     //Metodos en memoria
     public Localidad buscarLocalidad(int cod){
         Localidad cli, ret=null;
@@ -97,8 +97,8 @@ public class Localidad implements Serializable {
         }
         return ret;
     }    
-    public Localidad editaLocalidad(int cod, String nombre,int codPost, Provincia provincia, LinkedList<Calle> ca,
-            LinkedList<Sucursal> suc, LinkedList<Cliente> cli, LinkedList<Proveedor> pro, LinkedList<Empleado> em,
+    public Localidad editaLocalidad(int cod, String nombre,int codPost, Provincia provincia, List<Calle> ca,
+            List<Sucursal> suc, List<Cliente> cli, List<Proveedor> pro, List<Empleado> em,
             boolean ok){
         Localidad ret = buscarLocalidad( cod);
         this.setCodPost(codPost);
@@ -111,7 +111,7 @@ public class Localidad implements Serializable {
         this.setVsProveedor(pro);
         this.setVsSucursal(suc);
         if (ret!=null){
-            locs.removeFirstOccurrence(ret);
+            locs.remove(ret);
             ret = this;
             locs.add(ret);
         }else{
@@ -122,10 +122,10 @@ public class Localidad implements Serializable {
     public void eliminaLocalidad(int cod){
         Localidad ret = buscarLocalidad (cod);
         if (ret!=null){
-            locs.removeFirstOccurrence(ret);
+            locs.remove(ret);
         }
     }
-    public LinkedList<Localidad> darLocalidads(){
+    public List<Localidad> darLocalidads(){
         return locs;
     }
 }

@@ -33,7 +33,7 @@ public class Perito extends Empleado implements Serializable{
    
     //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Perito> pers = new LinkedList<Perito>();
+    private static List<Perito> pers = new LinkedList<Perito>();
     
     public Perito buscarPerito(long dni){
         Perito pe, ret=null;
@@ -61,7 +61,7 @@ public class Perito extends Empleado implements Serializable{
         return ret;
     }
     public Perito editaPerito(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, 
-            int sueldo, String pass, Date horaInicio, Date horaFin, LinkedList<Garantia> ga, boolean ok){
+            int sueldo, String pass, Date horaInicio, Date horaFin, List<Garantia> ga, boolean ok){
         Perito ret = buscarPerito(dni);
         this.setNombre(nombre);
         this.setDni(dni);
@@ -75,7 +75,7 @@ public class Perito extends Empleado implements Serializable{
         this.setUnaLocalidad(unaLoc);
         this.setPass(pass);
         if (ret!=null){
-            pers.removeFirstOccurrence(ret);
+            pers.remove(ret);
             ret = this;
             pers.add(ret);
         }else{
@@ -87,10 +87,10 @@ public class Perito extends Empleado implements Serializable{
         Perito ret = buscarPerito (dni);
         if (ret!=null){
             super.eliminaEmpleado(dni);
-            pers.removeFirstOccurrence(ret);
+            pers.remove(ret);
         }
     }
-    public LinkedList<Perito> darPerito(){
+    public List<Perito> darPerito(){
         return pers;
     }
 }

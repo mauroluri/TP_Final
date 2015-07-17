@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -45,7 +46,7 @@ public class Interno extends Pedido implements Serializable {
     
         //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Interno> ints = new LinkedList<Interno>();
+    private static List<Interno> ints = new LinkedList<Interno>();
     
     public Interno buscarInterno(long codPedido){
         Interno in, ret=null;
@@ -85,7 +86,7 @@ public class Interno extends Pedido implements Serializable {
         this.setUnVehiculo(unVeh);
         this.setUnaAutoparte(unaAut);
         if (ret!=null){
-            ints.removeFirstOccurrence(ret);
+            ints.remove(ret);
             ret = this;
             ints.add(ret);
         }else{
@@ -97,10 +98,10 @@ public class Interno extends Pedido implements Serializable {
         Interno ret = buscarInterno (codPedido);
         if (ret!=null){
             super.eliminaPedido(codPedido);
-            ints.removeFirstOccurrence(ret);
+            ints.remove(ret);
         }
     }
-    public LinkedList<Interno> darInterno(){
+    public List<Interno> darInterno(){
         return ints;
     }
     

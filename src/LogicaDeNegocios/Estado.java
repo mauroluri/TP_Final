@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -23,7 +24,7 @@ public class Estado implements Serializable {
     public Estado(String nombre) { this.nombre = nombre; }
     
     //En memoria (sin persistencia)    
-    private static LinkedList<Estado> estados = new LinkedList<Estado>();
+    private static List<Estado> estados = new LinkedList<Estado>();
 
     //Metodos en memoria
     public Estado buscarEstado(String nombre){
@@ -53,7 +54,7 @@ public class Estado implements Serializable {
         Estado ret = buscarEstado( nombre);
         this.setNombre(nombre);
         if (ret!=null){
-            estados.removeFirstOccurrence(ret);
+            estados.remove(ret);
             ret = this;
             estados.add(ret);
         }else{
@@ -64,10 +65,10 @@ public class Estado implements Serializable {
     public void eliminaEstado(String nombre){
         Estado ret = buscarEstado (nombre);
         if (ret!=null){
-            estados.removeFirstOccurrence(ret);
+            estados.remove(ret);
         }
     }
-    public LinkedList<Estado> darEstado(){
+    public List<Estado> darEstado(){
         return estados;
     }
 }

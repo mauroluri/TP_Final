@@ -95,7 +95,7 @@ public class Cliente implements Serializable{
     }
     
     //En memoria (sin persistencia)    
-    private static LinkedList<Cliente> clientes = new LinkedList<Cliente>();
+    private static List<Cliente> clientes = new LinkedList<Cliente>();
     //Metodos en memoria
     public Cliente buscarCliente(long dni){
         Cliente cli, ret=null;
@@ -122,8 +122,8 @@ public class Cliente implements Serializable{
         return ret;
     }    
     public Cliente editaCliente(String nombre, long dni, long telefono, String email, String cuit,
-            int altura, Localidad localidad, Calle calle, String contra, LinkedList<Vehiculo> ve, LinkedList<OrdenTrabajo> or,
-            LinkedList<Turno> tu, boolean ok){
+            int altura, Localidad localidad, Calle calle, String contra, List<Vehiculo> ve, List<OrdenTrabajo> or,
+            List<Turno> tu, boolean ok){
         Cliente ret = buscarCliente( dni);
         this.setNombre(nombre);
         this.setDni(dni);
@@ -139,7 +139,7 @@ public class Cliente implements Serializable{
         this.setVsVehiculo(ve);
         this.setBorrado(ok);
         if (ret!=null){
-            clientes.removeFirstOccurrence(ret);
+            clientes.remove(ret);
             ret = this;
             clientes.add(ret);
         }else{
@@ -150,10 +150,10 @@ public class Cliente implements Serializable{
     public void eliminaCliente(long dni){
         Cliente ret = buscarCliente (dni);
         if (ret!=null){
-            clientes.removeFirstOccurrence(ret);
+            clientes.remove(ret);
         }
     }
-    public LinkedList<Cliente> darClientes(){
+    public List<Cliente> darClientes(){
         return clientes;
     }
 }

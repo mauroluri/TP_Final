@@ -4,6 +4,7 @@ import java.util.Date;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -52,7 +53,7 @@ public class Externo extends Pedido implements Serializable{
     
         //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Externo> exs = new LinkedList<Externo>();
+    private static List<Externo> exs = new LinkedList<Externo>();
     
     public Externo buscarExterno(long codPedido){
         Externo ex, ret=null;
@@ -94,7 +95,7 @@ public class Externo extends Pedido implements Serializable{
         this.setUnVehiculo(unVeh);
         this.setUnaAutoparte(unaAut);
         if (ret!=null){
-            exs.removeFirstOccurrence(ret);
+            exs.remove(ret);
             ret = this;
             exs.add(ret);
         }else{
@@ -106,10 +107,10 @@ public class Externo extends Pedido implements Serializable{
         Externo ret = buscarExterno (codPedido);
         if (ret!=null){
             super.eliminaPedido(codPedido);
-            exs.removeFirstOccurrence(ret);
+            exs.remove(ret);
         }
     }
-    public LinkedList<Externo> darExterno(){
+    public List<Externo> darExterno(){
         return exs;
     }
 }

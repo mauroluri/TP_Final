@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -21,7 +22,7 @@ public class NivelImportancia implements Serializable {
     public NivelImportancia(String estado) { this.estado = estado; }
     
                 //En memoria (sin persistencia)    
-    private static LinkedList<NivelImportancia> nivs = new LinkedList<NivelImportancia>();
+    private static List<NivelImportancia> nivs = new LinkedList<NivelImportancia>();
 
     //Metodos en memoria
     public NivelImportancia buscarNivelImportancia(String estado){
@@ -51,7 +52,7 @@ public class NivelImportancia implements Serializable {
         NivelImportancia ret = buscarNivelImportancia( estado);
         this.setEstado(estado);
         if (ret!=null){
-            nivs.removeFirstOccurrence(ret);
+            nivs.remove(ret);
             ret = this;
             nivs.add(ret);
         }else{
@@ -62,10 +63,10 @@ public class NivelImportancia implements Serializable {
     public void eliminaNivelImportancia(String estado){
         NivelImportancia ret = buscarNivelImportancia (estado);
         if (ret!=null){
-            nivs.removeFirstOccurrence(ret);
+            nivs.remove(ret);
         }
     }
-    public LinkedList<NivelImportancia> darNivelImportancia(){
+    public List<NivelImportancia> darNivelImportancia(){
         return nivs;
     }
 }

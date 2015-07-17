@@ -47,7 +47,7 @@ public class GrupoParte implements Serializable{
 
     public GrupoParte() { }
 
-    public GrupoParte(String nombre, int codGrupo, Modelo mod, LinkedList<Autoparte> parts) {
+    public GrupoParte(String nombre, int codGrupo, Modelo mod, List<Autoparte> parts) {
         this.nombre = nombre;
         this.codGrupo = codGrupo;
         this.unModelo = mod;
@@ -57,7 +57,7 @@ public class GrupoParte implements Serializable{
     
     
     //En memoria (sin persistencia)    
-    private static LinkedList<GrupoParte> grupos = new LinkedList<GrupoParte>();
+    private static List<GrupoParte> grupos = new LinkedList<GrupoParte>();
     //Metodos en memoria
     public GrupoParte buscarGrupoParte(long codGrupo){
         GrupoParte gr, ret=null;
@@ -72,7 +72,7 @@ public class GrupoParte implements Serializable{
         }        
         return ret;
     }
-    public GrupoParte creaGrupoParte(String nombre, int codGrupo, Modelo mod, LinkedList<Autoparte> parts){
+    public GrupoParte creaGrupoParte(String nombre, int codGrupo, Modelo mod, List<Autoparte> parts){
         GrupoParte ret = buscarGrupoParte( codGrupo);
         if (ret==null){
             ret=new GrupoParte(nombre, codGrupo, mod, parts);
@@ -82,8 +82,8 @@ public class GrupoParte implements Serializable{
         }
         return ret;
     }    
-    public GrupoParte editaGrupoParte(String nombre, int codGrupo, Modelo mod, LinkedList<Autoparte> parts, 
-            LinkedList<Proveedor> provs){
+    public GrupoParte editaGrupoParte(String nombre, int codGrupo, Modelo mod, List<Autoparte> parts, 
+            List<Proveedor> provs){
         GrupoParte ret = buscarGrupoParte( codGrupo);
         this.setNombre(nombre);
         this.setCodGrupo(codGrupo);
@@ -91,7 +91,7 @@ public class GrupoParte implements Serializable{
         this.setVsAutoparte(parts);
         this.setVsProveedor(provs);
         if (ret!=null){
-            grupos.removeFirstOccurrence(ret);
+            grupos.remove(ret);
             ret = this;
             grupos.add(ret);
         }else{
@@ -102,10 +102,10 @@ public class GrupoParte implements Serializable{
     public void eliminaGrupoParte(long codGrupo){
         GrupoParte ret = buscarGrupoParte (codGrupo);
         if (ret!=null){
-            grupos.removeFirstOccurrence(ret);
+            grupos.remove(ret);
         }
     }
-    public LinkedList<GrupoParte> darGrupoPartes(){
+    public List<GrupoParte> darGrupoPartes(){
         return grupos;
     }
 }

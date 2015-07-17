@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Entity;
 
 @Entity
@@ -16,7 +17,7 @@ public class Ajuste extends OrdenTrabajo implements Serializable{
     
         //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Ajuste> ajustes = new LinkedList<Ajuste>();
+    private static List<Ajuste> ajustes = new LinkedList<Ajuste>();
     
     public Ajuste buscarAjuste(long codOrden){
         Ajuste aj, ret=null;
@@ -42,8 +43,8 @@ public class Ajuste extends OrdenTrabajo implements Serializable{
         }
         return ret;
     }
-    public Ajuste editaAjuste(Turno unTur, long codOrden, String descripcion, LinkedList<OrdenTrabajo> or, LinkedList<Actividad> acr,
-            LinkedList<Actividad> acp, boolean ok){
+    public Ajuste editaAjuste(Turno unTur, long codOrden, String descripcion, List<OrdenTrabajo> or, List<Actividad> acr,
+            List<Actividad> acp, boolean ok){
         Ajuste ret = buscarAjuste(codOrden);
         this.setBorrado(ok);
         this.setCodOrden(codOrden);
@@ -53,7 +54,7 @@ public class Ajuste extends OrdenTrabajo implements Serializable{
         this.setVsActividadesRealizadas(acr);
         this.setVsActividadesPendientes(acp);
         if (ret!=null){
-            ajustes.removeFirstOccurrence(ret);
+            ajustes.remove(ret);
             ret = this;
             ajustes.add(ret);
         }else{
@@ -65,10 +66,10 @@ public class Ajuste extends OrdenTrabajo implements Serializable{
         Ajuste ret = buscarAjuste (codOrden);
         if (ret!=null){
             super.eliminaOrdenTrabajo(codOrden);
-            ajustes.removeFirstOccurrence(ret);
+            ajustes.remove(ret);
         }
     }
-    public LinkedList<Ajuste> darAjustes(){
+    public List<Ajuste> darAjustes(){
         return ajustes;
     }
 }

@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -40,7 +41,7 @@ public class Modelo implements Serializable {
     }
        
             //En memoria (sin persistencia)    
-    private static LinkedList<Modelo> mods = new LinkedList<Modelo>();
+    private static List<Modelo> mods = new LinkedList<Modelo>();
 
     //Metodos en memoria
     public Modelo buscarModelo(String nombre){
@@ -72,7 +73,7 @@ public class Modelo implements Serializable {
         this.setAnio(anio);
         this.setUnaMarca(mar);
         if (ret!=null){
-            mods.removeFirstOccurrence(ret);
+            mods.remove(ret);
             ret = this;
             mods.add(ret);
         }else{
@@ -83,10 +84,10 @@ public class Modelo implements Serializable {
     public void eliminaModelo(String nombre){
         Modelo ret = buscarModelo (nombre);
         if (ret!=null){
-            mods.removeFirstOccurrence(ret);
+            mods.remove(ret);
         }
     }
-    public LinkedList<Modelo> darModelo(){
+    public List<Modelo> darModelo(){
         return mods;
     }
 }

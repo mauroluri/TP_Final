@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -32,7 +33,7 @@ public class Diagnostico extends OrdenTrabajo implements Serializable{
     }
        //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Diagnostico> diags = new LinkedList<Diagnostico>();
+    private static List<Diagnostico> diags = new LinkedList<Diagnostico>();
     
     public Diagnostico buscarDiagnostico(long codOrden){
         Diagnostico di, ret=null;
@@ -58,8 +59,8 @@ public class Diagnostico extends OrdenTrabajo implements Serializable{
         }
         return ret;
     }
-    public Diagnostico editaDiagnostico(Turno unTur, long codOrden, String descripcion, LinkedList<OrdenTrabajo> or, LinkedList<Actividad> acr,
-            LinkedList<Actividad> acp, boolean ok, int kilometraje, boolean inicial){
+    public Diagnostico editaDiagnostico(Turno unTur, long codOrden, String descripcion, List<OrdenTrabajo> or, List<Actividad> acr,
+            List<Actividad> acp, boolean ok, int kilometraje, boolean inicial){
         Diagnostico ret = buscarDiagnostico(codOrden);
         this.setBorrado(ok);
         this.setKilometraje(kilometraje);
@@ -71,7 +72,7 @@ public class Diagnostico extends OrdenTrabajo implements Serializable{
         this.setVsActividadesRealizadas(acr);
         this.setVsActividadesPendientes(acp);
         if (ret!=null){
-            diags.removeFirstOccurrence(ret);
+            diags.remove(ret);
             ret = this;
             diags.add(ret);
         }else{
@@ -83,10 +84,10 @@ public class Diagnostico extends OrdenTrabajo implements Serializable{
         Diagnostico ret = buscarDiagnostico (codOrden);
         if (ret!=null){
             super.eliminaOrdenTrabajo(codOrden);
-            diags.removeFirstOccurrence(ret);
+            diags.remove(ret);
         }
     }
-    public LinkedList<Diagnostico> darDiagnostico(){
+    public List<Diagnostico> darDiagnostico(){
         return diags;
     }
 }

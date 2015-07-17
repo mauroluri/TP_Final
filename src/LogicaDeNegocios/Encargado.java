@@ -36,14 +36,14 @@ public class Encargado extends Empleado implements Serializable{
     public Encargado(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, int sueldo, 
             String p, Date horaInicio, Date horaFin) {
         super(unaLoc, unaSuc, nombre, dni,  telefono, sueldo, p, horaInicio, horaFin);
-        //this.vsInterno = new LinkedList<Interno>();
+        //this.vsInterno = new List<Interno>();
         this.vsItem = new LinkedList<Item>();
         this.vsOrdenTrabajo = new LinkedList<OrdenTrabajo>();
     }
            
     //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Encargado> encs = new LinkedList<Encargado>();
+    private static List<Encargado> encs = new LinkedList<Encargado>();
     
     public Encargado buscarEncargado(long dni){
         Encargado en, ret=null;
@@ -71,7 +71,7 @@ public class Encargado extends Empleado implements Serializable{
         return ret;
     }
     public Encargado editaEncargado(Localidad unaLoc, Sucursal unaSuc, String nombre, long dni, long telefono, 
-            int sueldo, String pass, Date horaInicio, Date horaFin, LinkedList<Item> it, LinkedList<OrdenTrabajo> or, boolean ok){
+            int sueldo, String pass, Date horaInicio, Date horaFin, List<Item> it, List<OrdenTrabajo> or, boolean ok){
         Encargado ret = buscarEncargado(dni);
         this.setNombre(nombre);
         this.setDni(dni);
@@ -86,7 +86,7 @@ public class Encargado extends Empleado implements Serializable{
         this.setUnaLocalidad(unaLoc);
         this.setPass(pass);
         if (ret!=null){
-            encs.removeFirstOccurrence(ret);
+            encs.remove(ret);
             ret = this;
             encs.add(ret);
         }else{
@@ -98,10 +98,10 @@ public class Encargado extends Empleado implements Serializable{
         Encargado ret = buscarEncargado (dni);
         if (ret!=null){
             super.eliminaEmpleado(dni);
-            encs.removeFirstOccurrence(ret);
+            encs.remove(ret);
         }
     }
-    public LinkedList<Encargado> darEncargado(){
+    public List<Encargado> darEncargado(){
         return encs;
     }   
 }

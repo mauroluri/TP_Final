@@ -55,7 +55,7 @@ public class Garantia implements Serializable {
     }    
     
                 //En memoria (sin persistencia)    
-    private static LinkedList<Garantia> garantias = new LinkedList<Garantia>();
+    private static List<Garantia> garantias = new LinkedList<Garantia>();
 
     //Metodos en memoria
     public Garantia buscarGarantia(String detalle){
@@ -89,7 +89,7 @@ public class Garantia implements Serializable {
         this.setVigencia(vigencia);
         this.setVsAutoparte(partes);
         if (ret!=null){
-            garantias.removeFirstOccurrence(ret);
+            garantias.remove(ret);
             ret = this;
             garantias.add(ret);
         }else{
@@ -100,10 +100,10 @@ public class Garantia implements Serializable {
     public void eliminaGarantia(String detalle){
         Garantia ret = buscarGarantia (detalle);
         if (ret!=null){
-            garantias.removeFirstOccurrence(ret);
+            garantias.remove(ret);
         }
     }
-    public LinkedList<Garantia> darGarantia(){
+    public List<Garantia> darGarantia(){
         return garantias;
     }
 }

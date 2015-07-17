@@ -57,7 +57,7 @@ public class Actividad implements Serializable {
     }
     
             //En memoria (sin persistencia)    
-    private static LinkedList<Actividad> actividades = new LinkedList<Actividad>();
+    private static List<Actividad> actividades = new LinkedList<Actividad>();
 
     //Metodos en memoria
     public Actividad buscarActividad(String nombre){
@@ -91,7 +91,7 @@ public class Actividad implements Serializable {
         this.setUnGrupoParte(grupo);
         this.setVsEspDetActividad(ac);
         if (ret!=null){
-            actividades.removeFirstOccurrence(ret);
+            actividades.remove(ret);
             ret = this;
             actividades.add(ret);
         }else{
@@ -102,10 +102,10 @@ public class Actividad implements Serializable {
     public void eliminaActividad(String nombre){
         Actividad ret = buscarActividad (nombre);
         if (ret!=null){
-            actividades.removeFirstOccurrence(ret);
+            actividades.remove(ret);
         }
     }
-    public LinkedList<Actividad> darActividad(){
+    public List<Actividad> darActividad(){
         return actividades;
     }
 }

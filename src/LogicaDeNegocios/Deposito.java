@@ -3,8 +3,8 @@ package LogicaDeNegocios;
 import java.util.Date;
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.LinkedList;
 import javax.persistence.*;
 
 @Entity
@@ -29,7 +29,7 @@ public class Deposito extends Sector implements Serializable {
     
         //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Deposito> deps = new LinkedList<Deposito>();
+    private static List<Deposito> deps = new LinkedList<Deposito>();
     
     public Deposito buscarDeposito(int cod){
         Deposito de, ret=null;
@@ -55,7 +55,7 @@ public class Deposito extends Sector implements Serializable {
         }
         return ret;
     }
-    public Deposito editaDeposito(int cod, Date horaInicio, Date horaFin, LinkedList<Empleado> emps, LinkedList<Item> its ){
+    public Deposito editaDeposito(int cod, Date horaInicio, Date horaFin, List<Empleado> emps, List<Item> its ){
         Deposito ret = buscarDeposito(cod);
         this.setCod(cod);
         this.setHoraFin(horaFin);
@@ -63,7 +63,7 @@ public class Deposito extends Sector implements Serializable {
         this.setVsEmpleado(emps);
         this.setVsItem(its);
         if (ret!=null){
-            deps.removeFirstOccurrence(ret);
+            deps.remove(ret);
             ret = this;
             deps.add(ret);
         }else{
@@ -75,10 +75,10 @@ public class Deposito extends Sector implements Serializable {
         Deposito ret = buscarDeposito (cod);
         if (ret!=null){
             super.eliminaSector(cod);
-            deps.removeFirstOccurrence(ret);
+            deps.remove(ret);
         }
     }
-    public LinkedList<Deposito> darDeposito(){
+    public List<Deposito> darDeposito(){
         return deps;
     }    
 }

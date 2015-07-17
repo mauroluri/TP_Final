@@ -109,7 +109,7 @@ public class Sucursal implements Serializable{
     }
     
         //En memoria (sin persistencia)    
-    private static LinkedList<Sucursal> sucs = new LinkedList<Sucursal>();
+    private static List<Sucursal> sucs = new LinkedList<Sucursal>();
     //Metodos en memoria
     public Sucursal buscarSucursal(int cod){
         Sucursal su, ret=null;
@@ -136,8 +136,8 @@ public class Sucursal implements Serializable{
         return ret;
     }    
     public Sucursal editaSucursal(int cod, Localidad unaLoc, long telefono, int altura, Calle calleSuc, Date horaInicio,
-            Date horaFin,boolean ok,LinkedList<Turno> tu, LinkedList<Sector> sec, LinkedList<Empleado> emp, LinkedList<Pedido> pe, 
-            LinkedList<Cliente> cli, LinkedList<Calle> ca){
+            Date horaFin,boolean ok,List<Turno> tu, List<Sector> sec, List<Empleado> emp, List<Pedido> pe, 
+            List<Cliente> cli, List<Calle> ca){
         Sucursal ret = buscarSucursal(cod);
         this.setBorrado(ok);
         this.setAltura(altura);
@@ -154,7 +154,7 @@ public class Sucursal implements Serializable{
         this.setVsSector(sec);
         this.setVsTurno(tu);
         if (ret!=null){
-            sucs.removeFirstOccurrence(ret);
+            sucs.remove(ret);
             ret = this;
             sucs.add(ret);
         }else{
@@ -165,10 +165,10 @@ public class Sucursal implements Serializable{
     public void eliminaSucursal(int cod){
         Sucursal ret = buscarSucursal (cod);
         if (ret!=null){
-            sucs.removeFirstOccurrence(ret);
+            sucs.remove(ret);
         }
     }
-    public LinkedList<Sucursal> darSucursal(){
+    public List<Sucursal> darSucursal(){
         return sucs;
     }
 }

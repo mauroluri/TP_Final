@@ -15,11 +15,11 @@ public class Categoria implements Serializable {
     //Relaciones
         //Actividad
     @OneToMany
-    private LinkedList<Actividad> vsEspecialidadActividad;
+    private List<Actividad> vsEspecialidadActividad;
 
     //SETS
     public void setNombre(String nombre) { this.nombre = nombre;}
-    public void setVsEspecialidadActividad(LinkedList<Actividad> vsEspecialidadActividad) { this.vsEspecialidadActividad = vsEspecialidadActividad; }
+    public void setVsEspecialidadActividad(List<Actividad> vsEspecialidadActividad) { this.vsEspecialidadActividad = vsEspecialidadActividad; }
     
     //GETS
     public String getNombre() { return this.nombre;}
@@ -34,7 +34,7 @@ public class Categoria implements Serializable {
         this.vsEspecialidadActividad = new LinkedList<Actividad>(); 
     }
                 //En memoria (sin persistencia)    
-    private static LinkedList<Categoria> categs = new LinkedList<Categoria>();
+    private static List<Categoria> categs = new LinkedList<Categoria>();
 
     //Metodos en memoria
     public Categoria buscarCategoria(String nombre){
@@ -60,12 +60,12 @@ public class Categoria implements Serializable {
         }
         return ret;
     }    
-    public Categoria editaCategoria(String nombre, LinkedList<Actividad> act){
+    public Categoria editaCategoria(String nombre, List<Actividad> act){
         Categoria ret = buscarCategoria( nombre);
         this.setNombre(nombre);
         this.setVsEspecialidadActividad(act);
         if (ret!=null){
-            categs.removeFirstOccurrence(ret);
+            categs.remove(ret);
             ret = this;
             categs.add(ret);
         }else{
@@ -76,10 +76,10 @@ public class Categoria implements Serializable {
     public void eliminaCategoria(String nombre){
         Categoria ret = buscarCategoria (nombre);
         if (ret!=null){
-            categs.removeFirstOccurrence(ret);
+            categs.remove(ret);
         }
     }
-    public LinkedList<Categoria> darCategoria(){
+    public List<Categoria> darCategoria(){
         return categs;
     }
 }

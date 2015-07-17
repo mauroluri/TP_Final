@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -16,7 +17,7 @@ public class Accesorio extends Autoparte implements Serializable{
     
     //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Accesorio> accs = new LinkedList<Accesorio>();
+    private static List<Accesorio> accs = new LinkedList<Accesorio>();
     
     public Accesorio buscarAccesorio(int codParte){
         Accesorio at, ret=null;
@@ -44,7 +45,7 @@ public class Accesorio extends Autoparte implements Serializable{
         return ret;
     }
     public Accesorio editaAccesorio(int codParte, String descripcion, String caracteristicas, float precio, int impuesto, 
-            boolean recambio, long stock, LinkedList<Item> it, LinkedList<Modelo> mo, LinkedList<Vehiculo> ve, boolean ok){
+            boolean recambio, long stock, List<Item> it, List<Modelo> mo, List<Vehiculo> ve, boolean ok){
         Accesorio ret = buscarAccesorio(codParte);
         this.setBorrado(ok);
         this.setCaracteristicas(caracteristicas);
@@ -58,7 +59,7 @@ public class Accesorio extends Autoparte implements Serializable{
         this.setVsModelo(mo);
         this.setVsVehiculo(ve);
         if (ret!=null){
-            accs.removeFirstOccurrence(ret);
+            accs.remove(ret);
             ret = this;
             accs.add(ret);
         }else{
@@ -70,10 +71,10 @@ public class Accesorio extends Autoparte implements Serializable{
         Accesorio ret = buscarAccesorio (codParte);
         if (ret!=null){
             super.eliminaAutoparte(codParte);
-            accs.removeFirstOccurrence(ret);
+            accs.remove(ret);
         }
     }
-    public LinkedList<Accesorio> darAccesorio(){
+    public List<Accesorio> darAccesorio(){
         return accs;
     }
 }

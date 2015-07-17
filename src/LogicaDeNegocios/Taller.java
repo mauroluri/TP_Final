@@ -3,7 +3,7 @@ package LogicaDeNegocios;
 import java.util.Date;
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.List;
 import javax.persistence.*;
 
@@ -28,7 +28,7 @@ public class Taller extends Sector implements Serializable{
     
         //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Taller> deps = new LinkedList<Taller>();
+    private static List<Taller> deps = new LinkedList<Taller>();
     
     public Taller buscarTaller(int cod){
         Taller de, ret=null;
@@ -54,7 +54,7 @@ public class Taller extends Sector implements Serializable{
         }
         return ret;
     }
-    public Taller editaTaller(int cod, Date horaInicio, Date horaFin, LinkedList<Empleado> emps, LinkedList<OrdenTrabajo> ords ){
+    public Taller editaTaller(int cod, Date horaInicio, Date horaFin, List<Empleado> emps, List<OrdenTrabajo> ords ){
         Taller ret = buscarTaller(cod);
         this.setCod(cod);
         this.setHoraFin(horaFin);
@@ -62,7 +62,7 @@ public class Taller extends Sector implements Serializable{
         this.setVsEmpleado(emps);
         this.setVsOrdenTrabajo(ords);
         if (ret!=null){
-            deps.removeFirstOccurrence(ret);
+            deps.remove(ret);
             ret = this;
             deps.add(ret);
         }else{
@@ -74,10 +74,10 @@ public class Taller extends Sector implements Serializable{
         Taller ret = buscarTaller (cod);
         if (ret!=null){
             super.eliminaSector(cod);
-            deps.removeFirstOccurrence(ret);
+            deps.remove(ret);
         }
     }
-    public LinkedList<Taller> darTaller(){
+    public List<Taller> darTaller(){
         return deps;
     }
     

@@ -3,6 +3,7 @@ package LogicaDeNegocios;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -26,7 +27,7 @@ public class Marca implements Serializable {
     
        
             //En memoria (sin persistencia)    
-    private static LinkedList<Marca> marcas = new LinkedList<Marca>();
+    private static List<Marca> marcas = new LinkedList<Marca>();
 
     //Metodos en memoria
     public Marca buscarMarca(String nombre){
@@ -56,7 +57,7 @@ public class Marca implements Serializable {
         Marca ret = buscarMarca( nombre);
         this.setNombre(nombre);
         if (ret!=null){
-            marcas.removeFirstOccurrence(ret);
+            marcas.remove(ret);
             ret = this;
             marcas.add(ret);
         }else{
@@ -67,51 +68,10 @@ public class Marca implements Serializable {
     public void eliminaMarca(String nombre){
         Marca ret = buscarMarca (nombre);
         if (ret!=null){
-            marcas.removeFirstOccurrence(ret);
+            marcas.remove(ret);
         }
     }
-    public LinkedList<Marca> darMarca(){
+    public List<Marca> darMarca(){
         return marcas;
     }
 }
-
-
-
-//Cliente
-    public void crearCliente(String nombre, long dni, long telefono, String email, String cuit, int altura,
-            Localidad localidad, Calle calle) throws PreexistingEntityException, Exception{
-        Cliente miCliente = new Cliente();
-        miCliente = miCliente.creaCliente(nombre, dni, telefono, email, cuit, altura, localidad, calle);
-        if (miCliente!=null){
-            miPersistencia.crearCliente(miCliente);
-        }else{
-            throw new PreexistingEntityException("");
-        }
-    }
-    public void editarCliente(String nombre, long dni, long telefono, String email, String cuit, int altura, 
-            Localidad localidad, Calle calle, String contra, LinkedList<Vehiculo> ve, LinkedList<OrdenTrabajo> or,
-            LinkedList<Turno> tu, boolean ok) throws PreexistingEntityException, Exception{
-        Cliente miCliente = new Cliente();
-        miCliente = miCliente.editaCliente(nombre, dni, telefono, email, cuit, altura, localidad, calle,
-        contra, ve, or, tu, ok);        
-        this.miPersistencia.editarCliente(miCliente);}
-    public void eliminarCliente(long dni) throws NonexistentEntityException{
-        Cliente miCliente = new Cliente();
-        miCliente.eliminaCliente(dni);
-        this.miPersistencia.eliminarCliente(dni);}
-    public Cliente dameUnCliente(long dni){
-        Cliente miCliente = new Cliente();
-        miCliente = miCliente.buscarCliente(dni);
-        if (miCliente==null){        
-            miCliente= this.miPersistencia.dameUnCliente(dni);
-        }
-        return miCliente;
-    }
-    public List<Cliente> dameClientes(){
-        Cliente miCliente = new Cliente();
-        List<Cliente> misClientes = miCliente.darClientes();
-        if (misClientes.isEmpty()){
-            misClientes = this.miPersistencia.dameClientes();
-        }
-        return misClientes;
-    }

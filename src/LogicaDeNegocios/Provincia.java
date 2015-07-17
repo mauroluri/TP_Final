@@ -38,7 +38,7 @@ public class Provincia implements Serializable {
     
     
         //En memoria (sin persistencia)    
-    private static LinkedList<Provincia> provs = new LinkedList<Provincia>();
+    private static List<Provincia> provs = new LinkedList<Provincia>();
     //Metodos en memoria
     public Provincia buscarProvincia(int codigo){
         Provincia pro, ret=null;
@@ -63,13 +63,13 @@ public class Provincia implements Serializable {
         }
         return ret;
     }    
-    public Provincia editaProvincia(int codigo, String nombre, LinkedList<Localidad> locs){
+    public Provincia editaProvincia(int codigo, String nombre, List<Localidad> locs){
         Provincia ret = buscarProvincia( codigo);
         this.setNombre(nombre);
         this.setCodigo(codigo);
         this.setLocalidades(localidades);
         if (ret!=null){
-            provs.removeFirstOccurrence(ret);
+            provs.remove(ret);
             ret = this;
             provs.add(ret);
         }else{
@@ -80,10 +80,10 @@ public class Provincia implements Serializable {
     public void eliminaProvincia(int codigo){
         Provincia ret = buscarProvincia (codigo);
         if (ret!=null){
-            provs.removeFirstOccurrence(ret);
+            provs.remove(ret);
         }
     }
-    public LinkedList<Provincia> darProvincias(){
+    public List<Provincia> darProvincias(){
         return provs;
     }
 }

@@ -49,7 +49,7 @@ public class Mecanico extends Empleado implements Serializable{
     
     //En memoria (sin persistencia)        
     //Metodos en memoria
-    private static LinkedList<Mecanico> mecs = new LinkedList<Mecanico>();
+    private static List<Mecanico> mecs = new LinkedList<Mecanico>();
     
     public Mecanico buscarMecanico(long dni){
         Mecanico me, ret=null;
@@ -77,8 +77,8 @@ public class Mecanico extends Empleado implements Serializable{
         return ret;
     }
     public Mecanico editaMecanico(Localidad unaLoc,Sucursal unaSuc, String nombre, long dni, long telefono, int sueldo, 
-            String pass, Date horaInicio, Date horaFin, Especialidad profesion, LinkedList<Interno> in, LinkedList<OrdenTrabajo> or,
-            boolean ok,LinkedList<Turno> tu){
+            String pass, Date horaInicio, Date horaFin, Especialidad profesion, List<Interno> in, List<OrdenTrabajo> or,
+            boolean ok,List<Turno> tu){
         Mecanico ret = buscarMecanico(dni);
         this.setNombre(nombre);
         this.setDni(dni);
@@ -95,7 +95,7 @@ public class Mecanico extends Empleado implements Serializable{
         this.setUnaLocalidad(unaLoc);
         this.setPass(pass);
         if (ret!=null){
-            mecs.removeFirstOccurrence(ret);
+            mecs.remove(ret);
             ret = this;
             mecs.add(ret);
         }else{
@@ -107,10 +107,10 @@ public class Mecanico extends Empleado implements Serializable{
         Mecanico ret = buscarMecanico (dni);
         if (ret!=null){
             super.eliminaEmpleado(dni);
-            mecs.removeFirstOccurrence(ret);
+            mecs.remove(ret);
         }
     }
-    public LinkedList<Mecanico> darMecanico(){
+    public List<Mecanico> darMecanico(){
         return mecs;
     }
 }
