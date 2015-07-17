@@ -3,7 +3,7 @@ package LogicaDeNegocios;
 import java.util.Date;
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
 
