@@ -73,9 +73,9 @@ public class AAAControladora {
         miAjusteJpa.create(miAju);}    
     public void editarAjuste (Ajuste miAju) throws NonexistentEntityException, Exception {
         miAjusteJpa.edit(miAju);}    
-    public void eliminarAjuste (int cod) throws NonexistentEntityException {
+    public void eliminarAjuste (long cod) throws NonexistentEntityException {
         miAjusteJpa.destroy(cod);}    
-    public Ajuste dameUnAjuste (int cod) {
+    public Ajuste dameUnAjuste (long cod) {
         return miAjusteJpa.findAjuste(cod);}    
     public List<Ajuste> dameAjustes (){
         return miAjusteJpa.findAjusteEntities();}
@@ -157,9 +157,9 @@ public class AAAControladora {
         miDiagnosticoJpa.create(miDia);}    
     public void editarDiagnostico (Diagnostico miDia) throws NonexistentEntityException, Exception {
         miDiagnosticoJpa.edit(miDia);}    
-    public void eliminarDiagnostico (int cod) throws NonexistentEntityException {
+    public void eliminarDiagnostico (long cod) throws NonexistentEntityException {
         miDiagnosticoJpa.destroy(cod);}    
-    public Diagnostico dameUnDiagnostico (int cod) {
+    public Diagnostico dameUnDiagnostico (long cod) {
         return miDiagnosticoJpa.findDiagnostico(cod);}    
     public List<Diagnostico> dameDiagnosticos (){
         return miDiagnosticoJpa.findDiagnosticoEntities();}

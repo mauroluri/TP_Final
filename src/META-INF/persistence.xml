@@ -5,7 +5,6 @@
     <class>LogicaDeNegocios.Accesorio</class>
     <class>LogicaDeNegocios.Actividad</class>
     <class>LogicaDeNegocios.Ajuste</class>
-    <class>LogicaDeNegocios.AtencionPublico</class>
     <class>LogicaDeNegocios.Autoparte</class>
     <class>LogicaDeNegocios.Calle</class>
     <class>LogicaDeNegocios.Categoria</class>
@@ -45,6 +44,7 @@
     <class>LogicaDeNegocios.Turno</class>
     <class>LogicaDeNegocios.Vehiculo</class>
     <class>LogicaDeNegocios.DiaHabil</class>
+    <class>LogicaDeNegocios.AtencionPublico</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/TP_FinalPU"/>
       <property name="javax.persistence.jdbc.password" value="rednaxela"/>
