@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Persistencia;
 
 import java.io.Serializable;
@@ -12,20 +9,14 @@ import javax.persistence.criteria.Root;
 import LogicaDeNegocios.Cliente;
 import LogicaDeNegocios.Vehiculo;
 import LogicaDeNegocios.OrdenTrabajo;
-import LogicaDeNegocios.Empleado;
 import LogicaDeNegocios.Turno;
 import Persistencia.exceptions.NonexistentEntityException;
 import Persistencia.exceptions.PreexistingEntityException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-/**
- *
- * @author Ale
- */
 public class TurnoJpaController implements Serializable {
 
     public TurnoJpaController() {
@@ -42,9 +33,6 @@ public class TurnoJpaController implements Serializable {
     }
 
     public void create(Turno turno) throws PreexistingEntityException, Exception {
-        if (turno.getVsEmpleado() == null) {
-            turno.setVsEmpleado(new ArrayList<Empleado>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -64,12 +52,6 @@ public class TurnoJpaController implements Serializable {
                 unaOrdenTrabajo = em.getReference(unaOrdenTrabajo.getClass(), unaOrdenTrabajo.getCodOrden());
                 turno.setUnaOrdenTrabajo(unaOrdenTrabajo);
             }
-            List<Empleado> attachedVsEmpleado = new ArrayList<Empleado>();
-            for (Empleado vsEmpleadoEmpleadoToAttach : turno.getVsEmpleado()) {
-                vsEmpleadoEmpleadoToAttach = em.getReference(vsEmpleadoEmpleadoToAttach.getClass(), vsEmpleadoEmpleadoToAttach.getDni());
-                attachedVsEmpleado.add(vsEmpleadoEmpleadoToAttach);
-            }
-            turno.setVsEmpleado(attachedVsEmpleado);
             em.persist(turno);
             if (unCliente != null) {
                 unCliente.getVsTurno().add(turno);
@@ -87,10 +69,6 @@ public class TurnoJpaController implements Serializable {
                 }
                 unaOrdenTrabajo.setUnTurno(turno);
                 unaOrdenTrabajo = em.merge(unaOrdenTrabajo);
-            }
-            for (Empleado vsEmpleadoEmpleado : turno.getVsEmpleado()) {
-                vsEmpleadoEmpleado.getVsTurno().add(turno);
-                vsEmpleadoEmpleado = em.merge(vsEmpleadoEmpleado);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -117,8 +95,6 @@ public class TurnoJpaController implements Serializable {
             Vehiculo unVehiculoNew = turno.getUnVehiculo();
             OrdenTrabajo unaOrdenTrabajoOld = persistentTurno.getUnaOrdenTrabajo();
             OrdenTrabajo unaOrdenTrabajoNew = turno.getUnaOrdenTrabajo();
-            List<Empleado> vsEmpleadoOld = persistentTurno.getVsEmpleado();
-            List<Empleado> vsEmpleadoNew = turno.getVsEmpleado();
             if (unClienteNew != null) {
                 unClienteNew = em.getReference(unClienteNew.getClass(), unClienteNew.getDni());
                 turno.setUnCliente(unClienteNew);
@@ -131,13 +107,6 @@ public class TurnoJpaController implements Serializable {
                 unaOrdenTrabajoNew = em.getReference(unaOrdenTrabajoNew.getClass(), unaOrdenTrabajoNew.getCodOrden());
                 turno.setUnaOrdenTrabajo(unaOrdenTrabajoNew);
             }
-            List<Empleado> attachedVsEmpleadoNew = new ArrayList<Empleado>();
-            for (Empleado vsEmpleadoNewEmpleadoToAttach : vsEmpleadoNew) {
-                vsEmpleadoNewEmpleadoToAttach = em.getReference(vsEmpleadoNewEmpleadoToAttach.getClass(), vsEmpleadoNewEmpleadoToAttach.getDni());
-                attachedVsEmpleadoNew.add(vsEmpleadoNewEmpleadoToAttach);
-            }
-            vsEmpleadoNew = attachedVsEmpleadoNew;
-            turno.setVsEmpleado(vsEmpleadoNew);
             turno = em.merge(turno);
             if (unClienteOld != null && !unClienteOld.equals(unClienteNew)) {
                 unClienteOld.getVsTurno().remove(turno);
@@ -167,18 +136,6 @@ public class TurnoJpaController implements Serializable {
                 }
                 unaOrdenTrabajoNew.setUnTurno(turno);
                 unaOrdenTrabajoNew = em.merge(unaOrdenTrabajoNew);
-            }
-            for (Empleado vsEmpleadoOldEmpleado : vsEmpleadoOld) {
-                if (!vsEmpleadoNew.contains(vsEmpleadoOldEmpleado)) {
-                    vsEmpleadoOldEmpleado.getVsTurno().remove(turno);
-                    vsEmpleadoOldEmpleado = em.merge(vsEmpleadoOldEmpleado);
-                }
-            }
-            for (Empleado vsEmpleadoNewEmpleado : vsEmpleadoNew) {
-                if (!vsEmpleadoOld.contains(vsEmpleadoNewEmpleado)) {
-                    vsEmpleadoNewEmpleado.getVsTurno().add(turno);
-                    vsEmpleadoNewEmpleado = em.merge(vsEmpleadoNewEmpleado);
-                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -223,11 +180,6 @@ public class TurnoJpaController implements Serializable {
             if (unaOrdenTrabajo != null) {
                 unaOrdenTrabajo.setUnTurno(null);
                 unaOrdenTrabajo = em.merge(unaOrdenTrabajo);
-            }
-            List<Empleado> vsEmpleado = turno.getVsEmpleado();
-            for (Empleado vsEmpleadoEmpleado : vsEmpleado) {
-                vsEmpleadoEmpleado.getVsTurno().remove(turno);
-                vsEmpleadoEmpleado = em.merge(vsEmpleadoEmpleado);
             }
             em.remove(turno);
             em.getTransaction().commit();

@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Persistencia;
 
 import LogicaDeNegocios.Empleado;
@@ -12,19 +9,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import LogicaDeNegocios.Sucursal;
 import LogicaDeNegocios.Localidad;
-import LogicaDeNegocios.Turno;
 import Persistencia.exceptions.NonexistentEntityException;
 import Persistencia.exceptions.PreexistingEntityException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-/**
- *
- * @author Ale
- */
 public class EmpleadoJpaController implements Serializable {
 
     public EmpleadoJpaController() {
@@ -41,9 +32,6 @@ public class EmpleadoJpaController implements Serializable {
     }
 
     public void create(Empleado empleado) throws PreexistingEntityException, Exception {
-        if (empleado.getVsTurno() == null) {
-            empleado.setVsTurno(new ArrayList<Turno>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -58,12 +46,6 @@ public class EmpleadoJpaController implements Serializable {
                 unaLocalidad = em.getReference(unaLocalidad.getClass(), unaLocalidad.getCodigo());
                 empleado.setUnaLocalidad(unaLocalidad);
             }
-            List<Turno> attachedVsTurno = new ArrayList<Turno>();
-            for (Turno vsTurnoTurnoToAttach : empleado.getVsTurno()) {
-                vsTurnoTurnoToAttach = em.getReference(vsTurnoTurnoToAttach.getClass(), vsTurnoTurnoToAttach.getCodigo());
-                attachedVsTurno.add(vsTurnoTurnoToAttach);
-            }
-            empleado.setVsTurno(attachedVsTurno);
             em.persist(empleado);
             if (unaSucursal != null) {
                 unaSucursal.getVsEmpleado().add(empleado);
@@ -72,10 +54,6 @@ public class EmpleadoJpaController implements Serializable {
             if (unaLocalidad != null) {
                 unaLocalidad.getVsEmpleado().add(empleado);
                 unaLocalidad = em.merge(unaLocalidad);
-            }
-            for (Turno vsTurnoTurno : empleado.getVsTurno()) {
-                vsTurnoTurno.getVsEmpleado().add(empleado);
-                vsTurnoTurno = em.merge(vsTurnoTurno);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -100,8 +78,6 @@ public class EmpleadoJpaController implements Serializable {
             Sucursal unaSucursalNew = empleado.getUnaSucursal();
             Localidad unaLocalidadOld = persistentEmpleado.getUnaLocalidad();
             Localidad unaLocalidadNew = empleado.getUnaLocalidad();
-            List<Turno> vsTurnoOld = persistentEmpleado.getVsTurno();
-            List<Turno> vsTurnoNew = empleado.getVsTurno();
             if (unaSucursalNew != null) {
                 unaSucursalNew = em.getReference(unaSucursalNew.getClass(), unaSucursalNew.getCodSuc());
                 empleado.setUnaSucursal(unaSucursalNew);
@@ -110,13 +86,6 @@ public class EmpleadoJpaController implements Serializable {
                 unaLocalidadNew = em.getReference(unaLocalidadNew.getClass(), unaLocalidadNew.getCodigo());
                 empleado.setUnaLocalidad(unaLocalidadNew);
             }
-            List<Turno> attachedVsTurnoNew = new ArrayList<Turno>();
-            for (Turno vsTurnoNewTurnoToAttach : vsTurnoNew) {
-                vsTurnoNewTurnoToAttach = em.getReference(vsTurnoNewTurnoToAttach.getClass(), vsTurnoNewTurnoToAttach.getCodigo());
-                attachedVsTurnoNew.add(vsTurnoNewTurnoToAttach);
-            }
-            vsTurnoNew = attachedVsTurnoNew;
-            empleado.setVsTurno(vsTurnoNew);
             empleado = em.merge(empleado);
             if (unaSucursalOld != null && !unaSucursalOld.equals(unaSucursalNew)) {
                 unaSucursalOld.getVsEmpleado().remove(empleado);
@@ -133,18 +102,6 @@ public class EmpleadoJpaController implements Serializable {
             if (unaLocalidadNew != null && !unaLocalidadNew.equals(unaLocalidadOld)) {
                 unaLocalidadNew.getVsEmpleado().add(empleado);
                 unaLocalidadNew = em.merge(unaLocalidadNew);
-            }
-            for (Turno vsTurnoOldTurno : vsTurnoOld) {
-                if (!vsTurnoNew.contains(vsTurnoOldTurno)) {
-                    vsTurnoOldTurno.getVsEmpleado().remove(empleado);
-                    vsTurnoOldTurno = em.merge(vsTurnoOldTurno);
-                }
-            }
-            for (Turno vsTurnoNewTurno : vsTurnoNew) {
-                if (!vsTurnoOld.contains(vsTurnoNewTurno)) {
-                    vsTurnoNewTurno.getVsEmpleado().add(empleado);
-                    vsTurnoNewTurno = em.merge(vsTurnoNewTurno);
-                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -184,11 +141,6 @@ public class EmpleadoJpaController implements Serializable {
             if (unaLocalidad != null) {
                 unaLocalidad.getVsEmpleado().remove(empleado);
                 unaLocalidad = em.merge(unaLocalidad);
-            }
-            List<Turno> vsTurno = empleado.getVsTurno();
-            for (Turno vsTurnoTurno : vsTurno) {
-                vsTurnoTurno.getVsEmpleado().remove(empleado);
-                vsTurnoTurno = em.merge(vsTurnoTurno);
             }
             em.remove(empleado);
             em.getTransaction().commit();

@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Persistencia;
 
 import java.io.Serializable;
@@ -12,19 +9,13 @@ import javax.persistence.criteria.Root;
 import LogicaDeNegocios.Sucursal;
 import LogicaDeNegocios.Localidad;
 import LogicaDeNegocios.Perito;
-import LogicaDeNegocios.Turno;
 import Persistencia.exceptions.NonexistentEntityException;
 import Persistencia.exceptions.PreexistingEntityException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-/**
- *
- * @author Ale
- */
 public class PeritoJpaController implements Serializable {
 
     public PeritoJpaController() {
@@ -41,9 +32,6 @@ public class PeritoJpaController implements Serializable {
     }
 
     public void create(Perito perito) throws PreexistingEntityException, Exception {
-        if (perito.getVsTurno() == null) {
-            perito.setVsTurno(new ArrayList<Turno>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -58,12 +46,6 @@ public class PeritoJpaController implements Serializable {
                 unaLocalidad = em.getReference(unaLocalidad.getClass(), unaLocalidad.getCodigo());
                 perito.setUnaLocalidad(unaLocalidad);
             }
-            List<Turno> attachedVsTurno = new ArrayList<Turno>();
-            for (Turno vsTurnoTurnoToAttach : perito.getVsTurno()) {
-                vsTurnoTurnoToAttach = em.getReference(vsTurnoTurnoToAttach.getClass(), vsTurnoTurnoToAttach.getCodigo());
-                attachedVsTurno.add(vsTurnoTurnoToAttach);
-            }
-            perito.setVsTurno(attachedVsTurno);
             em.persist(perito);
             if (unaSucursal != null) {
                 unaSucursal.getVsEmpleado().add(perito);
@@ -72,10 +54,6 @@ public class PeritoJpaController implements Serializable {
             if (unaLocalidad != null) {
                 unaLocalidad.getVsEmpleado().add(perito);
                 unaLocalidad = em.merge(unaLocalidad);
-            }
-            for (Turno vsTurnoTurno : perito.getVsTurno()) {
-                vsTurnoTurno.getVsEmpleado().add(perito);
-                vsTurnoTurno = em.merge(vsTurnoTurno);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -100,8 +78,6 @@ public class PeritoJpaController implements Serializable {
             Sucursal unaSucursalNew = perito.getUnaSucursal();
             Localidad unaLocalidadOld = persistentPerito.getUnaLocalidad();
             Localidad unaLocalidadNew = perito.getUnaLocalidad();
-            List<Turno> vsTurnoOld = persistentPerito.getVsTurno();
-            List<Turno> vsTurnoNew = perito.getVsTurno();
             if (unaSucursalNew != null) {
                 unaSucursalNew = em.getReference(unaSucursalNew.getClass(), unaSucursalNew.getCodSuc());
                 perito.setUnaSucursal(unaSucursalNew);
@@ -110,13 +86,6 @@ public class PeritoJpaController implements Serializable {
                 unaLocalidadNew = em.getReference(unaLocalidadNew.getClass(), unaLocalidadNew.getCodigo());
                 perito.setUnaLocalidad(unaLocalidadNew);
             }
-            List<Turno> attachedVsTurnoNew = new ArrayList<Turno>();
-            for (Turno vsTurnoNewTurnoToAttach : vsTurnoNew) {
-                vsTurnoNewTurnoToAttach = em.getReference(vsTurnoNewTurnoToAttach.getClass(), vsTurnoNewTurnoToAttach.getCodigo());
-                attachedVsTurnoNew.add(vsTurnoNewTurnoToAttach);
-            }
-            vsTurnoNew = attachedVsTurnoNew;
-            perito.setVsTurno(vsTurnoNew);
             perito = em.merge(perito);
             if (unaSucursalOld != null && !unaSucursalOld.equals(unaSucursalNew)) {
                 unaSucursalOld.getVsEmpleado().remove(perito);
@@ -133,18 +102,6 @@ public class PeritoJpaController implements Serializable {
             if (unaLocalidadNew != null && !unaLocalidadNew.equals(unaLocalidadOld)) {
                 unaLocalidadNew.getVsEmpleado().add(perito);
                 unaLocalidadNew = em.merge(unaLocalidadNew);
-            }
-            for (Turno vsTurnoOldTurno : vsTurnoOld) {
-                if (!vsTurnoNew.contains(vsTurnoOldTurno)) {
-                    vsTurnoOldTurno.getVsEmpleado().remove(perito);
-                    vsTurnoOldTurno = em.merge(vsTurnoOldTurno);
-                }
-            }
-            for (Turno vsTurnoNewTurno : vsTurnoNew) {
-                if (!vsTurnoOld.contains(vsTurnoNewTurno)) {
-                    vsTurnoNewTurno.getVsEmpleado().add(perito);
-                    vsTurnoNewTurno = em.merge(vsTurnoNewTurno);
-                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -184,11 +141,6 @@ public class PeritoJpaController implements Serializable {
             if (unaLocalidad != null) {
                 unaLocalidad.getVsEmpleado().remove(perito);
                 unaLocalidad = em.merge(unaLocalidad);
-            }
-            List<Turno> vsTurno = perito.getVsTurno();
-            for (Turno vsTurnoTurno : vsTurno) {
-                vsTurnoTurno.getVsEmpleado().remove(perito);
-                vsTurnoTurno = em.merge(vsTurnoTurno);
             }
             em.remove(perito);
             em.getTransaction().commit();

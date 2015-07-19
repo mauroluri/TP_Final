@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Persistencia;
 
 import LogicaDeNegocios.AtencionPublico;
@@ -13,19 +10,15 @@ import javax.persistence.criteria.Root;
 import LogicaDeNegocios.Sucursal;
 import LogicaDeNegocios.Localidad;
 import LogicaDeNegocios.Externo;
-import java.util.ArrayList;
-import java.util.List;
-import LogicaDeNegocios.Turno;
 import Persistencia.exceptions.NonexistentEntityException;
 import Persistencia.exceptions.PreexistingEntityException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-/**
- *
- * @author Ale
- */
+
 public class AtencionPublicoJpaController implements Serializable {
 
     public AtencionPublicoJpaController() {
@@ -44,9 +37,6 @@ public class AtencionPublicoJpaController implements Serializable {
     public void create(AtencionPublico atencionPublico) throws PreexistingEntityException, Exception {
         if (atencionPublico.getVsExterno() == null) {
             atencionPublico.setVsExterno(new ArrayList<Externo>());
-        }
-        if (atencionPublico.getVsTurno() == null) {
-            atencionPublico.setVsTurno(new ArrayList<Turno>());
         }
         EntityManager em = null;
         try {
@@ -68,12 +58,6 @@ public class AtencionPublicoJpaController implements Serializable {
                 attachedVsExterno.add(vsExternoExternoToAttach);
             }
             atencionPublico.setVsExterno(attachedVsExterno);
-            List<Turno> attachedVsTurno = new ArrayList<Turno>();
-            for (Turno vsTurnoTurnoToAttach : atencionPublico.getVsTurno()) {
-                vsTurnoTurnoToAttach = em.getReference(vsTurnoTurnoToAttach.getClass(), vsTurnoTurnoToAttach.getCodigo());
-                attachedVsTurno.add(vsTurnoTurnoToAttach);
-            }
-            atencionPublico.setVsTurno(attachedVsTurno);
             em.persist(atencionPublico);
             if (unaSucursal != null) {
                 unaSucursal.getVsEmpleado().add(atencionPublico);
@@ -91,10 +75,6 @@ public class AtencionPublicoJpaController implements Serializable {
                     oldRemitenteOfVsExternoExterno.getVsExterno().remove(vsExternoExterno);
                     oldRemitenteOfVsExternoExterno = em.merge(oldRemitenteOfVsExternoExterno);
                 }
-            }
-            for (Turno vsTurnoTurno : atencionPublico.getVsTurno()) {
-                vsTurnoTurno.getVsEmpleado().add(atencionPublico);
-                vsTurnoTurno = em.merge(vsTurnoTurno);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -121,8 +101,6 @@ public class AtencionPublicoJpaController implements Serializable {
             Localidad unaLocalidadNew = atencionPublico.getUnaLocalidad();
             List<Externo> vsExternoOld = persistentAtencionPublico.getVsExterno();
             List<Externo> vsExternoNew = atencionPublico.getVsExterno();
-            List<Turno> vsTurnoOld = persistentAtencionPublico.getVsTurno();
-            List<Turno> vsTurnoNew = atencionPublico.getVsTurno();
             if (unaSucursalNew != null) {
                 unaSucursalNew = em.getReference(unaSucursalNew.getClass(), unaSucursalNew.getCodSuc());
                 atencionPublico.setUnaSucursal(unaSucursalNew);
@@ -138,13 +116,6 @@ public class AtencionPublicoJpaController implements Serializable {
             }
             vsExternoNew = attachedVsExternoNew;
             atencionPublico.setVsExterno(vsExternoNew);
-            List<Turno> attachedVsTurnoNew = new ArrayList<Turno>();
-            for (Turno vsTurnoNewTurnoToAttach : vsTurnoNew) {
-                vsTurnoNewTurnoToAttach = em.getReference(vsTurnoNewTurnoToAttach.getClass(), vsTurnoNewTurnoToAttach.getCodigo());
-                attachedVsTurnoNew.add(vsTurnoNewTurnoToAttach);
-            }
-            vsTurnoNew = attachedVsTurnoNew;
-            atencionPublico.setVsTurno(vsTurnoNew);
             atencionPublico = em.merge(atencionPublico);
             if (unaSucursalOld != null && !unaSucursalOld.equals(unaSucursalNew)) {
                 unaSucursalOld.getVsEmpleado().remove(atencionPublico);
@@ -177,18 +148,6 @@ public class AtencionPublicoJpaController implements Serializable {
                         oldRemitenteOfVsExternoNewExterno.getVsExterno().remove(vsExternoNewExterno);
                         oldRemitenteOfVsExternoNewExterno = em.merge(oldRemitenteOfVsExternoNewExterno);
                     }
-                }
-            }
-            for (Turno vsTurnoOldTurno : vsTurnoOld) {
-                if (!vsTurnoNew.contains(vsTurnoOldTurno)) {
-                    vsTurnoOldTurno.getVsEmpleado().remove(atencionPublico);
-                    vsTurnoOldTurno = em.merge(vsTurnoOldTurno);
-                }
-            }
-            for (Turno vsTurnoNewTurno : vsTurnoNew) {
-                if (!vsTurnoOld.contains(vsTurnoNewTurno)) {
-                    vsTurnoNewTurno.getVsEmpleado().add(atencionPublico);
-                    vsTurnoNewTurno = em.merge(vsTurnoNewTurno);
                 }
             }
             em.getTransaction().commit();
@@ -234,11 +193,6 @@ public class AtencionPublicoJpaController implements Serializable {
             for (Externo vsExternoExterno : vsExterno) {
                 vsExternoExterno.setRemitente(null);
                 vsExternoExterno = em.merge(vsExternoExterno);
-            }
-            List<Turno> vsTurno = atencionPublico.getVsTurno();
-            for (Turno vsTurnoTurno : vsTurno) {
-                vsTurnoTurno.getVsEmpleado().remove(atencionPublico);
-                vsTurnoTurno = em.merge(vsTurnoTurno);
             }
             em.remove(atencionPublico);
             em.getTransaction().commit();
